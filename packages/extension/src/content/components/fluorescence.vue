@@ -32,7 +32,7 @@ defineProps({
   .sidekick-fluorescence {
     top: 50%;
     left: 0;
-    transform: translate(-80%, -50%);
+    transform: translate(-20%, -50%);
   }
 }
 
@@ -40,7 +40,7 @@ defineProps({
   .sidekick-fluorescence {
     top: 50%;
     right: 0;
-    transform: translate(80%, -50%);
+    transform: translate(20%, -50%);
   }
 }
 
@@ -48,7 +48,7 @@ defineProps({
   .sidekick-fluorescence {
     top: 0;
     left: 50%;
-    transform: translate(-50%, -80%);
+    transform: translate(-50%, -20%);
   }
 }
 
@@ -56,7 +56,7 @@ defineProps({
   .sidekick-fluorescence {
     bottom: 0;
     left: 50%;
-    transform: translate(-50%, 80%);
+    transform: translate(-50%, 20%);
   }
 }
 .sidekick-diffuse {

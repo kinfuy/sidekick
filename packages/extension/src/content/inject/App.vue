@@ -4,7 +4,7 @@
     @mouseenter="hoverToolBar"
     @mouseleave="leaveToolBar"
   >
-    <div class="sidekick-tool-bar" :class="{ 'sidekick-collapse': collapse }">
+    <div class="sidekick-tool-bar" :class="{ 'sidekick-active': isActive }">
       <Tool
         v-for="tool in tools"
         :key="tool.name"
@@ -12,12 +12,12 @@
         :logo="tool.logo"
       />
     </div>
-    <Fluorescence v-if="collapse" :is-diffuse="isDiffuse" />
+    <Fluorescence v-if="!isActive" :is-diffuse="isDiffuse" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Tool from '../components/tool.vue';
 import Fluorescence from '../components/fluorescence.vue';
 import notice from '../../assets/app/notice.png';
@@ -54,7 +54,7 @@ const tools = ref([
   },
 ]);
 
-const collapse = ref(true);
+const isActive = ref(false);
 
 const isDiffuse = ref(false);
 
@@ -63,16 +63,16 @@ const hoverToolBar = () => {
   clearTimeout(timer);
   isDiffuse.value = true;
   timer = setTimeout(() => {
-    collapse.value = false;
-  }, 1500);
+    isActive.value = true;
+  }, 1000);
 };
 
 const leaveToolBar = () => {
   clearTimeout(timer);
   timer = setTimeout(() => {
-    collapse.value = true;
+    isActive.value = false;
     isDiffuse.value = false;
-  }, 1000);
+  }, 500);
 };
 </script>
 
@@ -80,6 +80,7 @@ const leaveToolBar = () => {
 .sidekick-kit {
   position: fixed;
   z-index: 2999999999999;
+  opacity: 1 !important;
 
   .sidekick-tool-bar {
     background-color: rgba(0, 0, 0, 0.5);
@@ -98,10 +99,11 @@ const leaveToolBar = () => {
   bottom: 0;
   height: 100vh;
   width: 48px;
+  transform: translateX(-48px);
 
-  .sidekick-collapse {
+  .sidekick-active {
     overflow: hidden;
-    transform: translateX(-48px);
+    transform: translateX(48px);
   }
 
   .sidekick-tool-bar {
@@ -119,10 +121,11 @@ const leaveToolBar = () => {
   right: 0;
   height: 100vh;
   width: 48px;
+  transform: translateX(48px);
 
-  .sidekick-collapse {
+  .sidekick-active {
     overflow: hidden;
-    transform: translateX(48px);
+    transform: translateX(-48px);
   }
 
   .sidekick-tool-bar {
@@ -138,10 +141,11 @@ const leaveToolBar = () => {
   top: 0;
   width: 100vw;
   height: 48px;
+  transform: translateY(-48px);
 
-  .sidekick-collapse {
+  .sidekick-active {
     overflow: hidden;
-    transform: translateY(-48px);
+    transform: translateY(48px);
   }
 
   .sidekick-tool {
@@ -153,10 +157,11 @@ const leaveToolBar = () => {
   bottom: 0;
   width: 100vw;
   height: 48px;
+  transform: translateY(48px);
 
-  .sidekick-collapse {
+  .sidekick-active {
     overflow: hidden;
-    transform: translateY(48px);
+    transform: translateY(-48px);
   }
 
   .sidekick-tool {
