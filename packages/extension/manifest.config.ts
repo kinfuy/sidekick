@@ -40,6 +40,14 @@ export default defineManifest(async () => {
       'cookies',
     ],
     host_permissions: ['<all_urls>'],
-    web_accessible_resources: isDev ? [] : [],
+    web_accessible_resources: isDev
+      ? []
+      : [
+          {
+            matches: ['<all_urls>'],
+            resources: ['assets/shadow-styles.css'],
+            use_dynamic_url: true,
+          },
+        ],
   };
 });

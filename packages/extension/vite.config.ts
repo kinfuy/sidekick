@@ -24,7 +24,12 @@ export default defineConfig({
     vuejsx(),
     crx({ manifest }),
     shadowDomCssPlugin({
-      config: [],
+      config: [
+        {
+          container: '#sidekick-extension',
+          output: 'assets/shadow-styles.css',
+        },
+      ],
     }),
     shortcutsPlugin({ defaults: ['s'] }),
   ],
