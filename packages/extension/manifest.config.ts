@@ -6,7 +6,8 @@ export default defineManifest(async () => {
     manifest_version: 3,
     name: 'Sidekick',
     version: '0.0.1',
-    description: 'The fish in the browser are free, flexible, and efficient. A super efficient personal assistant',
+    description:
+      'The fish in the browser are free, flexible, and efficient. A super efficient personal assistant',
     icons: {
       '16': 'src/assets/logo.png',
       '48': 'src/assets/logo.png',
@@ -18,7 +19,7 @@ export default defineManifest(async () => {
     },
     action: {
       default_icon: 'src/assets/logo.png',
-      default_title: '百川 Baichuan',
+      default_title: 'sidekick',
       default_popup: 'popup.html',
     },
     content_scripts: [
@@ -39,8 +40,6 @@ export default defineManifest(async () => {
       'cookies',
     ],
     host_permissions: ['<all_urls>'],
-    web_accessible_resources: isDev
-      ? []
-      : [],
+    web_accessible_resources: isDev ? [] : [],
   };
 });

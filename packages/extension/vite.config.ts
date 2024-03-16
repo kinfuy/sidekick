@@ -24,22 +24,7 @@ export default defineConfig({
     vuejsx(),
     crx({ manifest }),
     shadowDomCssPlugin({
-      config: [
-        {
-          container: '#baichuan-magic-kit',
-          output: 'assets/shadow-styles.css',
-        },
-        {
-          key: 'github',
-          container: '#github-pro-backtop-warper',
-          output: 'assets/shadow-github-backtop.css',
-        },
-        {
-          key: 'webnotice',
-          container: '#web-notice',
-          output: 'assets/web-notice.css',
-        },
-      ],
+      config: [],
     }),
     shortcutsPlugin({ defaults: ['s'] }),
   ],
