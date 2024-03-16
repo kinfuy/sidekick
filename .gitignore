@@ -1,0 +1,6 @@
+node_modules
+dist
+token.ts
+account-config.ts
+
+*.pem

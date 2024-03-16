@@ -1,0 +1,35 @@
+{
+  "name": "sidekick",
+  "version": "1.0.0",
+  "author": "kinfuy",
+  "license": "MIT",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build"
+  },
+  "dependencies": {
+    "vue": "^3.3.1"
+  },
+  "devDependencies": {
+    "@crxjs/vite-plugin": "2.0.0-beta.18",
+    "@rollup/pluginutils": "^5.0.2",
+    "@types/node": "^18.15.9",
+    "@vitejs/plugin-vue": "^4.2.0",
+    "@vitejs/plugin-vue-jsx": "^3.0.1",
+    "chrome-types": "^0.1.191",
+    "less": "^4.1.3",
+    "postcss": "^8.4.24",
+    "postcss-html": "^1.5.0",
+    "postcss-import": "^15.1.0",
+    "postcss-less": "^6.0.0",
+    "postcss-nesting": "^11.2.2",
+    "prettier": "^2.8.8",
+    "process": "^0.11.10",
+    "vite": "^4.2.0",
+    "vite-plugin-shortcuts": "^0.1.0",
+    "vite-plugin-shadowcss": "^0.0.3",
+    "vite-tsconfig-paths": "^4.2.0"
+  }
+}

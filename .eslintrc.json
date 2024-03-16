@@ -1,0 +1,10 @@
+{
+  "extends": ["@alqmc/eslint-config"],
+  "rules": {
+    "arrow-parens": ["error", "always"],
+    "import/no-extraneous-dependencies": "off",
+    "vue/dot-location": "off",
+    "no-debugger": "off",
+    "no-restricted-syntax": "off"
+  }
+}
