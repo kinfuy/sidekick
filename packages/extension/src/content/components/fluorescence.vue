@@ -24,8 +24,6 @@ defineProps({
   height: 128px;
   background-image: linear-gradient(-180deg, #e79e0d 50%, #299cdf 50%);
   filter: blur(72px);
-
-  transition: all 2s;
 }
 
 .left-mode {
@@ -63,5 +61,6 @@ defineProps({
   width: 288px;
   height: 288px;
   filter: blur(80px);
+  transition: all 2s;
 }
 </style>

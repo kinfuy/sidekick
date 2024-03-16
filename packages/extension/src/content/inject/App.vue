@@ -1,6 +1,7 @@
 <template>
   <div
     class="sidekick-kit left-mode"
+    style="opacity: 0"
     @mouseenter="hoverToolBar"
     @mouseleave="leaveToolBar"
   >
@@ -17,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import Tool from '../components/tool.vue';
 import Fluorescence from '../components/fluorescence.vue';
 import notice from '../../assets/app/notice.png';
