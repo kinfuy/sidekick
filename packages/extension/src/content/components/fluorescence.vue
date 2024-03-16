@@ -17,7 +17,6 @@ defineProps({
 <style lang="less" shadow>
 .sidekick-fluorescence {
   position: fixed;
-  //   pointer-events: none;
   position: fixed;
   border-radius: 50%;
   width: 128px;

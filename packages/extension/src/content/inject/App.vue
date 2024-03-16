@@ -11,14 +11,17 @@
         :key="tool.name"
         :title="tool.title"
         :logo="tool.logo"
+        @click="toolClick(tool)"
       />
     </div>
     <Fluorescence v-if="!isActive" :is-diffuse="isDiffuse" />
   </div>
+  <Dialog v-model="isVisable" title="环境警示" />
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import Dialog from '@content/components/dialog.vue';
 import Tool from '../components/tool.vue';
 import Fluorescence from '../components/fluorescence.vue';
 import notice from '../../assets/app/notice.png';
@@ -65,7 +68,7 @@ const hoverToolBar = () => {
   isDiffuse.value = true;
   timer = setTimeout(() => {
     isActive.value = true;
-  }, 1000);
+  }, 500);
 };
 
 const leaveToolBar = () => {
@@ -73,7 +76,15 @@ const leaveToolBar = () => {
   timer = setTimeout(() => {
     isActive.value = false;
     isDiffuse.value = false;
-  }, 500);
+  }, 300);
+};
+
+const isVisable = ref(false);
+
+const toolClick = (tool: any) => {
+  if (tool.name === 'notice') {
+    isVisable.value = true;
+  }
 };
 </script>
 
