@@ -101,6 +101,7 @@ const toolClick = (tool: any) => {
     height: 100%;
     width: 100%;
     background-color: #fff;
+    box-shadow: 0 0 10px rgb(0 0 0 / 50%);
   }
 }
 
