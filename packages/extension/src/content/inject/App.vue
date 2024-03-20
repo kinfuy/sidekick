@@ -1,6 +1,6 @@
 <template>
   <div
-    class="sidekick-kit left-mode"
+    class="sidekick-kit right-mode"
     style="opacity: 0"
     @mouseenter="hoverToolBar"
     @mouseleave="leaveToolBar"
@@ -95,13 +95,12 @@ const toolClick = (tool: any) => {
   opacity: 1 !important;
 
   .sidekick-tool-bar {
-    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
-    justify-content: center;
     transition: all 0.5s;
     height: 100%;
     width: 100%;
+    background-color: #fff;
   }
 }
 
@@ -110,12 +109,12 @@ const toolClick = (tool: any) => {
   left: 0;
   bottom: 0;
   height: 100vh;
-  width: 48px;
-  transform: translateX(-48px);
+  width: 58px;
+  transform: translateX(-58px);
 
   .sidekick-active {
     overflow: hidden;
-    transform: translateX(48px);
+    transform: translateX(58px);
   }
 
   .sidekick-tool-bar {
@@ -132,12 +131,12 @@ const toolClick = (tool: any) => {
   bottom: 0;
   right: 0;
   height: 100vh;
-  width: 48px;
-  transform: translateX(48px);
+  width: 58px;
+  transform: translateX(58px);
 
   .sidekick-active {
     overflow: hidden;
-    transform: translateX(-48px);
+    transform: translateX(-58px);
   }
 
   .sidekick-tool-bar {
@@ -152,12 +151,12 @@ const toolClick = (tool: any) => {
 .top-mode {
   top: 0;
   width: 100vw;
-  height: 48px;
-  transform: translateY(-48px);
+  height: 58px;
+  transform: translateY(-58px);
 
   .sidekick-active {
     overflow: hidden;
-    transform: translateY(48px);
+    transform: translateY(58px);
   }
 
   .sidekick-tool {
@@ -168,12 +167,12 @@ const toolClick = (tool: any) => {
 .bottom-mode {
   bottom: 0;
   width: 100vw;
-  height: 48px;
-  transform: translateY(48px);
+  height: 58px;
+  transform: translateY(58px);
 
   .sidekick-active {
     overflow: hidden;
-    transform: translateY(-48px);
+    transform: translateY(-58px);
   }
 
   .sidekick-tool {
