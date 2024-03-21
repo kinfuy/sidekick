@@ -14,7 +14,7 @@ export default defineManifest(async () => {
       '128': 'src/assets/logo.png',
     },
     background: {
-      service_worker: 'src/background/index.ts',
+      service_worker: 'src/pages/background/index.ts',
       type: 'module',
     },
     action: {
@@ -25,7 +25,7 @@ export default defineManifest(async () => {
     content_scripts: [
       {
         matches: ['<all_urls>'],
-        js: ['src/content/index.ts'],
+        js: ['src/pages/content/index.ts'],
         run_at: 'document_start',
       },
     ],

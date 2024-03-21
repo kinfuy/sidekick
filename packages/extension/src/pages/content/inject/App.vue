@@ -1,12 +1,16 @@
 <template>
   <div
-    class="sidekick-kit right-mode"
+    class="sidekick-kit"
+    :class="`${toolMode}-mode`"
     style="opacity: 0"
     @mouseenter="hoverToolBar"
     @mouseleave="leaveToolBar"
   >
-    <div class="sidekick-tool-bar" :class="{ 'sidekick-active': isActive }">
-      <Tool
+    <div
+      class="sidekick-tool-bar"
+      :class="{ 'sidekick-active': isActive || isVisable }"
+    >
+      <ToolItem
         v-for="tool in tools"
         :key="tool.name"
         :title="tool.title"
@@ -14,21 +18,27 @@
         @click="toolClick(tool)"
       />
     </div>
-    <Fluorescence v-if="!isActive" :is-diffuse="isDiffuse" />
+    <Fluorescence v-if="!isActive && !isVisable" :is-diffuse="isDiffuse" />
   </div>
   <Dialog v-model="isVisable" title="环境警示" />
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import Dialog from '@content/components/dialog.vue';
-import Tool from '../components/tool.vue';
-import Fluorescence from '../components/fluorescence.vue';
-import notice from '../../assets/app/notice.png';
-import shot from '../../assets/app/shot.png';
-import browser from '../../assets/app/browser.png';
-import pen from '../../assets/app/pen.png';
-import clipboard from '../../assets/app/clipboard.png';
+import Dialog from '@pages/common/Dialog/Dialog.vue';
+import ToolItem from '@pages/common/ToolItem/ToolItem.vue';
+import Fluorescence from '@pages/common/Fluorescence/Fluorescence.vue';
+import '@pages/common/Fluorescence/Fluorescence.less?shadow';
+import '@pages/common/Dialog/Dialog.less?shadow';
+import '@pages/common/ToolItem/ToolItem.less?shadow';
+
+import notice from '@assets/app/notice.png';
+import shot from '@assets/app/shot.png';
+import browser from '@assets/app/browser.png';
+import pen from '@assets/app/pen.png';
+import clipboard from '@assets/app/clipboard.png';
+
+const toolMode = ref('left');
 
 const tools = ref([
   {
@@ -101,7 +111,8 @@ const toolClick = (tool: any) => {
     height: 100%;
     width: 100%;
     background-color: #fff;
-    box-shadow: 0 0 10px rgb(0 0 0 / 50%);
+    box-shadow: 0 0 49px 16px #00000024;
+    padding: 10px;
   }
 }
 
@@ -110,12 +121,12 @@ const toolClick = (tool: any) => {
   left: 0;
   bottom: 0;
   height: 100vh;
-  width: 58px;
-  transform: translateX(-58px);
+  width: 60px;
+  transform: translateX(-60px);
 
   .sidekick-active {
     overflow: hidden;
-    transform: translateX(58px);
+    transform: translateX(60px);
   }
 
   .sidekick-tool-bar {
@@ -132,12 +143,12 @@ const toolClick = (tool: any) => {
   bottom: 0;
   right: 0;
   height: 100vh;
-  width: 58px;
-  transform: translateX(58px);
+  width: 60px;
+  transform: translateX(60px);
 
   .sidekick-active {
     overflow: hidden;
-    transform: translateX(-58px);
+    transform: translateX(-60px);
   }
 
   .sidekick-tool-bar {
@@ -146,38 +157,6 @@ const toolClick = (tool: any) => {
 
   .sidekick-tool {
     margin: 12px 0;
-  }
-}
-
-.top-mode {
-  top: 0;
-  width: 100vw;
-  height: 58px;
-  transform: translateY(-58px);
-
-  .sidekick-active {
-    overflow: hidden;
-    transform: translateY(58px);
-  }
-
-  .sidekick-tool {
-    margin: 0 12px;
-  }
-}
-
-.bottom-mode {
-  bottom: 0;
-  width: 100vw;
-  height: 58px;
-  transform: translateY(58px);
-
-  .sidekick-active {
-    overflow: hidden;
-    transform: translateY(-58px);
-  }
-
-  .sidekick-tool {
-    margin: 0 12px;
   }
 }
 </style>

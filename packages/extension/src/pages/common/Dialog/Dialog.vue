@@ -1,5 +1,5 @@
 <template>
-  <div v-if="stateVisable" :style="style" class="sidekick-dialog">
+  <div v-if="stateVisable" :class="`sidekick-dialog sidekick-${direction}`">
     <div class="sidekick-dialog-header">
       <span>{{ title }}</span>
       <svg
@@ -26,29 +26,18 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  direction: {
+    type: String,
+    default: 'left',
+  },
   title: {
     type: String,
-  },
-  width: {
-    type: Number,
-    default: 836,
-  },
-  height: {
-    type: Number,
-    default: 500,
   },
 });
 
 const emit = defineEmits(['update:modelValue']);
 
 const stateVisable = ref(false);
-
-const style = computed(() => {
-  return {
-    width: `${props.width}px`,
-    height: `${props.height}px`,
-  };
-});
 
 watch(
   () => props.modelValue,
@@ -66,32 +55,3 @@ const close = () => {
   emit('update:modelValue', false);
 };
 </script>
-
-<style lang="less" shadow>
-.sidekick-dialog {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2999999999999;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  background-color: #fff;
-  border-radius: 8px;
-
-  .sidekick-dialog-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #f0f0f0;
-    padding: 0 16px;
-    height: 48px;
-
-    .sidekick-dialog-close {
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-  }
-}
-</style>
