@@ -1,7 +1,11 @@
 <template>
   <div v-if="stateVisable" :class="`sidekick-dialog sidekick-${direction}`">
     <div class="sidekick-dialog-header">
-      <span>{{ title }}</span>
+      <span></span>
+      <span class="sidekick-dialog-title">
+        <img class="tool-logo" :src="tool.logo" />
+        <span> {{ tool.title }}</span>
+      </span>
       <svg
         class="sidekick-dialog-close"
         xmlns="http://www.w3.org/2000/svg"
@@ -30,8 +34,9 @@ const props = defineProps({
     type: String,
     default: 'left',
   },
-  title: {
-    type: String,
+  tool: {
+    type: Object,
+    default: () => ({}),
   },
 });
 

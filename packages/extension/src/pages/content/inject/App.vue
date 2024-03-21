@@ -1,26 +1,33 @@
 <template>
-  <div
-    class="sidekick-kit"
-    :class="`${toolMode}-mode`"
-    style="opacity: 0"
-    @mouseenter="hoverToolBar"
-    @mouseleave="leaveToolBar"
-  >
+  <div class="sidekick-app" :class="[theme]">
     <div
-      class="sidekick-tool-bar"
-      :class="{ 'sidekick-active': isActive || isVisable }"
+      class="sidekick-kit"
+      :class="[`${toolMode}-mode`]"
+      style="opacity: 0"
+      @mouseenter="hoverToolBar"
+      @mouseleave="leaveToolBar"
     >
-      <ToolItem
-        v-for="tool in tools"
-        :key="tool.name"
-        :title="tool.title"
-        :logo="tool.logo"
-        @click="toolClick(tool)"
-      />
+      <div
+        class="sidekick-tool-bar"
+        :class="{ 'sidekick-active': isActive || isVisable }"
+      >
+        <div class="sidekick-content">
+          <ToolItem
+            v-for="tool in tools"
+            :key="tool.name"
+            :title="tool.title"
+            :logo="tool.logo"
+            @click="toolClick(tool)"
+          />
+        </div>
+        <div class="sidekick-footer">
+          <span class="btn" @click="() => handleSwitch()">主题</span>
+        </div>
+      </div>
+      <Fluorescence v-if="!isActive && !isVisable" :is-diffuse="isDiffuse" />
     </div>
-    <Fluorescence v-if="!isActive && !isVisable" :is-diffuse="isDiffuse" />
+    <Dialog v-model="isVisable" :tool="current" />
   </div>
-  <Dialog v-model="isVisable" title="环境警示" />
 </template>
 
 <script lang="ts" setup>
@@ -38,7 +45,19 @@ import browser from '@assets/app/browser.png';
 import pen from '@assets/app/pen.png';
 import clipboard from '@assets/app/clipboard.png';
 
+import { useTheme } from '@store/useTheme';
+
 const toolMode = ref('left');
+
+const { theme, setTheme } = useTheme();
+
+const handleSwitch = () => {
+  if (theme.value === 'light') {
+    setTheme('dark');
+  } else if (theme.value === 'dark') {
+    setTheme('light');
+  }
+};
 
 const tools = ref([
   {
@@ -91,9 +110,18 @@ const leaveToolBar = () => {
 
 const isVisable = ref(false);
 
+const current = ref();
+
 const toolClick = (tool: any) => {
-  if (tool.name === 'notice') {
+  if (current.value?.name && tool.name !== current.value.name) {
     isVisable.value = true;
+  } else {
+    isVisable.value = !isVisable.value;
+  }
+  if (isVisable.value) {
+    current.value = tool;
+  } else {
+    current.value = null;
   }
 };
 </script>
@@ -107,12 +135,21 @@ const toolClick = (tool: any) => {
   .sidekick-tool-bar {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
     transition: all 0.5s;
     height: 100%;
     width: 100%;
-    background-color: #fff;
+    background-color: var(--bg-color);
     box-shadow: 0 0 49px 16px #00000024;
     padding: 10px;
+
+    .sidekick-content {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
   }
 }
 
@@ -127,10 +164,6 @@ const toolClick = (tool: any) => {
   .sidekick-active {
     overflow: hidden;
     transform: translateX(60px);
-  }
-
-  .sidekick-tool-bar {
-    flex-direction: column;
   }
 
   .sidekick-tool {
@@ -149,10 +182,6 @@ const toolClick = (tool: any) => {
   .sidekick-active {
     overflow: hidden;
     transform: translateX(-60px);
-  }
-
-  .sidekick-tool-bar {
-    flex-direction: column;
   }
 
   .sidekick-tool {

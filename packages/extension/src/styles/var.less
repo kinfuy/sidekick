@@ -1,31 +1,32 @@
-:root {
-    --primary-color: #98ff99;
-    --primary-color-tint-20: tint(#98ff99, 20%);
-    --primary-color-tint-40: tint(#98ff99, 40%);
-    --primary-color-tint-80: tint(#98ff99, 80%);
-    --primary-color-tint-90: tint(#98ff99, 90%);
-    --primary-color-shade-5: shade(#98ff99, 5%);
-    --primary-color-fade-20: fade(#98ff99, 20%);
-    --primary-color-fade-80: fade(#98ff99, 80%);
-    --parmary-color-hover: #56ea57;
-}
-
-:host {
-    --primary-color: #98ff99;
-    --primary-color-tint-20: tint(#98ff99, 20%);
-    --primary-color-tint-40: tint(#98ff99, 40%);
-    --primary-color-tint-80: tint(#98ff99, 80%);
-    --primary-color-tint-90: tint(#98ff99, 90%);
-    --primary-color-shade-5: shade(#98ff99, 5%);
-    --primary-color-fade-20: fade(#98ff99, 20%);
-    --primary-color-fade-80: fade(#98ff99, 80%);
-    --parmary-color-hover: #56ea57;
+.theme(@mainColor: #99BC85) {
+    --primary-color: @mainColor;
+    --primary-color-tint-20: tint(@mainColor, 20%);
+    --primary-color-tint-40: tint(@mainColor, 40%);
+    --primary-color-tint-60: tint(@mainColor, 60%);
+    --primary-color-tint-70: tint(@mainColor, 70%);
+    --primary-color-tint-80: tint(@mainColor, 80%);
+    --primary-color-tint-90: tint(@mainColor, 90%);
+    --primary-color-tint-92: tint(@mainColor, 92%);
+    --primary-color-shade-5: shade(@mainColor, 5%);
+    --primary-color-fade-5: fade(@mainColor, 5%);
+    --primary-color-fade-10: fade(@mainColor, 10%);
+    --primary-color-fade-20: fade(@mainColor, 20%);
+    --primary-color-fade-40: fade(@mainColor, 40%);
+    --primary-color-fade-50: fade(@mainColor, 50%);
+    --primary-color-fade-60: fade(@mainColor, 60%);
+    --primary-color-fade-70: fade(@mainColor, 70%);
+    --primary-color-fade-80: fade(@mainColor, 80%);
+    --primary-color-fade-100: fade(@mainColor, 100%);
 }
 
 .light {
-    .theme(#313955);
+    .theme(#99BC85);
+
+    --bg-color: #fff;
 }
 
 .dark {
-    .theme(#98ff99);
+    .theme(#313955);
+
+    --bg-color: #313955;
 }

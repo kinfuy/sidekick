@@ -1,7 +1,8 @@
 import { ref } from 'vue';
-export const useTheme = () => {
-  const theme = ref('light');
 
+const theme = ref('light');
+
+export const useTheme = () => {
   const setTheme = (val: string) => {
     theme.value = val;
   };
