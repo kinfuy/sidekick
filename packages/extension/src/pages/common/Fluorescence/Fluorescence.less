@@ -1,5 +1,13 @@
-.sidekick-fluorescence {
+.sidekick-fluorescence-container {
     position: fixed;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.sidekick-fluorescence {
     border-radius: 50%;
     width: 128px;
     height: 128px;
@@ -8,7 +16,7 @@
 }
 
 .left-mode {
-    .sidekick-fluorescence {
+    .sidekick-fluorescence-container {
         top: 50%;
         left: 0;
         transform: translate(-20%, -50%);
@@ -16,7 +24,7 @@
 }
 
 .right-mode {
-    .sidekick-fluorescence {
+    .sidekick-fluorescence-container {
         top: 50%;
         right: 0;
         transform: translate(20%, -50%);
@@ -24,7 +32,7 @@
 }
 
 .top-mode {
-    .sidekick-fluorescence {
+    .sidekick-fluorescence-container {
         top: 0;
         left: 50%;
         transform: translate(-50%, -20%);
@@ -32,7 +40,7 @@
 }
 
 .bottom-mode {
-    .sidekick-fluorescence {
+    .sidekick-fluorescence-container {
         bottom: 0;
         left: 50%;
         transform: translate(-50%, 20%);

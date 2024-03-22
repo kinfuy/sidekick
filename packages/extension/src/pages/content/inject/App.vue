@@ -97,7 +97,7 @@ const hoverToolBar = () => {
   isDiffuse.value = true;
   timer = setTimeout(() => {
     isActive.value = true;
-  }, 500);
+  }, 1000);
 };
 
 const leaveToolBar = () => {
@@ -134,7 +134,6 @@ const toolClick = (tool: any) => {
 
   .sidekick-tool-bar {
     display: flex;
-    align-items: center;
     justify-content: space-between;
     flex-direction: column;
     align-items: center;
