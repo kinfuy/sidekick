@@ -18,12 +18,15 @@
         ></path>
       </svg>
     </div>
-    <slot></slot>
+    <div class="sidekick-dialog-body">
+      <component :is="ViewRender"></component>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
+import Notice from '../App/Notice';
 
 const props = defineProps({
   modelValue: {
@@ -44,6 +47,13 @@ const emit = defineEmits(['update:modelValue']);
 
 const stateVisable = ref(false);
 
+const ViewRender = computed(() => {
+  if (props.tool.name === 'notice') {
+    return Notice;
+  }
+  return null;
+});
+
 watch(
   () => props.modelValue,
   (val) => {
@@ -59,4 +69,8 @@ const close = () => {
   stateVisable.value = false;
   emit('update:modelValue', false);
 };
+
+defineExpose({
+  show,
+});
 </script>
