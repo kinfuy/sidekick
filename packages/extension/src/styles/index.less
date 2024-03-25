@@ -8,11 +8,40 @@
 }
 
 
-.btn {
+.btn-text {
     cursor: pointer;
     color: var(--primary-color);
 
     &:hover {
         color: var(--primary-color-tint-20);
     }
+}
+
+.btn {
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 4px;
+    line-height: 26px;
+    text-align: center;
+    background-color: var(--primary-color);
+    padding: 4px 8px;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.btn-small {
+    line-height: 20px;
+    font-size: 12px;
+    padding: 2px 4px;
+}
+
+.wirte-text {
+    color: #fff;
 }

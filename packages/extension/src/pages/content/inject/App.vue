@@ -21,7 +21,7 @@
           />
         </div>
         <div class="sidekick-footer">
-          <span class="btn" @click="() => handleSwitch()">主题</span>
+          <span class="btn-text" @click="() => handleSwitch()">主题</span>
         </div>
       </div>
       <Fluorescence v-if="!isActive && !isVisable" :is-diffuse="isDiffuse" />
@@ -38,6 +38,7 @@ import Fluorescence from '@pages/common/Fluorescence/Fluorescence.vue';
 import '@pages/common/Fluorescence/Fluorescence.less?shadow';
 import '@pages/common/Dialog/Dialog.less?shadow';
 import '@pages/common/ToolItem/ToolItem.less?shadow';
+import '@pages/common/App/Notice.less?shadow';
 
 import notice from '@assets/app/notice.png';
 import shot from '@assets/app/shot.png';
