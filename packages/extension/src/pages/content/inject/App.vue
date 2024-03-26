@@ -21,7 +21,9 @@
           />
         </div>
         <div class="sidekick-footer">
-          <span class="btn-text" @click="() => handleSwitch()">主题</span>
+          <div class="footer-operate">
+            <img :src="setIcon" @click="() => handleSwitch()" />
+          </div>
         </div>
       </div>
       <Fluorescence v-if="!isActive && !isVisable" :is-diffuse="isDiffuse" />
@@ -39,14 +41,18 @@ import '@pages/common/Fluorescence/Fluorescence.less?shadow';
 import '@pages/common/Dialog/Dialog.less?shadow';
 import '@pages/common/ToolItem/ToolItem.less?shadow';
 import '@pages/common/App/Notice.less?shadow';
+import '@pages/common/Empty/Empty.less?shadow';
 
 import notice from '@assets/app/notice.png';
 import shot from '@assets/app/shot.png';
 import browser from '@assets/app/browser.png';
 import pen from '@assets/app/pen.png';
 import clipboard from '@assets/app/clipboard.png';
+import set from '@assets/image/set.svg';
 
 import { useTheme } from '@store/useTheme';
+
+const setIcon = chrome.runtime.getURL(set);
 
 const toolMode = ref('left');
 
@@ -98,7 +104,7 @@ const hoverToolBar = () => {
   isDiffuse.value = true;
   timer = setTimeout(() => {
     isActive.value = true;
-  }, 1000);
+  }, 500);
 };
 
 const leaveToolBar = () => {
@@ -134,6 +140,7 @@ const toolClick = (tool: any) => {
   opacity: 1 !important;
 
   .sidekick-tool-bar {
+    position: relative;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
@@ -149,6 +156,25 @@ const toolClick = (tool: any) => {
       display: flex;
       align-items: center;
       flex-direction: column;
+    }
+
+    .sidekick-footer {
+      position: absolute;
+      bottom: 0;
+      height: 60px;
+      width: 100%;
+
+      .footer-operate {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+          width: 24px;
+          height: 24px;
+          cursor: pointer;
+        }
+      }
     }
   }
 }

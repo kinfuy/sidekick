@@ -27,6 +27,7 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
 import Notice from '../App/Notice';
+import Empty from '../Empty/Empty';
 
 const props = defineProps({
   modelValue: {
@@ -51,7 +52,7 @@ const ViewRender = computed(() => {
   if (props.tool.name === 'notice') {
     return Notice;
   }
-  return null;
+  return Empty;
 });
 
 watch(
