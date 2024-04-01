@@ -112,7 +112,7 @@ const leaveToolBar = () => {
   timer = setTimeout(() => {
     isActive.value = false;
     isDiffuse.value = false;
-  }, 300);
+  }, 500);
 };
 
 const isVisable = ref(false);

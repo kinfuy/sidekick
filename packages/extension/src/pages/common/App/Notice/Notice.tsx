@@ -1,17 +1,31 @@
 import { defineComponent } from 'vue';
-import Empty from '../../Empty/Empty';
 
 export default defineComponent({
   name: 'Notice',
-  render() {
-    const NoticeView = () => {
-      return <div>NoticeView</div>;
+
+  setup() {
+    const url = new URL(window.location.href).host;
+    return {
+      url,
     };
-    return (
-      <div>
-        <NoticeView></NoticeView>
-        <Empty></Empty>
-      </div>
-    );
+  },
+  render() {
+    const UrlFiled = () => {
+      return (
+        <div>
+          <span>Url</span>
+          <input v-model={this.url} type="text" />
+        </div>
+      );
+    };
+    const NoticeView = () => {
+      return (
+        <div>
+          <UrlFiled></UrlFiled>
+        </div>
+      );
+    };
+
+    return <NoticeView></NoticeView>;
   },
 });
