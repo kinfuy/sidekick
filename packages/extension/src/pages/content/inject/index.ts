@@ -5,7 +5,8 @@ const APP_SELCTOR = 'sidekick-extension';
 
 export const initInject = () => {
   const isExist = document.querySelector(`#${APP_SELCTOR}`);
-  if (isExist) return;
+  if (isExist) return true;
+
   const container = document.createElement('div');
   container.id = `${APP_SELCTOR}`;
   setTimeout(() => document.body?.appendChild(container), 0);
@@ -19,7 +20,7 @@ export const initInject = () => {
     styleEl.setAttribute('rel', 'stylesheet');
     styleEl.setAttribute(
       'href',
-      chrome.runtime.getURL('/assets/shadow-styles.css')
+      chrome.runtime.getURL('/assets/shadow-styles.css'),
     );
     shadowDOM.appendChild(styleEl);
   }

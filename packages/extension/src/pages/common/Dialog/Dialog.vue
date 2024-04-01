@@ -26,7 +26,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
-import Notice from '../App/Notice';
+import Notice from '../App/Notice/Notice';
 import Empty from '../Empty/Empty';
 
 const props = defineProps({
@@ -59,7 +59,7 @@ watch(
   () => props.modelValue,
   (val) => {
     stateVisable.value = val;
-  }
+  },
 );
 
 const show = () => {
@@ -75,3 +75,4 @@ defineExpose({
   show,
 });
 </script>
+../App/Notice/Notice

@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue';
-import Empty from '../Empty/Empty';
+import Empty from '../../Empty/Empty';
 
 export default defineComponent({
   name: 'Notice',

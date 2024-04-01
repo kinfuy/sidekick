@@ -1,8 +1,11 @@
 import { initInject } from './inject';
-console.log('content');
 
 const initContent = () => {
   initInject();
+  const timer = setTimeout(() => {
+    const isExist = initInject();
+    if (isExist) clearTimeout(timer);
+  }, 100);
 };
 
 initContent();
