@@ -69,7 +69,7 @@ const handleSwitch = () => {
 const tools = ref([
   {
     name: 'notice',
-    title: '环境警示',
+    title: 'Env Notice',
     logo: chrome.runtime.getURL(notice),
   },
   {

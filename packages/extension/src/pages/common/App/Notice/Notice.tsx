@@ -10,18 +10,18 @@ export default defineComponent({
     };
   },
   render() {
-    const UrlFiled = () => {
+    const Filed = (title: string) => {
       return (
-        <div>
-          <span>Url</span>
-          <input v-model={this.url} type="text" />
+        <div class="ui-filed">
+          <span class="ui-filed-label">{title}:</span>
+          <span>{this.url}</span>
         </div>
       );
     };
     const NoticeView = () => {
       return (
-        <div>
-          <UrlFiled></UrlFiled>
+        <div class="app-notice">
+          <div class="ui-card m-t-1">{Filed('地址')}</div>
         </div>
       );
     };
