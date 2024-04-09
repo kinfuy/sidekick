@@ -13,15 +13,18 @@
       >
         <div class="sidekick-content">
           <ToolItem
-            v-for="tool in tools"
-            :key="tool.name"
-            :title="tool.title"
-            :logo="tool.logo"
-            @click="toolClick(tool)"
+            v-for="app in apps"
+            :key="app.name"
+            :title="app.title"
+            :logo="app.logo"
+            @click="appClick(app)"
           />
         </div>
         <div class="sidekick-footer">
-          <div class="footer-operate">
+          <div class="footer-operate btn">
+            <img :src="themeIcon" @click="() => handleSwitch()" />
+          </div>
+          <div class="footer-operate btn">
             <img :src="setIcon" @click="() => handleSwitch()" />
           </div>
         </div>
@@ -33,7 +36,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import Dialog from '@pages/common/Dialog/Dialog.vue';
 import ToolItem from '@pages/common/ToolItem/ToolItem.vue';
 import Fluorescence from '@pages/common/Fluorescence/Fluorescence.vue';
@@ -43,20 +46,27 @@ import '@pages/common/ToolItem/ToolItem.less?shadow';
 import '@pages/common/App/Notice/Notice.less?shadow';
 import '@pages/common/Empty/Empty.less?shadow';
 
-import notice from '@assets/app/notice.png';
-import shot from '@assets/app/shot.png';
-import browser from '@assets/app/browser.png';
-import pen from '@assets/app/pen.png';
-import clipboard from '@assets/app/clipboard.png';
+import dark from '@assets/image/dark.svg';
+import light from '@assets/image/light.svg';
 import set from '@assets/image/set.svg';
 
 import { useTheme } from '@store/useTheme';
-
-const setIcon = chrome.runtime.getURL(set);
+import { useApp } from '@store/useApp';
 
 const toolMode = ref('left');
 
 const { theme, setTheme } = useTheme();
+
+const { apps } = useApp();
+
+const setIcon = chrome.runtime.getURL(set);
+
+const themeIcon = computed(() => {
+  if (theme.value === 'light') {
+    return chrome.runtime.getURL(light);
+  }
+  return chrome.runtime.getURL(dark);
+});
 
 const handleSwitch = () => {
   if (theme.value === 'light') {
@@ -65,34 +75,6 @@ const handleSwitch = () => {
     setTheme('light');
   }
 };
-
-const tools = ref([
-  {
-    name: 'notice',
-    title: 'Env Notice',
-    logo: chrome.runtime.getURL(notice),
-  },
-  {
-    name: 'shot',
-    title: '截图',
-    logo: chrome.runtime.getURL(shot),
-  },
-  {
-    name: 'browser',
-    title: '浏览器',
-    logo: chrome.runtime.getURL(browser),
-  },
-  {
-    name: 'pen',
-    title: '马克笔',
-    logo: chrome.runtime.getURL(pen),
-  },
-  {
-    name: 'clipboard',
-    title: '粘贴板',
-    logo: chrome.runtime.getURL(clipboard),
-  },
-]);
 
 const isActive = ref(false);
 
@@ -119,7 +101,7 @@ const isVisable = ref(false);
 
 const current = ref();
 
-const toolClick = (tool: any) => {
+const appClick = (tool: any) => {
   if (current.value?.name && tool.name !== current.value.name) {
     isVisable.value = true;
   } else {
@@ -148,7 +130,7 @@ const toolClick = (tool: any) => {
     transition: all 0.5s;
     height: 100%;
     width: 100%;
-    background-color: var(--bg-color);
+    background-color: var(--bg-color-primary);
     box-shadow: 0 0 49px 16px #00000024;
     padding: 10px;
 
@@ -161,13 +143,22 @@ const toolClick = (tool: any) => {
     .sidekick-footer {
       position: absolute;
       bottom: 0;
-      height: 60px;
+      min-height: 60px;
       width: 100%;
+      border-top: 1px solid var(--bg-color-hight);
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
 
       .footer-operate {
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-direction: column;
+        margin-bottom: 6px;
+        padding: 8px;
 
         img {
           width: 24px;

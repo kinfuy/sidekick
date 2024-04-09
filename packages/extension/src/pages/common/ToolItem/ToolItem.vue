@@ -1,5 +1,5 @@
 <template>
-  <div class="sidekick-tool">
+  <div class="sidekick-tool btn">
     <img class="sidekick-tool-logo" :src="logo" :title="title" />
   </div>
 </template>
