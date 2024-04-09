@@ -20,18 +20,20 @@
             @click="appClick(app)"
           />
         </div>
+
         <div class="sidekick-footer">
-          <div class="footer-operate btn">
+          <span class="line" />
+          <div class="footer-operate btn m-t-1">
             <img :src="themeIcon" @click="() => handleSwitch()" />
           </div>
           <div class="footer-operate btn" @click="appClick(innerSetApp)">
-            <img :src="setIcon" @click="() => handleSwitch()" />
+            <img :src="setIcon" />
           </div>
         </div>
       </div>
       <Fluorescence v-if="!isActive && !isVisable" :is-diffuse="isDiffuse" />
     </div>
-    <Dialog v-model="isVisable" :tool="current" />
+    <Dialog v-model="isVisable" :direction="direction" :tool="current" />
   </div>
 </template>
 
@@ -40,11 +42,7 @@ import { computed, ref } from 'vue';
 import Dialog from '@pages/common/Dialog/Dialog.vue';
 import ToolItem from '@pages/common/ToolItem/ToolItem.vue';
 import Fluorescence from '@pages/common/Fluorescence/Fluorescence.vue';
-import '@pages/common/Fluorescence/Fluorescence.less?shadow';
-import '@pages/common/Dialog/Dialog.less?shadow';
-import '@pages/common/ToolItem/ToolItem.less?shadow';
-import '@pages/common/App/Notice/Notice.less?shadow';
-import '@pages/common/Empty/Empty.less?shadow';
+import './App.less?shadow';
 
 import dark from '@assets/image/dark.svg';
 import light from '@assets/image/light.svg';
@@ -142,14 +140,12 @@ const appClick = (tool: any) => {
       display: flex;
       align-items: center;
       flex-direction: column;
+      flex-grow: 0;
     }
 
     .sidekick-footer {
-      position: absolute;
-      bottom: 0;
       min-height: 60px;
       width: 100%;
-      border-top: 1px solid var(--bg-color-hight);
       padding: 10px 0;
       display: flex;
       align-items: center;
