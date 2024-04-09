@@ -2,7 +2,7 @@
   <div class="sidekick-app" :class="[theme]">
     <div
       class="sidekick-kit"
-      :class="[`${toolMode}-mode`]"
+      :class="[`${direction}-mode`]"
       style="opacity: 0"
       @mouseenter="hoverToolBar"
       @mouseleave="leaveToolBar"
@@ -24,7 +24,7 @@
           <div class="footer-operate btn">
             <img :src="themeIcon" @click="() => handleSwitch()" />
           </div>
-          <div class="footer-operate btn">
+          <div class="footer-operate btn" @click="appClick(innerSetApp)">
             <img :src="setIcon" @click="() => handleSwitch()" />
           </div>
         </div>
@@ -53,13 +53,17 @@ import set from '@assets/image/set.svg';
 import { useTheme } from '@store/useTheme';
 import { useApp } from '@store/useApp';
 
-const toolMode = ref('left');
-
-const { theme, setTheme } = useTheme();
+const { theme, direction, setTheme } = useTheme();
 
 const { apps } = useApp();
 
 const setIcon = chrome.runtime.getURL(set);
+
+const innerSetApp = ref({
+  name: 'setting',
+  title: '设置',
+  logo: setIcon,
+});
 
 const themeIcon = computed(() => {
   if (theme.value === 'light') {

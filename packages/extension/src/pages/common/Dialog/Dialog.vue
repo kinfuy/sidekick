@@ -27,6 +27,7 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
 import Notice from '../App/Notice/Notice';
+import Setting from '../App/Setting/Setting';
 import Empty from '../Empty/Empty';
 
 const props = defineProps({
@@ -52,6 +53,9 @@ const ViewRender = computed(() => {
   if (props.tool.name === 'notice') {
     return Notice;
   }
+  if (props.tool.name === 'setting') {
+    return Setting;
+  }
   return Empty;
 });
 
@@ -75,4 +79,3 @@ defineExpose({
   show,
 });
 </script>
-../App/Notice/Notice

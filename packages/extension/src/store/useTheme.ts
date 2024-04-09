@@ -3,12 +3,14 @@ import { storage } from '@utils/chrome';
 
 export interface ThemeStore {
   mode: 'light' | 'dark';
+  direction: 'left' | 'right';
 }
 
 const STORE_KEY = 'themeStore';
 
 const themeStore = ref<ThemeStore>({
   mode: 'light',
+  direction: 'left',
 });
 
 export const useTheme = () => {
@@ -17,6 +19,7 @@ export const useTheme = () => {
   const sync = async () => {
     let store: ThemeStore = {
       mode: 'light',
+      direction: 'left',
     };
     const _store = await get<ThemeStore>(STORE_KEY);
     if (_store && JSON.stringify(_store) !== '{}') {
@@ -25,10 +28,17 @@ export const useTheme = () => {
     themeStore.value = store;
   };
 
-  const theme = computed(() => themeStore.value.mode);
+  const theme = computed(() => themeStore.value.mode || 'light');
+
+  const direction = computed(() => themeStore.value.direction || 'left');
 
   const save = () => {
     set(STORE_KEY, JSON.stringify(toRaw(themeStore.value)));
+  };
+
+  const setDirection = (val: 'left' | 'right') => {
+    themeStore.value.direction = val;
+    save();
   };
 
   const setTheme = (val: 'light' | 'dark') => {
@@ -40,6 +50,8 @@ export const useTheme = () => {
   return {
     sync,
     theme,
+    direction,
     setTheme,
+    setDirection,
   };
 };
