@@ -1,9 +1,8 @@
 <template>
-  <div class="sidekick-app" :class="[theme]">
+  <div class="sidekick-app" style="opacity: 0" :class="[theme]">
     <div
       class="sidekick-kit"
       :class="[`${direction}-mode`]"
-      style="opacity: 0"
       @mouseenter="hoverToolBar"
       @mouseleave="leaveToolBar"
     >
@@ -73,7 +72,7 @@ const themeIcon = computed(() => {
 const handleSwitch = () => {
   if (theme.value === 'light') {
     setTheme('dark');
-  } else if (theme.value === 'dark') {
+  } else {
     setTheme('light');
   }
 };
@@ -118,10 +117,13 @@ const appClick = (tool: any) => {
 </script>
 
 <style lang="less" shadow>
+.sidekick-app {
+  opacity: 1 !important;
+}
+
 .sidekick-kit {
   position: fixed;
   z-index: 2999999999999;
-  opacity: 1 !important;
 
   .sidekick-tool-bar {
     position: relative;
