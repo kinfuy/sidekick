@@ -7,17 +7,41 @@
     color: var(--text-color-primary);
     font-size: 14px;
     border: 1px solid var(--bg-color-hight);
+    display: flex;
+    align-items: center;
+
+    .ui-filed-label {
+        color: var(--text-color-primary);
+        font-size: 12px;
+        margin-right: 6px;
+        flex-shrink: 0;
+        text-align: right;
+
+    }
+
+    input {
+        padding: 2px 6px;
+        line-height: 24px;
+        border-radius: 4px;
+        border: 1px solid var(--bg-color-second);
+        outline: none;
+        background-color: var(--bg-color-second);
+        color: var(--text-color-primary);
+        flex-grow: 1;
+
+        &:focus {
+            outline: none;
+            border-color: var(--primary-color-tint-20);
+            box-shadow: 0 0 0 2px var(--primary-color-fade-20);
+        }
+    }
 }
 
-.ui-filed-label {
-    color: var(--text-color-primary);
-    font-size: 14px;
 
-}
 
 .ui-card {
     border-radius: 6px;
-    padding: 8px 16px;
+    padding: 8px 12px;
     box-sizing: border-box;
     width: 100%;
     margin-bottom: 20px;

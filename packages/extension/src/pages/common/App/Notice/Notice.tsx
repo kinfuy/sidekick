@@ -13,15 +13,20 @@ export default defineComponent({
     const Filed = (title: string) => {
       return (
         <div class="ui-filed">
-          <span class="ui-filed-label">{title}:</span>
-          <span>{this.url}</span>
+          <span class="ui-filed-label" style="width:48px">
+            {title}:
+          </span>
+          <input type="text" v-model={this.url} />
         </div>
       );
     };
     const NoticeView = () => {
       return (
         <div class="app-notice">
-          <div class="ui-card m-t-1">{Filed('地址')}</div>
+          <div class="ui-card m-t-1">
+            <div class="m-b-1">{Filed('URL')}</div>
+            <div>{Filed('提示词')}</div>
+          </div>
         </div>
       );
     };

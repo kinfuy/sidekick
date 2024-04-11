@@ -123,7 +123,7 @@ const appClick = (tool: any) => {
 
 .sidekick-kit {
   position: fixed;
-  z-index: 2999999999999;
+  z-index: 2147483647;
 
   .sidekick-tool-bar {
     position: relative;
