@@ -42,7 +42,7 @@ export default defineComponent({
   },
   render() {
     const Title = (title: string) => {
-      return <div class="setting-title theme-text f-16">{title}</div>;
+      return <div class="setting-title thene-text-desc f-16">{title}</div>;
     };
 
     const Theme = () => {
