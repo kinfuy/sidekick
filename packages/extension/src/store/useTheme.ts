@@ -4,6 +4,7 @@ import { storage } from '@utils/chrome';
 export interface ThemeStore {
   mode: 'light' | 'dark';
   direction: 'left' | 'right';
+  pos: { y?: number };
 }
 
 const STORE_KEY = 'themeStore';
@@ -11,6 +12,7 @@ const STORE_KEY = 'themeStore';
 const themeStore = ref<ThemeStore>({
   mode: 'light',
   direction: 'left',
+  pos: { y: 0 },
 });
 
 export const useTheme = () => {
@@ -20,6 +22,7 @@ export const useTheme = () => {
     let store: ThemeStore = {
       mode: 'light',
       direction: 'left',
+      pos: { y: 0 },
     };
     const _store = await get<ThemeStore>(STORE_KEY);
     if (_store && JSON.stringify(_store) !== '{}') {
@@ -31,6 +34,8 @@ export const useTheme = () => {
   const theme = computed(() => themeStore.value.mode || 'light');
 
   const direction = computed(() => themeStore.value.direction || 'left');
+
+  const posY = computed(() => themeStore.value.pos?.y);
 
   const save = () => {
     set(STORE_KEY, JSON.stringify(toRaw(themeStore.value)));
@@ -49,6 +54,7 @@ export const useTheme = () => {
   sync();
   return {
     sync,
+    posY,
     theme,
     direction,
     setTheme,

@@ -4,3 +4,139 @@
 @import url("@/pages/common/App/Notice/Notice.less");
 @import url("@/pages/common/Empty/Empty.less");
 @import url("@/pages/common/App/Setting/Setting.less");
+
+.sidekick-app {
+    opacity: 1 !important;
+}
+
+.sidekick-kit {
+    position: fixed;
+    z-index: 2147483647;
+
+    .sidekick-tool-bar {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        align-items: center;
+        transition: all 0.25s;
+        height: 100%;
+        width: 100%;
+        background-color: var(--bg-color-primary);
+        box-shadow: 0 0 49px 16px #00000024;
+        padding: 10px;
+        z-index: 2147483647;
+
+        .sidekick-content {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            flex-grow: 0;
+        }
+
+        .sidekick-footer {
+            min-height: 60px;
+            width: 100%;
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+
+            .footer-operate {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                margin-bottom: 6px;
+                padding: 8px;
+
+                img {
+                    width: 24px;
+                    height: 24px;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+
+.kit-tool-warper {
+    position: fixed;
+    z-index: 2147483647;
+    transition: transform 0.25s;
+    right: 0;
+    transform: translateX(38%);
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    height: 60px;
+
+    .kit-tool {
+        position: fixed;
+        right: 0;
+        top: 30%;
+        width: 38px;
+        z-index: 2147483600;
+        height: 44px;
+        padding-left: 12px;
+        background-color: #fff;
+        box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
+        border-radius: 22px 0 0 22px;
+        transition: all 300ms;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        opacity: 0.6;
+
+        &:hover {
+            width: 48px;
+            height: 44px;
+            background-image: linear-gradient(135deg, #7cbef4 30%, #e3eef3 100%);
+            box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
+            border-radius: 22px 0 0 22px;
+            opacity: 1;
+        }
+
+        .app-logo {
+            width: 24px;
+            height: 24px;
+        }
+    }
+}
+
+.left-mode {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100vh;
+    width: 60px;
+    transform: translateX(-60px);
+
+    .sidekick-active {
+        overflow: hidden;
+        transform: translateX(60px);
+    }
+
+    .sidekick-tool {
+        margin: 12px 0;
+    }
+}
+
+.right-mode {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    height: 100vh;
+    width: 60px;
+    transform: translateX(60px);
+
+    .sidekick-active {
+        overflow: hidden;
+        transform: translateX(-60px);
+    }
+
+    .sidekick-tool {
+        margin: 12px 0;
+    }
+}

@@ -1,9 +1,17 @@
 <template>
   <div class="sidekick-app" style="opacity: 0" :class="[theme]">
     <div
+      class="kit-tool-warper"
+      :style="{ top: posY ? `${posY}px` : `30%` }"
+      :class="{ 'is-not-active': isActive }"
+    >
+      <div class="kit-tool" @mousedown="catchPos" @mouseup="hoverToolBar">
+        <img draggable="false" class="app-logo" :src="logoUrl" alt="logo" />
+      </div>
+    </div>
+    <div
       class="sidekick-kit"
       :class="[`${direction}-mode`]"
-      @mouseenter="hoverToolBar"
       @mouseleave="leaveToolBar"
     >
       <div
@@ -30,7 +38,6 @@
           </div>
         </div>
       </div>
-      <Fluorescence v-if="!isActive && !isVisable" :is-diffuse="isDiffuse" />
     </div>
     <Dialog v-model="isVisable" :direction="direction" :tool="current" />
   </div>
@@ -40,8 +47,8 @@
 import { computed, ref } from 'vue';
 import Dialog from '@pages/common/Dialog/Dialog.vue';
 import ToolItem from '@pages/common/ToolItem/ToolItem.vue';
-import Fluorescence from '@pages/common/Fluorescence/Fluorescence.vue';
 import './App.less?shadow';
+import logo from '@assets/logo16.png';
 
 import dark from '@assets/image/dark.svg';
 import light from '@assets/image/light.svg';
@@ -50,11 +57,13 @@ import set from '@assets/image/set.svg';
 import { useTheme } from '@store/useTheme';
 import { useApp } from '@store/useApp';
 
-const { theme, direction, setTheme } = useTheme();
+const { theme, direction, posY, setTheme } = useTheme();
 
 const { apps } = useApp();
 
 const setIcon = chrome.runtime.getURL(set);
+
+const logoUrl = chrome.runtime.getURL(logo);
 
 const innerSetApp = ref({
   name: 'setting',
@@ -77,25 +86,25 @@ const handleSwitch = () => {
   }
 };
 
+const lastPosY = ref();
+const catchPos = () => {
+  lastPosY.value = posY.value;
+};
+
 const isActive = ref(false);
 
-const isDiffuse = ref(false);
-
-let timer = 0;
-const hoverToolBar = () => {
-  clearTimeout(timer);
-  isDiffuse.value = true;
-  timer = setTimeout(() => {
-    isActive.value = true;
-  }, 500);
+let timer: any;
+const hoverToolBar = (payload: MouseEvent) => {
+  if (timer) clearTimeout(timer);
+  if (payload.button !== 0) return;
+  isActive.value = !isActive.value;
 };
 
 const leaveToolBar = () => {
-  clearTimeout(timer);
-  timer = setTimeout(() => {
+  const timer = setTimeout(() => {
     isActive.value = false;
-    isDiffuse.value = false;
-  }, 500);
+    clearTimeout(timer);
+  }, 1000);
 };
 
 const isVisable = ref(false);
@@ -115,96 +124,3 @@ const appClick = (tool: any) => {
   }
 };
 </script>
-
-<style lang="less" shadow>
-.sidekick-app {
-  opacity: 1 !important;
-}
-
-.sidekick-kit {
-  position: fixed;
-  z-index: 2147483647;
-
-  .sidekick-tool-bar {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    align-items: center;
-    transition: all 0.5s;
-    height: 100%;
-    width: 100%;
-    background-color: var(--bg-color-primary);
-    box-shadow: 0 0 49px 16px #00000024;
-    padding: 10px;
-
-    .sidekick-content {
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      flex-grow: 0;
-    }
-
-    .sidekick-footer {
-      min-height: 60px;
-      width: 100%;
-      padding: 10px 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-
-      .footer-operate {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        margin-bottom: 6px;
-        padding: 8px;
-
-        img {
-          width: 24px;
-          height: 24px;
-          cursor: pointer;
-        }
-      }
-    }
-  }
-}
-
-.left-mode {
-  top: 0;
-  left: 0;
-  bottom: 0;
-  height: 100vh;
-  width: 60px;
-  transform: translateX(-60px);
-
-  .sidekick-active {
-    overflow: hidden;
-    transform: translateX(60px);
-  }
-
-  .sidekick-tool {
-    margin: 12px 0;
-  }
-}
-
-.right-mode {
-  top: 0;
-  bottom: 0;
-  right: 0;
-  height: 100vh;
-  width: 60px;
-  transform: translateX(60px);
-
-  .sidekick-active {
-    overflow: hidden;
-    transform: translateX(-60px);
-  }
-
-  .sidekick-tool {
-    margin: 12px 0;
-  }
-}
-</style>
