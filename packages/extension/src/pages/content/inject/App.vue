@@ -139,11 +139,11 @@ const hoverToolBar = () => {
   openTimer = setTimeout(() => {
     isActive.value = true;
     clearTimeout(openTimer);
-  }, 1200);
+  }, 1000);
 };
 
 const leaveToolBar = (isBar: boolean = false) => {
-  if (!isBar && isActive.value) return; // 侧边栏打开 logo 离开不关闭
+  if ((!isBar && isActive.value) || isDragging.value) return; // 侧边栏打开 logo 离开不关闭
   clearTimeout(openTimer);
   leaveTimer = setTimeout(() => {
     isActive.value = false;

@@ -1,4 +1,4 @@
-import { computed, ref, toRaw } from 'vue';
+import { computed, onMounted, onUnmounted, ref, toRaw } from 'vue';
 import { storage } from '@utils/chrome';
 
 export interface ThemeStore {
@@ -38,7 +38,25 @@ export const useTheme = () => {
 
   const direction = computed(() => themeStore.value.direction);
 
-  const posY = computed(() => themeStore.value.pos?.y);
+  const windowHeight = ref(document.documentElement.clientHeight);
+
+  const setHeight = () => {
+    windowHeight.value = document.documentElement.clientHeight;
+  };
+
+  onMounted(() => {
+    window.addEventListener('resize', setHeight);
+  });
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', setHeight);
+  });
+
+  const posY = computed(() => {
+    return windowHeight.value < themeStore.value.pos.y
+      ? windowHeight.value - 180
+      : themeStore.value.pos.y;
+  });
 
   const save = () => {
     set(STORE_KEY, JSON.stringify(toRaw(themeStore.value)));
