@@ -1,22 +1,33 @@
 <template>
   <div class="sidekick-app" style="opacity: 0" :class="[theme]">
     <div
+      ref="kitRef"
       class="kit-tool-warper"
-      :style="{ top: posY ? `${posY}px` : `30%` }"
-      :class="{ 'is-not-active': isActive }"
+      :style="{ top: y ? `${y}px` : `38%` }"
+      :class="[`${direction}-kit`]"
     >
-      <div class="kit-tool" @mousedown="catchPos" @mouseup="hoverToolBar">
+      <div
+        class="kit-tool"
+        :class="[{ 'tool-active': isDragging }]"
+        @mouseenter="hoverToolBar"
+        @mouseleave="() => leaveToolBar()"
+        @mousedown="catchPos"
+        @mouseup="clickToolBar"
+      >
         <img draggable="false" class="app-logo" :src="logoUrl" alt="logo" />
       </div>
     </div>
     <div
       class="sidekick-kit"
       :class="[`${direction}-mode`]"
-      @mouseleave="leaveToolBar"
+      @mouseenter="hoverToolBar"
+      @mouseleave="() => leaveToolBar(true)"
     >
       <div
         class="sidekick-tool-bar"
-        :class="{ 'sidekick-active': isActive || isVisable }"
+        :class="{
+          'sidekick-active': isActive || isVisable,
+        }"
       >
         <div class="sidekick-content">
           <ToolItem
@@ -44,9 +55,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch, watchEffect } from 'vue';
 import Dialog from '@pages/common/Dialog/Dialog.vue';
 import ToolItem from '@pages/common/ToolItem/ToolItem.vue';
+import { useDraggable } from '@vueuse/core';
 import './App.less?shadow';
 import logo from '@assets/logo16.png';
 
@@ -57,7 +69,25 @@ import set from '@assets/image/set.svg';
 import { useTheme } from '@store/useTheme';
 import { useApp } from '@store/useApp';
 
-const { theme, direction, posY, setTheme } = useTheme();
+const { theme, direction, posY, setTheme, setPosY } = useTheme();
+
+const kitRef = ref();
+const { y, isDragging } = useDraggable(kitRef, {
+  axis: 'y',
+  onEnd: ({ y }) => {
+    setPosY(y);
+  },
+});
+
+watch(
+  () => posY.value,
+  (val) => {
+    y.value = val;
+  },
+  {
+    immediate: true,
+  },
+);
 
 const { apps } = useApp();
 
@@ -79,48 +109,55 @@ const themeIcon = computed(() => {
 });
 
 const handleSwitch = () => {
-  if (theme.value === 'light') {
-    setTheme('dark');
-  } else {
-    setTheme('light');
-  }
+  if (theme.value === 'light') setTheme('dark');
+  else setTheme('light');
 };
 
 const lastPosY = ref();
 const catchPos = () => {
-  lastPosY.value = posY.value;
+  lastPosY.value = y.value;
 };
 
 const isActive = ref(false);
-
-let timer: any;
-const hoverToolBar = (payload: MouseEvent) => {
-  if (timer) clearTimeout(timer);
-  if (payload.button !== 0) return;
-  isActive.value = !isActive.value;
-};
-
-const leaveToolBar = () => {
-  const timer = setTimeout(() => {
-    isActive.value = false;
-    clearTimeout(timer);
-  }, 1000);
-};
-
 const isVisable = ref(false);
+
+let openTimer: any;
+let leaveTimer: any;
+const clickToolBar = (payload: MouseEvent) => {
+  if (openTimer) clearTimeout(openTimer);
+  if (payload.button !== 0) return;
+  setTimeout(() => {
+    const gap = Math.abs(lastPosY.value - y.value) < 10;
+    if (gap) isActive.value = !isActive.value;
+  }, 0);
+};
+
+const hoverToolBar = () => {
+  clearTimeout(openTimer);
+  clearTimeout(leaveTimer);
+  if (isDragging.value) return;
+  openTimer = setTimeout(() => {
+    isActive.value = true;
+    clearTimeout(openTimer);
+  }, 1200);
+};
+
+const leaveToolBar = (isBar: boolean = false) => {
+  if (!isBar && isActive.value) return; // 侧边栏打开 logo 离开不关闭
+  clearTimeout(openTimer);
+  leaveTimer = setTimeout(() => {
+    isActive.value = false;
+    clearTimeout(leaveTimer);
+  }, 800);
+};
 
 const current = ref();
 
 const appClick = (tool: any) => {
   if (current.value?.name && tool.name !== current.value.name) {
     isVisable.value = true;
-  } else {
-    isVisable.value = !isVisable.value;
-  }
-  if (isVisable.value) {
-    current.value = tool;
-  } else {
-    current.value = null;
-  }
+  } else isVisable.value = !isVisable.value;
+  if (isVisable.value) current.value = tool;
+  else current.value = null;
 };
 </script>
