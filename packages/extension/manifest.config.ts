@@ -17,11 +17,11 @@ export default defineManifest(async () => {
       service_worker: 'src/pages/background/index.ts',
       type: 'module',
     },
-    action: {
-      default_icon: 'src/assets/logo.png',
-      default_title: 'sidekick',
-      default_popup: 'popup.html',
-    },
+    // action: {
+    //   default_icon: 'src/assets/logo.png',
+    //   default_title: 'sidekick',
+    //   default_popup: 'popup.html',
+    // },
     content_scripts: [
       {
         matches: ['<all_urls>'],

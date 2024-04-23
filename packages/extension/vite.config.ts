@@ -24,6 +24,9 @@ export default defineConfig({
     vuejsx(),
     crx({ manifest }),
     shadowDomCssPlugin({
+      alias: {
+        '@': resolve('./src'),
+      },
       config: [
         {
           container: '#sidekick-extension',
@@ -45,7 +48,7 @@ export default defineConfig({
     cssMinify: false,
     assetsInlineLimit: 0,
     rollupOptions: {
-      input: ['newtab.html', 'option.html', 'popup.html'],
+      // input: ['newtab.html', 'option.html', 'popup.html'],
       // output: {
       //   assetFileNames: `assets/[name].[ext]`,
       // },
