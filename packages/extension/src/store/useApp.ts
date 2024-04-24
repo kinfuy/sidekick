@@ -1,35 +1,14 @@
-import notice from '@assets/app/notice.png';
-import pen from '@assets/app/pen.png';
-import clipboard from '@assets/app/clipboard.png';
 import { computed, ref, toRaw } from 'vue';
 import { storage } from '@utils/chrome';
+import { appsRaw } from '../applications';
+import type { AppEntry } from '@/types/core-app.type';
 
 export interface AppStore {
-  apps: Array<{
-    name: string;
-    title: string;
-    logo: string;
-  }>;
+  apps: Array<AppEntry>;
 }
 
 const defaultStore: AppStore = {
-  apps: [
-    {
-      name: 'notice',
-      title: 'Env Notice',
-      logo: chrome.runtime.getURL(notice),
-    },
-    {
-      name: 'pen',
-      title: '马克笔',
-      logo: chrome.runtime.getURL(pen),
-    },
-    {
-      name: 'clipboard',
-      title: '粘贴板',
-      logo: chrome.runtime.getURL(clipboard),
-    },
-  ],
+  apps: appsRaw,
 };
 
 const appStore = ref<AppStore>(defaultStore);
@@ -54,10 +33,15 @@ export const useApp = () => {
 
   const apps = computed(() => appStore.value.apps);
 
+  const isAppActive = (name: string) => {
+    return appsRaw.find((a) => a.inner && a.name === name) || false;
+  };
+
   sync();
 
   return {
     save,
+    isAppActive,
     apps,
   };
 };

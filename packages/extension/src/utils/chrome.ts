@@ -12,6 +12,9 @@ export const storage = {
     const store = await chrome.storage.sync.get(key);
     return store[key] ? (JSON.parse(store[key]) as T) : ({} as T);
   },
+  clear: (): void => {
+    chrome.storage.local.clear();
+  },
 };
 
 // 获取当前选项卡ID
@@ -90,53 +93,6 @@ export const injectCustomScript = (injectscript: any) => {
     }
   };
   document.head.appendChild(script);
-};
-
-/**
- * 创建devtool
- */
-export const createDevtoolsanels = () => {
-  return chrome.devtools.panels.create();
-};
-
-/**
- * 获取store
- */
-export const getStoreKey = <T>(keys: Array<string>): Promise<T> => {
-  return new Promise((resolve, reject) => {
-    const store: Record<string, any> = {};
-    keys.forEach((x) => {
-      store[x] = null;
-    });
-    try {
-      chrome.storage.local.get(store, (rst) => {
-        resolve(rst as T);
-      });
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
-
-/**
- * 设置store
- */
-export const setStore = (store: object): Promise<any> => {
-  return new Promise((resolve, reject) => {
-    try {
-      chrome.storage.local.set(store, () => {
-        resolve(true);
-      });
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
-/**
- * 清理插件所有store
- */
-export const clearStore = (): void => {
-  chrome.storage.local.clear();
 };
 
 /**

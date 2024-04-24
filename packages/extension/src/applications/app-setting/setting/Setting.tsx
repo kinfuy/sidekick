@@ -2,11 +2,12 @@ import { computed, defineComponent } from 'vue';
 import { useTheme } from '@store/useTheme';
 import dark from '@assets/image/dark.svg';
 import light from '@assets/image/light.svg';
+import { storage } from '@utils';
 
 export default defineComponent({
   name: 'Setting',
   setup() {
-    const { theme, direction, setTheme, setDirection } = useTheme();
+    const { theme, direction, setTheme, setDirection, clear } = useTheme();
 
     const themeIcon = computed(() => {
       if (theme.value === 'light') {
@@ -38,11 +39,23 @@ export default defineComponent({
       return '右侧';
     });
 
-    return { theme, themeIcon, directionText, handleSwitch, handleDirection };
+    const clearStore = async () => {
+      clear();
+      console.log('clear', await storage.get('themeStore'));
+      // window.location.reload();
+    };
+    return {
+      theme,
+      themeIcon,
+      directionText,
+      handleSwitch,
+      handleDirection,
+      clearStore,
+    };
   },
   render() {
     const Title = (title: string) => {
-      return <div class="setting-title thene-text-desc f-16">{title}</div>;
+      return <div class="setting-title theme-text-desc f-16">{title}</div>;
     };
 
     const Theme = () => {
@@ -64,6 +77,16 @@ export default defineComponent({
               onClick={() => this.handleDirection()}
             >
               {this.directionText}
+            </span>
+          </div>
+          <span class="line" />
+          <div class="setting-theme">
+            <span></span>
+            <span
+              class="btn btn-small btn-border"
+              onClick={() => this.clearStore()}
+            >
+              清除缓存
             </span>
           </div>
         </>

@@ -1,6 +1,6 @@
 import { apps } from '../applications';
-import { useCoreStore } from './store';
 import { PreCoreApp, SuffixCoreApp } from './core-app';
+import { useApp } from '@/store/useApp';
 import type { Application, ApplicationHook } from '@/types/core-app.type';
 
 /**
@@ -16,7 +16,7 @@ export const getApplicationHooks = async (
   limitApp?: Array<string>,
 ): Promise<ApplicationHook[]> => {
   const applicationHook: ApplicationHook[] = [];
-  const { isAppActive } = useCoreStore();
+  const { isAppActive } = useApp();
 
   apps
     .filter((a) => (limitApp ? limitApp.includes(a.name) : true))

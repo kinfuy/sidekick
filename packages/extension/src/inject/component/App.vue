@@ -153,7 +153,7 @@ const leaveToolBar = (isBar: boolean = false) => {
 
 const current = ref();
 
-const appClick = (tool: any) => {
+const appClick = async (tool: any) => {
   if (current.value?.name && tool.name !== current.value.name) {
     isVisable.value = true;
   } else isVisable.value = !isVisable.value;

@@ -1,13 +1,12 @@
 import { sendMessageToContentScript } from '@utils';
+import notice from '@assets/app/notice.png';
 import type { App } from '@/types/core-app.type';
 
 export const WebNotice: App = {
   name: 'web-notice',
-  title: '生产环境',
-  logo: 'KXiangling',
-  description: '生产环境提示，防止误操作生产环境',
-  category: 'PureTool',
-  version: '0.0.1',
+  title: 'Env Notice',
+  inner: false,
+  logo: chrome.runtime.getURL(notice),
   hooks: {
     onActiveChange: () => {
       sendMessageToContentScript({

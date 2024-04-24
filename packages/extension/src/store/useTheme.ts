@@ -9,21 +9,19 @@ export interface ThemeStore {
 
 const STORE_KEY = 'themeStore';
 
-const themeStore = ref<ThemeStore>({
+const defaultStore: ThemeStore = {
   mode: 'light',
-  direction: 'left',
-  pos: { y: 0 },
-});
+  direction: 'right',
+  pos: { y: 100 },
+};
+
+const themeStore = ref<ThemeStore>(JSON.parse(JSON.stringify(defaultStore)));
 
 export const useTheme = () => {
   const { get, set } = storage;
 
   const sync = async () => {
-    let store: ThemeStore = {
-      mode: 'light',
-      direction: 'left',
-      pos: { y: 0 },
-    };
+    let store: ThemeStore = JSON.parse(JSON.stringify(defaultStore));
     const _store = await get<ThemeStore>(STORE_KEY);
     if (_store && JSON.stringify(_store) !== '{}') {
       store = _store as ThemeStore;
@@ -31,7 +29,6 @@ export const useTheme = () => {
     themeStore.value.direction = store.direction || 'left';
     themeStore.value.mode = store.mode || 'light';
     themeStore.value.pos = store.pos || { y: 0 };
-    console.log('themeStore', themeStore.value.pos);
   };
 
   const theme = computed(() => themeStore.value.mode);
@@ -77,6 +74,11 @@ export const useTheme = () => {
     save();
   };
 
+  const clear = () => {
+    themeStore.value = JSON.parse(JSON.stringify(defaultStore));
+    save();
+  };
+
   sync();
   return {
     sync,
@@ -86,5 +88,6 @@ export const useTheme = () => {
     setTheme,
     setDirection,
     setPosY,
+    clear,
   };
 };

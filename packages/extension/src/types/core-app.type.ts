@@ -1,31 +1,15 @@
 import type { PostMessage } from '@utils';
 
-/**
- * APP 类型
- * @desc WebsitePro: 站点增强
- * @desc PureTool：工具
- */
-export type AppCategory = 'WebsitePro' | 'PureTool';
-
-export type PopupAction = 'active' | 'setting' | 'popup-view';
-
 export interface AppEntry {
   name: string;
   title: string;
   logo: string;
-  description: string;
-  category: AppCategory;
-  version: string;
-  cover?: string;
-  author?: string;
-  popupAction?: PopupAction;
+  inner: boolean;
+  description?: string;
 }
 
 export interface CoreApp extends AppEntry {
   active: boolean;
-  isInstall: boolean;
-  popupAction: PopupAction;
-  seted?: boolean;
 }
 
 export interface CoreStoreInstance {
@@ -71,7 +55,6 @@ export interface Application extends Record<string, any> {
 }
 
 export interface App extends AppEntry {
-  alarms?: string[];
   hooks: Application;
 }
 
