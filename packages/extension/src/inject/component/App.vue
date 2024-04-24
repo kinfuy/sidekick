@@ -56,8 +56,8 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch, watchEffect } from 'vue';
-import Dialog from '@pages/common/Dialog/Dialog.vue';
-import ToolItem from '@pages/common/ToolItem/ToolItem.vue';
+import Dialog from '@components/common/Dialog/Dialog.vue';
+import ToolItem from '@components/common/ToolItem/ToolItem.vue';
 import { useDraggable } from '@vueuse/core';
 import './App.less?shadow';
 import logo from '@assets/logo16.png';

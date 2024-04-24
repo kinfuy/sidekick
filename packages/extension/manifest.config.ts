@@ -14,18 +14,18 @@ export default defineManifest(async () => {
       '128': 'src/assets/logo.png',
     },
     background: {
-      service_worker: 'src/pages/background/index.ts',
+      service_worker: 'src/background/index.ts',
       type: 'module',
     },
-    // action: {
-    //   default_icon: 'src/assets/logo.png',
-    //   default_title: 'sidekick',
-    //   default_popup: 'popup.html',
-    // },
+    action: {
+      default_icon: 'src/assets/logo.png',
+      default_title: 'sidekick',
+      default_popup: 'popup.html',
+    },
     content_scripts: [
       {
         matches: ['<all_urls>'],
-        js: ['src/pages/content/index.ts'],
+        js: ['src/content/index.ts'],
         run_at: 'document_start',
       },
     ],

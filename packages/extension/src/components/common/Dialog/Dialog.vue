@@ -26,9 +26,9 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
-import Notice from '../App/Notice/Notice';
-import Setting from '../App/Setting/Setting';
 import Empty from '../Empty/Empty';
+import Setting from '@/applications/app-setting/setting/Setting';
+import Notice from '@/applications/web-notice/notice/Notice';
 
 const props = defineProps({
   modelValue: {

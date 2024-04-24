@@ -1,0 +1,26 @@
+@sortable-prefix: ~'sortable';
+
+.@{sortable-prefix} {
+  &-container {
+    position: relative;
+
+    &-horizontal {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+  }
+
+  &-item {
+    &.is-dragging {
+      * {
+        visibility: hidden;
+        transition: none !important;
+      }
+    }
+  }
+
+  &-drag-ghost {
+    position: fixed;
+    z-index: 1050;
+  }
+}

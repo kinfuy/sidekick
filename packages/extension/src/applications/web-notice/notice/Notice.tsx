@@ -1,8 +1,8 @@
 import { defineComponent, ref } from 'vue';
-import Sinput from '@pages/common/Input';
+import Sinput from '@/components/common/Input';
+import SSwitch from '@/components/common/Switch';
 export default defineComponent({
   name: 'Notice',
-
   setup() {
     const webNotice = ref({
       url: new URL(window.location.href).host,
@@ -21,6 +21,11 @@ export default defineComponent({
     const NoticeView = () => {
       return (
         <div class="app-notice">
+          <div class="p-l-1 thene-text-desc f-16">设置</div>
+          <div class="ui-card m-t-1">
+            <SSwitch />
+          </div>
+
           <div class="p-l-1 thene-text-desc f-16">基础</div>
           <div class="ui-card m-t-1">
             <div class="m-b-1">
