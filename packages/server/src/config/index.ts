@@ -26,10 +26,16 @@ class ConfigEnv {
     this.host = envConfig.DB_HOST;
     this.port = envConfig.DB_PORT;
 
-    this.email.host = envConfig.EMAIL_HOST
-    this.email.port = envConfig.EMAIL_PORT
-    this.email.auth.user = envConfig.EMAIL_USER
-    this.email.auth.pass = envConfig.EMAIL_PASS
+    this.email = {
+      host:envConfig.EMAIL_HOST,
+      port:envConfig.EMAIL_PORT,
+      secure:true,
+      auth:{
+        user:envConfig.EMAIL_USER,
+        pass :envConfig.EMAIL_PASS
+      }
+    }
+    
 
     this.username = envConfig.DB_USER;
     this.password = envConfig.DB_PASSWORD;

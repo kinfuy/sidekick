@@ -1,12 +1,17 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { EmailService } from './service/email.service';
 
-@Controller()
+@Controller('email')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly emailService: EmailService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  async getHello() {
+    debugger
+    return this.emailService.sendEmail({
+      to:'kinfuy@outlook.com',
+      subject:"TEST",
+      text:"我是一份测试邮件"
+    })
   }
 }
