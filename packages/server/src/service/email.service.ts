@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
+import { envConfig } from '../config';
+
 interface MailInfo {
     // 接收方邮箱
     to: string;
