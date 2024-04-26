@@ -1,10 +1,11 @@
+import type { PostMessage } from '@utils';
 import { injectPostMessage } from '@utils';
 
 window.addEventListener('message', (info: any) => {
-  if (!info.data) return;
+  const response = info.data as PostMessage;
+  if (!response?.data || response.data?.key !== 'app_inject') return;
   const { code, data } = info.data;
-
-  console.log('app_inject', code, data);
+  console.log('app_inject', info, code, data);
 });
 
 document.addEventListener('visibilitychange', () => {

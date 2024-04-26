@@ -21,7 +21,7 @@ export const getApplicationHooks = async (
   apps
     .filter((a) => (limitApp ? limitApp.includes(a.name) : true))
     .forEach((app) => {
-      const active = isActived ? isAppActive(app.name) : true;
+      const active = isActived ? isAppActive() : true;
       if (app.hooks[name] && active) {
         applicationHook.push(app.hooks[name]);
       }

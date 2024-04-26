@@ -5,7 +5,7 @@ import light from '@assets/image/light.svg';
 import { storage } from '@utils';
 
 export default defineComponent({
-  name: 'Setting',
+  name: 'AppSetting',
   setup() {
     const { theme, direction, setTheme, setDirection, clear } = useTheme();
 

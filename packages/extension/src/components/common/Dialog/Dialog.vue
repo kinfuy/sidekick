@@ -19,16 +19,15 @@
       </svg>
     </div>
     <div class="sidekick-dialog-body">
-      <component :is="ViewRender"></component>
+      <Empty v-if="!tool.name"></Empty>
+      <component :is="tool.name" v-else></component>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import Empty from '../Empty/Empty';
-import Setting from '@/applications/app-setting/setting/Setting';
-import Notice from '@/applications/web-notice/notice/Notice';
 
 const props = defineProps({
   modelValue: {
@@ -48,16 +47,6 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue']);
 
 const stateVisable = ref(false);
-
-const ViewRender = computed(() => {
-  if (props.tool.name === 'notice') {
-    return Notice;
-  }
-  if (props.tool.name === 'setting') {
-    return Setting;
-  }
-  return Empty;
-});
 
 watch(
   () => props.modelValue,

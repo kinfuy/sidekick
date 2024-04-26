@@ -12,8 +12,11 @@ export const storage = {
     const store = await chrome.storage.sync.get(key);
     return store[key] ? (JSON.parse(store[key]) as T) : ({} as T);
   },
+  remove: (key: string) => {
+    chrome.storage.sync.remove(key);
+  },
   clear: (): void => {
-    chrome.storage.local.clear();
+    chrome.storage.sync.clear();
   },
 };
 

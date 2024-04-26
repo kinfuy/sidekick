@@ -3,7 +3,7 @@ import notice from '@assets/app/notice.png';
 import type { App } from '@/types/core-app.type';
 
 export const WebNotice: App = {
-  name: 'web-notice',
+  name: 'WebNotice',
   title: 'Env Notice',
   inner: false,
   logo: chrome.runtime.getURL(notice),
@@ -16,23 +16,28 @@ export const WebNotice: App = {
       });
     },
     async onDocLoad() {
+      console.log('WebNotice onDocLoad');
       sendMessageToContentScript({
         from: 'background',
-        code: 'web-notice',
+        code: 'WebNotice',
         data: [],
       });
     },
     async onPageshow() {
+      console.log('WebNotice onPageshow');
+      debugger;
       sendMessageToContentScript({
         from: 'background',
-        code: 'web-notice',
+        code: 'WebNotice',
         data: [],
       });
     },
     async onDocVisibilitychange() {
+      console.log('WebNotice onDocVisibilitychange');
+
       sendMessageToContentScript({
         from: 'background',
-        code: 'web-notice',
+        code: 'WebNotice',
         data: [],
       });
     },

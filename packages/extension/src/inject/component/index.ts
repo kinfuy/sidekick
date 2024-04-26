@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import { install } from '@applications/install';
 import App from './App.vue';
 
 const APP_SELCTOR = 'sidekick-extension';
@@ -27,6 +28,8 @@ export const initInject = () => {
   shadowDOM.appendChild(root);
 
   const app = createApp(App);
+
+  install(app);
 
   app.mount(root);
 };

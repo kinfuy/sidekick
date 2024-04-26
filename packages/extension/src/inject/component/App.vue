@@ -41,11 +41,13 @@
 
         <div class="sidekick-footer">
           <span class="line" />
-          <div class="footer-operate btn m-t-1">
-            <img :src="themeIcon" @click="() => handleSwitch()" />
-          </div>
-          <div class="footer-operate btn" @click="appClick(innerSetApp)">
-            <img :src="setIcon" />
+          <div
+            v-for="innerApp in innerApps"
+            :key="innerApp.name"
+            class="footer-operate btn m-t-1"
+            @click="appClick(innerApp)"
+          >
+            <img :src="innerApp.logo" />
           </div>
         </div>
       </div>
@@ -55,17 +57,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch, watchEffect } from 'vue';
+import { ref, watch } from 'vue';
 import Dialog from '@components/common/Dialog/Dialog.vue';
 import ToolItem from '@components/common/ToolItem/ToolItem.vue';
 import { useDraggable } from '@vueuse/core';
 import './App.less?shadow';
 import logo from '@assets/logo16.png';
-
-import dark from '@assets/image/dark.svg';
-import light from '@assets/image/light.svg';
-import set from '@assets/image/set.svg';
-
 import { useTheme } from '@store/useTheme';
 import { useApp } from '@store/useApp';
 
@@ -89,29 +86,9 @@ watch(
   },
 );
 
-const { apps } = useApp();
-
-const setIcon = chrome.runtime.getURL(set);
+const { apps, innerApps } = useApp();
 
 const logoUrl = chrome.runtime.getURL(logo);
-
-const innerSetApp = ref({
-  name: 'setting',
-  title: '设置',
-  logo: setIcon,
-});
-
-const themeIcon = computed(() => {
-  if (theme.value === 'light') {
-    return chrome.runtime.getURL(light);
-  }
-  return chrome.runtime.getURL(dark);
-});
-
-const handleSwitch = () => {
-  if (theme.value === 'light') setTheme('dark');
-  else setTheme('light');
-};
 
 const lastPosY = ref();
 const catchPos = () => {

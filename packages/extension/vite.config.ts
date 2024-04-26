@@ -32,6 +32,11 @@ export default defineConfig({
           container: '#sidekick-extension',
           output: 'assets/shadow-styles.css',
         },
+        {
+          key: 'webnotice',
+          container: '#web-notice',
+          output: 'assets/web-notice.css',
+        },
       ],
     }),
     shortcutsPlugin({ defaults: ['s'] }),

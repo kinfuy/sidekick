@@ -31,10 +31,14 @@ export const useApp = () => {
     appStore.value = store;
   };
 
-  const apps = computed(() => appStore.value.apps);
+  const apps = computed(() => appStore.value.apps.filter((a) => !a.inner));
 
-  const isAppActive = (name: string) => {
-    return appsRaw.find((a) => a.inner && a.name === name) || false;
+  const innerApps = computed(() => {
+    return appStore.value.apps.filter((a) => a.inner);
+  });
+
+  const isAppActive = () => {
+    return true;
   };
 
   sync();
@@ -43,5 +47,6 @@ export const useApp = () => {
     save,
     isAppActive,
     apps,
+    innerApps,
   };
 };

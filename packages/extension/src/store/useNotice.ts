@@ -30,10 +30,7 @@ export const useWebNoticeStore = () => {
   };
 
   const sync = async () => {
-    let store: NoticeStore = {
-      whiteList: [],
-      current: undefined,
-    };
+    let store: NoticeStore = { whiteList: [], current: undefined };
     const _store = await get<NoticeStore>(STORE_KEY);
     if (_store && JSON.stringify(_store) !== '{}') {
       store = _store as NoticeStore;

@@ -4,7 +4,7 @@ export interface AppEntry {
   name: string;
   title: string;
   logo: string;
-  inner: boolean;
+  inner: boolean; // 是否是内部应用
   description?: string;
 }
 

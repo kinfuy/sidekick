@@ -1,15 +1,15 @@
 <template>
   <div
     class="web-notice-warper"
-    :style="{ 'border-color': current?.config.color }"
+    :style="{ 'border-color': current?.style.color }"
   >
     <div
       v-if="current"
       class="notice-tips"
-      :class="{ 'animation-none': current?.config.animation }"
+      :class="{ 'animation-none': current?.style.animation }"
       :style="{
-        color: current?.config.color,
-        fontSize: `${current?.config.size}px`,
+        color: current?.style.color,
+        fontSize: `${current?.style.size}px`,
         backgroundImage: color,
       }"
     >
@@ -25,8 +25,8 @@ import { useWebNoticeStore } from '../store';
 const { current } = useWebNoticeStore();
 
 const color = computed(() => {
-  return current.value?.config.animation
-    ? `-webkit-linear-gradient(left,#fff,${current.value?.config.color} 25%,#fff 50%,${current.value?.config.color} 75%,#fff)`
+  return current.value?.style.animation
+    ? `-webkit-linear-gradient(left,#fff,${current.value?.style.color} 25%,#fff 50%,${current.value?.style.color} 75%,#fff)`
     : '';
 });
 </script>

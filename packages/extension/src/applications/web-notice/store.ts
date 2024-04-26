@@ -1,6 +1,5 @@
+import { storage } from '@utils';
 import { computed, ref, toRaw } from 'vue';
-import { useStoreProxy } from '../../core/store-manage';
-
 const defaultStore: WebNoticeStoreInstance = {
   whiteList: [],
   current: undefined,
@@ -11,7 +10,7 @@ interface Web {
   url: string;
   tips: string;
   active: boolean;
-  config: {
+  style: {
     color: string;
     animation: boolean;
     size: number;
@@ -25,9 +24,10 @@ export interface WebNoticeStoreInstance {
 }
 
 const store = ref<WebNoticeStoreInstance>(defaultStore);
+const STORE_KEY = 'webNoticeStore';
 
-export const useWebNoticeStore = (isInject = false) => {
-  const { getStoreKey, setStore } = useStoreProxy(isInject);
+export const useWebNoticeStore = () => {
+  const { get, set } = storage;
   const whiteList = computed(() => {
     return store.value.whiteList;
   });
@@ -41,14 +41,12 @@ export const useWebNoticeStore = (isInject = false) => {
   });
 
   const save = () => {
-    setStore({ webNotice: toRaw(store.value) });
+    set(STORE_KEY, JSON.stringify(toRaw(store.value)));
   };
 
   const sync = async () => {
     let _store: WebNoticeStoreInstance = defaultStore;
-    const { webNotice } = await getStoreKey<{
-      webNotice: WebNoticeStoreInstance;
-    }>(['webNotice']);
+    const webNotice = await get<WebNoticeStoreInstance>('webNotice');
     if (webNotice && JSON.stringify(webNotice) !== '{}') {
       _store = webNotice;
     }
@@ -84,7 +82,7 @@ export const useWebNoticeStore = (isInject = false) => {
         if (w.url === web.url) {
           w.active = web.active;
           w.tips = web.tips;
-          w.config = web.config;
+          w.style = web.style;
         }
       });
     } else {

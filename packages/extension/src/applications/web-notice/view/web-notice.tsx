@@ -2,7 +2,7 @@ import { defineComponent, ref } from 'vue';
 import Sinput from '@/components/common/Input';
 import SSwitch from '@/components/common/Switch';
 export default defineComponent({
-  name: 'Notice',
+  name: 'WebNotice',
   setup() {
     const webNotice = ref({
       url: new URL(window.location.href).host,
