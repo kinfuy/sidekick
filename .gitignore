@@ -3,4 +3,6 @@ dist
 token.ts
 account-config.ts
 
+.env
+
 *.pem

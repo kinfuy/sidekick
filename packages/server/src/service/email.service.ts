@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
+import { envConfig } from '../config';
+
 interface MailInfo {
     // 接收方邮箱
     to: string;
@@ -14,13 +16,13 @@ interface MailInfo {
 export class EmailService {
   private transporter: nodemailer.Transporter;
   private mailConfig =  {
-    host: 'smtp.qq.com',
-    port: 465,
-    secure: true,
-    auth: {
-    user: '你开通的邮箱账号',
-    pass: '生成的密钥'
-  }
+    host: envConfig.email.host,
+    port: envConfig.email.port,
+    secure: false,
+      auth: {
+      user: envConfig.email.auth.user,
+      pass: envConfig.email.auth.pass
+   }
   }
   constructor() {
     this.transporter = nodemailer.createTransport(this.mailConfig);
