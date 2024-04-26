@@ -1,13 +1,14 @@
 import { computed, defineComponent } from 'vue';
 import { useTheme } from '@store/useTheme';
+import { useAuth } from '@store/useAuth';
 import dark from '@assets/image/dark.svg';
 import light from '@assets/image/light.svg';
-import { storage } from '@utils';
-
 export default defineComponent({
   name: 'AppSetting',
   setup() {
     const { theme, direction, setTheme, setDirection, clear } = useTheme();
+
+    const { user } = useAuth();
 
     const themeIcon = computed(() => {
       if (theme.value === 'light') {
@@ -33,18 +34,15 @@ export default defineComponent({
     };
 
     const directionText = computed(() => {
-      if (direction.value === 'left') {
-        return '左侧';
-      }
+      if (direction.value === 'left') return '左侧';
       return '右侧';
     });
 
     const clearStore = async () => {
       clear();
-      console.log('clear', await storage.get('themeStore'));
-      // window.location.reload();
     };
     return {
+      user,
       theme,
       themeIcon,
       directionText,
@@ -93,9 +91,17 @@ export default defineComponent({
       );
     };
 
+    const User = () => {
+      return <div class="setting-user">{this.user?.name}</div>;
+    };
+
     const SettingView = () => {
       return (
         <div class="app-setting">
+          {Title('用户')}
+          <div class="ui-card m-t-1">
+            <User />
+          </div>
           {Title('基础')}
           <div class="ui-card m-t-1">
             <Theme />
