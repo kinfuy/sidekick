@@ -5,6 +5,9 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { envConfig } from './config';
 import { EmailService } from './service/email.service';
+import { LoginService } from './service/login.service';
+
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -14,7 +17,7 @@ import { EmailService } from './service/email.service';
       username: envConfig.username,
       password: envConfig.password,
       database: envConfig.database,
-       // 开启打印生成sql语句
+      // 开启打印生成sql语句
       logging: false,
       synchronize: true, //自动同步创建数据库表,具备一定的危险线，存在线上应用时尽量关闭
       retryDelay: 500,
@@ -24,6 +27,6 @@ import { EmailService } from './service/email.service';
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService,EmailService],
+  providers: [AppService, EmailService, LoginService],
 })
 export class AppModule {}

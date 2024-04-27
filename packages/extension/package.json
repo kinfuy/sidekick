@@ -10,8 +10,9 @@
     "build": "tsc && vite build"
   },
   "dependencies": {
-    "vue": "^3.3.1",
-    "@vueuse/core": "^10.9.0"
+    "@vueuse/core": "^10.9.0",
+    "axios": "^1.6.8",
+    "vue": "^3.3.1"
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "2.0.0-beta.18",
@@ -29,8 +30,8 @@
     "prettier": "^2.8.8",
     "process": "^0.11.10",
     "vite": "^4.2.0",
-    "vite-plugin-shortcuts": "^0.1.0",
     "vite-plugin-shadowcss": "^0.0.4",
+    "vite-plugin-shortcuts": "^0.1.0",
     "vite-tsconfig-paths": "^4.2.0"
   }
 }

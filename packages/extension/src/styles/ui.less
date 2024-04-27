@@ -19,6 +19,7 @@
     }
 
     input {
+        height: 32px;
         padding: 2px 6px;
         line-height: 24px;
         border-radius: 4px;
@@ -51,7 +52,7 @@
 
 .btn-text {
     cursor: pointer;
-    color: var(--text-color-primary);
+    color: var(--text-color-second);
 
     &:hover {
         opacity: 0.8;
@@ -71,6 +72,16 @@
     &:hover {
         opacity: 0.8;
         background-color: var(--primary-color-tint-60);
+    }
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: #fff;
+
+    &:hover {
+        opacity: 0.8;
+        background-color: var(--primary-color);
     }
 }
 

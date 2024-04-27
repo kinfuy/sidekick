@@ -19,6 +19,10 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    placeholder: {
+      type: String,
+      default: '',
+    },
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
@@ -54,6 +58,7 @@ export default defineComponent({
         <input
           type={this.type}
           v-model={this.stateValue}
+          placeholder={this.placeholder}
           onChange={this.handleChange}
         />
       </div>
