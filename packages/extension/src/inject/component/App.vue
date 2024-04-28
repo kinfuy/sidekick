@@ -135,8 +135,9 @@ const current = ref();
 const { isLogin } = useAuth();
 
 const appClick = async (tool: any) => {
-  if (!isLogin.value) {
+  if (!isLogin.value && tool.name === 'AppSetting') {
     window.open(getChromeUrl('login.html'));
+    return;
   }
   if (current.value?.name && tool.name !== current.value.name) {
     isVisable.value = true;
