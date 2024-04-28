@@ -16,9 +16,10 @@ async function bootstrap() {
         maxAge: 1000 * 60 * 60 * 24, // 设置 cookie 的有效期为一天  
       },  
     }),  
-  );  
+  ); 
 
   app.enableCors();
+
 
   await app.listen(9000);
 }

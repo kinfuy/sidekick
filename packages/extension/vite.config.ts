@@ -53,10 +53,10 @@ export default defineConfig({
     cssMinify: false,
     assetsInlineLimit: 0,
     rollupOptions: {
-      // input: ['newtab.html', 'option.html', 'popup.html'],
-      // output: {
-      //   assetFileNames: `assets/[name].[ext]`,
-      // },
+      input: ['popup.html', 'login.html'],
+      output: {
+        assetFileNames: `assets/[name].[ext]`,
+      },
     },
   },
   server: {

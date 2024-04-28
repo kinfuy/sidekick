@@ -24,8 +24,6 @@ export const WebNotice: App = {
       });
     },
     async onPageshow() {
-      console.log('WebNotice onPageshow');
-      debugger;
       sendMessageToContentScript({
         from: 'background',
         code: 'WebNotice',

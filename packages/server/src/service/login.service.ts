@@ -69,6 +69,14 @@ export class LoginService {
   }
 
   async getVerifyCode(params: VerifyCodeDto, code:number) {
+    if(!params.email){
+      return {
+        data: null,
+        message: '邮箱不能为空',
+        code: responseCode.FAIL,
+      }
+    }
+
     await this.emailService.sendCode(params.email, code);
     return {
       data: code,

@@ -65,6 +65,8 @@ import './App.less?shadow';
 import logo from '@assets/logo16.png';
 import { useTheme } from '@store/useTheme';
 import { useApp } from '@store/useApp';
+import { useAuth } from '@store/useAuth';
+import { getChromeUrl } from '@utils';
 
 const { theme, direction, posY, setTheme, setPosY } = useTheme();
 
@@ -130,7 +132,12 @@ const leaveToolBar = (isBar: boolean = false) => {
 
 const current = ref();
 
+const { isLogin } = useAuth();
+
 const appClick = async (tool: any) => {
+  if (!isLogin.value) {
+    window.open(getChromeUrl('login.html'));
+  }
   if (current.value?.name && tool.name !== current.value.name) {
     isVisable.value = true;
   } else isVisable.value = !isVisable.value;

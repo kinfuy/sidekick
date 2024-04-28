@@ -1,0 +1,106 @@
+@import url("@/styles/index.less");
+
+.sidekick-login {
+    position: fixed;
+    inset: 0;
+    background-image: linear-gradient(to left, #d9afd9 0%, #97d9e1 100%);
+
+    .sidekick-content {
+        margin: 100px auto;
+        box-shadow: 0 6px 16px #0000001a;
+        width: 400px;
+        border-radius: 1rem;
+        background-color: #fff;
+        padding: 3rem;
+    }
+
+    .sidekick-login-logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+
+        .logo-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .logo-title {
+                color: var(--text-color-primary);
+                font-size: 32px;
+                margin-bottom: 8px;
+                font-weight: 700;
+                margin-left: 8px;
+            }
+
+            img {
+                width: 56px;
+                height: 56px;
+            }
+        }
+
+
+    }
+
+    .login-content {
+        width: 100%;
+        background-color: var(--bg-color-hight);
+
+        .login-form-item {
+            width: 100%;
+            padding: 0;
+            margin-bottom: 16px;
+        }
+
+        .login-verify {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+
+            .login-verify-code {
+                flex-shrink: 0;
+                height: 30px;
+                width: 76px;
+                line-height: 30px;
+                text-align: center;
+                cursor: pointer;
+                border-radius: 4px;
+                box-sizing: border-box;
+                color: var(--text-color-primary);
+
+                &:hover {
+                    opacity: 0.8;
+                    background-color: var(--primary-color-tint-60);
+                }
+            }
+        }
+    }
+
+    .login-error {
+        color: red;
+        margin-bottom: 6px;
+        font-size: 12px;
+    }
+
+    .login-operate {
+        width: 100%;
+        margin-top: 34px;
+
+        .login-oprate-footer {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 6px;
+        }
+    }
+
+
+
+    .login-line {
+        width: 100%;
+        margin: 16px 0;
+        color: var(--text-color-second);
+        text-align: center;
+    }
+}

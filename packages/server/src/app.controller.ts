@@ -22,27 +22,28 @@ export class AppController {
   }
 
   @Post('register')
-  async register(
-    @Body() parmas: RegisterDto,
-    @Session() session: any,
-  ) {
-    if(session.code != parmas.verifyCode || session.expireTime < new Date().getTime()){
+  async register(@Body() parmas: RegisterDto, @Req() req) {
+    debugger
+    req.session.code = 3333;
+    if (
+      req.session.code != parmas.verifyCode ||
+      req.session.expireTime < new Date().getTime()
+    ) {
       return {
         data: null,
         message: '验证码错误或已过期',
         code: responseCode.FAIL,
-      }
+      };
     }
-   
+
     return this.loginService.register(parmas);
   }
 
   @Post('verifyCode')
-  async getVerifyCode(@Body() parmas: VerifyCodeDto, @Session() session: any) {
-    debugger
+  async getVerifyCode(@Body() parmas: VerifyCodeDto, @Req() req) {
     const code = Math.floor(Math.random() * 1000000);
-    session.code = code;
-    session.expireTime = new Date().getTime() + 60 * 1000;
+    req.session.code = code;
+    req.session.expireTime = new Date().getTime() + 60 * 1000 * 5;
     return this.loginService.getVerifyCode(parmas, code);
   }
 }

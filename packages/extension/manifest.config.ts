@@ -1,7 +1,7 @@
 import { defineManifest } from '@crxjs/vite-plugin';
 export const isDev = process.env.NODE_ENV !== 'production';
 
-export default defineManifest(async () => {
+export default defineManifest(() => {
   return {
     manifest_version: 3,
     name: 'Sidekick',
@@ -39,7 +39,7 @@ export default defineManifest(async () => {
       'alarms',
       'cookies',
     ],
-    host_permissions: ['<all_urls>'],
+    host_permissions: ['https://*/', 'localhost:9000'],
     web_accessible_resources: isDev
       ? []
       : [
