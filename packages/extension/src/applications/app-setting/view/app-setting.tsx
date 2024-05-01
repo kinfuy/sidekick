@@ -1,14 +1,15 @@
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, inject, watchEffect } from 'vue';
 import { useTheme } from '@store/useTheme';
 import { useAuth } from '@store/useAuth';
 import dark from '@assets/image/dark.svg';
 import light from '@assets/image/light.svg';
+import { getChromeUrl } from '@utils';
 export default defineComponent({
   name: 'AppSetting',
   setup() {
-    const { theme, direction, setTheme, setDirection, clear } = useTheme();
+    const { theme, direction, setTheme, setDirection, clearTheme } = useTheme();
 
-    const { user } = useAuth();
+    const { user, isLogin, clearAuth } = useAuth();
 
     const themeIcon = computed(() => {
       if (theme.value === 'light') {
@@ -38,8 +39,20 @@ export default defineComponent({
       return '右侧';
     });
 
+    const { setDialog } = inject('appContent') as any;
+
+    watchEffect(() => {
+      if (!isLogin.value) {
+        setDialog(false);
+        setTimeout(() => {
+          window.open(getChromeUrl('login.html'));
+        }, 0);
+      }
+    });
+
     const clearStore = async () => {
-      clear();
+      clearTheme();
+      clearAuth();
     };
     return {
       user,
@@ -92,7 +105,7 @@ export default defineComponent({
     };
 
     const User = () => {
-      return <div class="setting-user">{this.user?.name}</div>;
+      return <div class="setting-user theme-text">{this.user?.email}</div>;
     };
 
     const SettingView = () => {

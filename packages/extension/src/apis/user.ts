@@ -34,3 +34,15 @@ export const sendCodeApi = async (data: object) => {
   });
   return await res.json();
 };
+
+export const verifyEmailApi = async (data: object) => {
+  const res = await fetch(`${api_url}/verifyEmail`, {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(data),
+  });
+  return await res.json();
+};

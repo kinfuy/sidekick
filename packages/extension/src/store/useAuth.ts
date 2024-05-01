@@ -1,12 +1,13 @@
-import { computed, ref, toRaw } from 'vue';
+import { computed, onUnmounted, ref, toRaw } from 'vue';
 import { storage } from '@utils/chrome';
 
 const STORE_KEY = 'userStore';
 
 export interface UserStore {
   isLogin: boolean;
-  lastLoginTime?: number;
+  lastLoginTime?: string;
   user?: {
+    email: string;
     avatar: string;
     name: string;
     description?: string;
@@ -41,11 +42,36 @@ export const useAuth = () => {
 
   const user = computed(() => userStore.value.user);
 
+  const setUser = (user: UserStore['user']) => {
+    userStore.value.user = user;
+    userStore.value.isLogin = true;
+    userStore.value.lastLoginTime = new Date().getTime().toString();
+    save();
+  };
+
+  const clearAuth = () => {
+    userStore.value = JSON.parse(JSON.stringify(defaultStore()));
+    save();
+  };
+
+  const syncStore = async (changes: any) => {
+    if (changes[STORE_KEY]) {
+      sync();
+    }
+  };
+
+  chrome.storage.onChanged.addListener(syncStore);
   sync();
+
+  onUnmounted(() => {
+    chrome.storage.onChanged.removeListener(syncStore);
+  });
 
   return {
     isLogin,
     user,
     save,
+    setUser,
+    clearAuth,
   };
 };

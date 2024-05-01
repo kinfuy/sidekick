@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { provide, ref, watch } from 'vue';
 import Dialog from '@components/common/Dialog/Dialog.vue';
 import ToolItem from '@components/common/ToolItem/ToolItem.vue';
 import { useDraggable } from '@vueuse/core';
@@ -97,8 +97,8 @@ const catchPos = () => {
   lastPosY.value = y.value;
 };
 
-const isActive = ref(false);
-const isVisable = ref(false);
+const isActive = ref(false); // 侧边栏
+const isVisable = ref(false); // 抽屉
 
 let openTimer: any;
 let leaveTimer: any;
@@ -145,4 +145,10 @@ const appClick = async (tool: any) => {
   if (isVisable.value) current.value = tool;
   else current.value = null;
 };
+
+provide('appContent', {
+  setDialog: (val: boolean) => {
+    isVisable.value = val;
+  },
+});
 </script>

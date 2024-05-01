@@ -74,7 +74,7 @@ export const useTheme = () => {
     save();
   };
 
-  const clear = () => {
+  const clearTheme = () => {
     themeStore.value = JSON.parse(JSON.stringify(defaultStore));
     save();
   };
@@ -88,6 +88,6 @@ export const useTheme = () => {
     setTheme,
     setDirection,
     setPosY,
-    clear,
+    clearTheme,
   };
 };

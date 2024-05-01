@@ -9,7 +9,7 @@
       :class="{ 'animation-none': current?.style.animation }"
       :style="{
         color: current?.style.color,
-        fontSize: `${current?.style.size}px`,
+        fontSize: `${current?.style.fontSize}px`,
         backgroundImage: color,
       }"
     >

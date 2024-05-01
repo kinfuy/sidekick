@@ -24,7 +24,7 @@ export default defineComponent({
       default: '',
     },
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'change', 'blur', 'focus'],
   setup(props, { emit }) {
     const stateValue = ref('');
 
@@ -40,10 +40,16 @@ export default defineComponent({
 
     const handleChange = () => {
       emit('update:modelValue', stateValue.value);
+      emit('change', stateValue.value);
+    };
+
+    const emitEvent = (event: 'blur' | 'focus') => {
+      emit(event, stateValue.value);
     };
 
     return {
       stateValue,
+      emitEvent,
       handleChange,
     };
   },
@@ -59,6 +65,8 @@ export default defineComponent({
           type={this.type}
           v-model={this.stateValue}
           placeholder={this.placeholder}
+          onBlur={this.emitEvent.bind(this, 'blur')}
+          onFocus={this.emitEvent.bind(this, 'focus')}
           onChange={this.handleChange}
         />
       </div>

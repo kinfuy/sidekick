@@ -26,6 +26,14 @@ export const getActiveTab = async () => {
   return tabs[0];
 };
 
+// 关闭当前活跃 tab
+export const clearActiveTab = async () => {
+  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (tabs.length) {
+    chrome.tabs.remove(Number(tabs[0].id));
+  }
+};
+
 // 创建tab
 export const createtab = async (url: string) => {
   return chrome.tabs.create({ url });

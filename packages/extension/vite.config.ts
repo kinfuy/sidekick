@@ -27,15 +27,18 @@ export default defineConfig({
       alias: {
         '@': resolve('./src'),
       },
+      log: true,
       config: [
         {
           container: '#sidekick-extension',
           output: 'assets/shadow-styles.css',
+          retry: 3,
         },
         {
           key: 'webnotice',
           container: '#web-notice',
           output: 'assets/web-notice.css',
+          retry: 5,
         },
       ],
     }),

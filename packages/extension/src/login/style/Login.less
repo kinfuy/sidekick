@@ -1,14 +1,34 @@
 @import url("@/styles/index.less");
 
+
+/* 动画，控制背景 background-position */
+@keyframes gradient-bg {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 .sidekick-login {
     position: fixed;
     inset: 0;
-    background-image: linear-gradient(to left, #d9afd9 0%, #97d9e1 100%);
+    // background-image: linear-gradient(to left, #d9afd9 0%, #97d9e1 100%);
+    background: linear-gradient(-45deg, #D6DAC8, #F3D0D7, #AFD198, #F5CCA0);
+    background-size: 600% 600%;
+    animation: gradient-bg 8s ease infinite;
 
     .sidekick-content {
         margin: 100px auto;
         box-shadow: 0 6px 16px #0000001a;
-        width: 400px;
+        width: 460px;
+        min-height: 380px;
         border-radius: 1rem;
         background-color: #fff;
         padding: 3rem;
@@ -50,13 +70,13 @@
         .login-form-item {
             width: 100%;
             padding: 0;
-            margin-bottom: 16px;
+            margin-top: 16px;
         }
 
         .login-verify {
             display: flex;
             align-items: center;
-            margin-bottom: 16px;
+            margin-top: 16px;
 
             .login-verify-code {
                 flex-shrink: 0;
@@ -79,13 +99,14 @@
 
     .login-error {
         color: red;
-        margin-bottom: 6px;
         font-size: 12px;
+        height: 24px;
+        line-height: 24px;
+        margin-bottom: 12px;
     }
 
     .login-operate {
         width: 100%;
-        margin-top: 34px;
 
         .login-oprate-footer {
             display: flex;

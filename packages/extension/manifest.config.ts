@@ -48,6 +48,11 @@ export default defineManifest(() => {
             resources: ['assets/shadow-styles.css'],
             use_dynamic_url: true,
           },
+          {
+            matches: ['<all_urls>'],
+            resources: ['assets/web-notice.css'],
+            use_dynamic_url: true,
+          },
         ],
   };
 });

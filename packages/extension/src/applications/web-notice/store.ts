@@ -13,7 +13,7 @@ interface Web {
   style: {
     color: string;
     animation: boolean;
-    size: number;
+    fontSize: number;
   };
 }
 
@@ -46,7 +46,7 @@ export const useWebNoticeStore = () => {
 
   const sync = async () => {
     let _store: WebNoticeStoreInstance = defaultStore;
-    const webNotice = await get<WebNoticeStoreInstance>('webNotice');
+    const webNotice = await get<WebNoticeStoreInstance>(STORE_KEY);
     if (webNotice && JSON.stringify(webNotice) !== '{}') {
       _store = webNotice;
     }
@@ -76,7 +76,7 @@ export const useWebNoticeStore = () => {
     store.value.viewType = val;
   };
 
-  const addWeb = (web: Web) => {
+  const updateWeb = (web: Web) => {
     if (store.value.whiteList.some((x) => x.url === web.url)) {
       store.value.whiteList.forEach((w) => {
         if (w.url === web.url) {
@@ -100,6 +100,6 @@ export const useWebNoticeStore = () => {
     setCurrent,
     viewType,
     serViewType,
-    addWeb,
+    updateWeb,
   };
 };

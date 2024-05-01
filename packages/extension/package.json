@@ -11,12 +11,13 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.9.0",
-    "axios": "^1.6.8",
+    "blueimp-md5": "^2.19.0",
     "vue": "^3.3.1"
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "2.0.0-beta.18",
     "@rollup/pluginutils": "^5.0.2",
+    "@types/blueimp-md5": "^2.18.2",
     "@types/node": "^18.15.9",
     "@vitejs/plugin-vue": "^4.2.0",
     "@vitejs/plugin-vue-jsx": "^3.0.1",

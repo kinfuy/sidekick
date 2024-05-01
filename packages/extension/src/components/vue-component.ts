@@ -43,12 +43,12 @@ export const createApp = (options: AppProps): App<Element> | undefined => {
 
   const shadowDOM = container.attachShadow?.({ mode: 'open' }); //  || container;
 
-  if (!__DEV__) {
-    const styleEl = document.createElement('link');
-    styleEl.setAttribute('rel', 'stylesheet');
-    styleEl.setAttribute('href', chrome.runtime.getURL(predStyle));
-    shadowDOM.appendChild(styleEl);
-  }
+  // if (!__DEV__) {
+  const styleEl = document.createElement('link');
+  styleEl.setAttribute('rel', 'stylesheet');
+  styleEl.setAttribute('href', chrome.runtime.getURL(predStyle));
+  shadowDOM.appendChild(styleEl);
+  // }
 
   shadowDOM.appendChild(root);
 

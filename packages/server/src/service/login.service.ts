@@ -3,7 +3,7 @@ import { LoginDto, RegisterDto, VerifyCodeDto } from '../dto/login.dto';
 import { User } from '../user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import blueimpMd5 from 'blueimp-md5';
+import * as blueimpMd5 from 'blueimp-md5';
 import { responseCode } from '../Config/const';
 import { EmailService } from './email.service';
 
@@ -23,7 +23,7 @@ export class LoginService {
       .getOne();
 
     if (user) {
-      const pwd = blueimpMd5(email + password);
+      const pwd = blueimpMd5(`${email}${password}`);
       if (user.password === pwd) {
         return {
           data: {
@@ -32,13 +32,22 @@ export class LoginService {
           message: '登录成功',
           code: responseCode.SUCCESS,
         };
+      } else {
+        return {
+          data: null,
+          message: '用户名或密码错误',
+          code: responseCode.FAIL,
+        };
       }
+    } else {
+      return {
+        data: {
+          confirm: true,
+        },
+        message: '邮箱需要验证',
+        code: responseCode.SUCCESS,
+      };
     }
-    return {
-      data: null,
-      message: '用户名或密码错误',
-      code: responseCode.FAIL,
-    };
   }
 
   async register(params: RegisterDto) {
@@ -48,42 +57,50 @@ export class LoginService {
         email: email,
       },
     });
-    if (oldUser) {
-      return {
-        data: null,
-        message: '邮箱已存在',
-        code: responseCode.FAIL,
-      };
+    const user = oldUser ?? new User();
+    if (!oldUser) {
+      user.email = email;
+      user.name = '鱼大';
     }
-    const user = new User();
-    user.email = email;
-    user.password = blueimpMd5(email + password);
     user.updateTime = new Date();
-    user.name = '鱼大';
+    user.password = blueimpMd5(`${email}${password}`);
     this.userModel.save(user);
     return {
-      data: null,
+      data: {
+        email: email,
+        name: oldUser?.name ?? '鱼大',
+        avatar: '',
+        description: '',
+      },
       message: '注册成功',
       code: responseCode.SUCCESS,
     };
   }
 
-  async getVerifyCode(params: VerifyCodeDto, code:number) {
-    if(!params.email){
+  async getVerifyCode(params: VerifyCodeDto, code: number) {
+    if (!params.email) {
       return {
         data: null,
         message: '邮箱不能为空',
         code: responseCode.FAIL,
-      }
+      };
     }
 
-    await this.emailService.sendCode(params.email, code);
+    await this.emailService.sendCode(params.email, code).catch((e) => {
+      return {
+        data: null,
+        message: '验证码发送失败',
+        code: responseCode.FAIL,
+      };
+    });
     return {
       data: code,
       message: '验证码发送成功',
       code: responseCode.SUCCESS,
-    }
+    };
   }
 
-  async validateUser() {}
+  async verifyEmail(params: RegisterDto) {
+    return this.register(params);
+  }
 }

@@ -18,16 +18,16 @@ export class User {
     @Column({ unique: true })
     email: string
   
-    @Column()
+    @Column({ default: null })
     sex: number;
   
     @Column({ default: null }) 
     mobile: string;
   
-    @Column({ select: false, length: 30 }) 
+    @Column({ select: false, length: 100 }) 
     password: string;
   
-    @Column({ select: false }) 
+    @Column({ select: false, default: false }) 
     isDelete: boolean;
   
     @CreateDateColumn({ type: 'timestamp' })
