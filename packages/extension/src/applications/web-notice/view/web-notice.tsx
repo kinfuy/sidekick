@@ -64,16 +64,16 @@ export default defineComponent({
           <div class="p-l-1 theme-text-desc f-16">设置</div>
           <div class="flex justify-between ui-card m-t-1">
             <span class="theme-text">状态</span>
-            <span class="flex align-center">
+            <span
+              class="flex align-center cursor"
+              onClick={() => this.handleOpen()}
+            >
               <span
                 class={`dot m-r-1 ${
                   this.webNotice.active ? 'dot-success' : ''
                 }`}
               ></span>
-              <span
-                class="theme-text btn-text"
-                onClick={() => this.handleOpen()}
-              >
+              <span class="theme-text btn-text">
                 {this.webNotice.active ? '开启' : '关闭'}
               </span>
             </span>

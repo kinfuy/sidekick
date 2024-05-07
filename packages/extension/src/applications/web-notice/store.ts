@@ -66,6 +66,7 @@ export const useWebNoticeStore = () => {
       if (url.includes(web.url)) return true;
       return false;
     });
+    save();
     return store.value.current;
   };
 
