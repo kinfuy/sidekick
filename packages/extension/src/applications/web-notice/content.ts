@@ -6,7 +6,7 @@ export const initNotice = async () => {
   const { setCurrent } = useWebNoticeStore();
 
   const current = await setCurrent(window.location.href);
-  if (current) {
+  if (current && current.active) {
     createApp({
       app: {
         component: Notice,

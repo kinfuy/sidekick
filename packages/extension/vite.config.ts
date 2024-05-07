@@ -38,7 +38,7 @@ export default defineConfig({
           key: 'webnotice',
           container: '#web-notice',
           output: 'assets/web-notice.css',
-          retry: 5,
+          retry: 10,
         },
       ],
     }),

@@ -1,7 +1,10 @@
 <template>
   <div
     class="web-notice-warper"
-    :style="{ 'border-color': current?.style.color }"
+    :style="{
+      'border-color': current?.style.color,
+      'border-width': `${current?.style.borderWidth}px`,
+    }"
   >
     <div
       v-if="current"

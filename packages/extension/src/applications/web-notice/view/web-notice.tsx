@@ -15,6 +15,7 @@ export default defineComponent({
         color: '#fa8919',
         fontSize: 48,
         animation: true,
+        borderWidth: 4,
       },
     });
 
@@ -29,6 +30,7 @@ export default defineComponent({
           color: current.value?.style?.color || '#fa8919',
           animation: current.value?.style?.animation ?? true,
           fontSize: current.value?.style?.fontSize || 48,
+          borderWidth: current.value?.style?.borderWidth || 4,
         };
       },
       {
@@ -105,13 +107,22 @@ export default defineComponent({
                 v-model={this.webNotice.style.fontSize}
               />
             </div>
-            <div>
+            <div class="m-b-1">
               <Sinput
                 type="color"
                 onChange={this.handleChange}
                 label="颜色"
                 style={{ width: '132px' }}
                 v-model={this.webNotice.style.color}
+              />
+            </div>
+            <div>
+              <Sinput
+                label="边框"
+                onChange={this.handleChange}
+                type="number"
+                style={{ width: '114px' }}
+                v-model={this.webNotice.style.borderWidth}
               />
             </div>
           </div>

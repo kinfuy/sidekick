@@ -14,6 +14,7 @@ interface Web {
     color: string;
     animation: boolean;
     fontSize: number;
+    borderWidth: number;
   };
 }
 
@@ -62,14 +63,10 @@ export const useWebNoticeStore = () => {
   const setCurrent = async (url: string) => {
     await sync();
     store.value.current = store.value.whiteList.find((web) => {
-      if (url.includes(web.url) && web.active) return true;
+      if (url.includes(web.url)) return true;
       return false;
     });
-    save();
-    if (store.value.current) {
-      return true;
-    }
-    return false;
+    return store.value.current;
   };
 
   const serViewType = (val: 'border' | 'waterMask') => {
