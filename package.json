@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "pnpm run -C packages/extension dev",
+    "serve": "pnpm run -C packages/server start:dev",
     "build": "pnpm run -C packages/extension build",
     "lint": "eslint . --fix",
     "log": "changeloger",

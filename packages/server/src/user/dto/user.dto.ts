@@ -4,7 +4,7 @@ import { PartialType } from '@nestjs/mapped-types';
 
 
 export class CreateUserDto {
-    name: string;
+    name?: string;
     sex?: number;
     mobile?: string;
     password: string;

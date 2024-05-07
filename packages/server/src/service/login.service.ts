@@ -53,14 +53,11 @@ export class LoginService {
   async register(params: RegisterDto) {
     const { email, password } = params;
     const oldUser = await this.userModel.findOne({
-      where: {
-        email: email,
-      },
+      where: { email: email },
     });
     const user = oldUser ?? new User();
     if (!oldUser) {
       user.email = email;
-      user.name = '鱼大';
     }
     user.updateTime = new Date();
     user.password = blueimpMd5(`${email}${password}`);
@@ -68,7 +65,6 @@ export class LoginService {
     return {
       data: {
         email: email,
-        name: oldUser?.name ?? '鱼大',
         avatar: '',
         description: '',
       },
@@ -94,7 +90,7 @@ export class LoginService {
       };
     });
     return {
-      data: code,
+      data: null,
       message: '验证码发送成功',
       code: responseCode.SUCCESS,
     };
