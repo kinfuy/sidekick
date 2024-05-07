@@ -235,6 +235,7 @@ const register = () => {
             name: res.data.name,
             description: res.data.description,
           });
+          clearActiveTab();
         }
       } else {
         errorTips.value = res.message || '注册失败';
@@ -282,6 +283,7 @@ const verifyEmail = () => {
             name: res.data.name,
             description: res.data.description,
           });
+          clearActiveTab();
         } else {
           errorTips.value = res.message || '验证失败';
         }
