@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { envConfig } from './config';
 import { EmailService } from './service/email.service';
 import { LoginService } from './service/login.service';
+import { SubscriptionModule } from './subscription/subscription.module';
 
 
 @Module({
@@ -25,6 +26,7 @@ import { LoginService } from './service/login.service';
       autoLoadEntities: true, //自动查找entity实体
     }),
     UserModule,
+    SubscriptionModule,
   ],
   controllers: [AppController],
   providers: [AppService, EmailService, LoginService],
