@@ -67,6 +67,7 @@ import { useTheme } from '@store/useTheme';
 import { useApp } from '@store/useApp';
 import { useAuth } from '@store/useAuth';
 import { getChromeUrl } from '@utils';
+import type { AppEntry } from '@/types/core-app.type';
 
 const { theme, direction, posY, setTheme, setPosY } = useTheme();
 
@@ -134,9 +135,13 @@ const current = ref();
 
 const { isLogin } = useAuth();
 
-const appClick = async (tool: any) => {
-  if (!isLogin.value && tool.name === 'AppSetting') {
+const appClick = async (tool: AppEntry) => {
+  if (!isLogin.value && tool.isLogin) {
     window.open(getChromeUrl('login.html'));
+    return;
+  }
+  if (tool.linkUrl) {
+    window.open(tool.linkUrl);
     return;
   }
   if (current.value?.name && tool.name !== current.value.name) {
@@ -145,6 +150,14 @@ const appClick = async (tool: any) => {
   if (isVisable.value) current.value = tool;
   else current.value = null;
 };
+
+watch(
+  () => isDragging.value,
+  () => {
+    clearTimeout(openTimer);
+    clearTimeout(leaveTimer);
+  },
+);
 
 provide('appContent', {
   setDialog: (val: boolean) => {

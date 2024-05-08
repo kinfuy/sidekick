@@ -28,7 +28,12 @@ export const useApp = () => {
     if (_store && JSON.stringify(_store) !== '{}') {
       store = _store as AppStore;
     }
-    appStore.value = store;
+    appsRaw.forEach((a) => {
+      if (!store.apps.find((s) => s.name === a.name)) {
+        store.apps.push(a);
+      }
+    });
+    appStore.value = defaultStore ?? store;
   };
 
   const apps = computed(() => appStore.value.apps.filter((a) => !a.inner));

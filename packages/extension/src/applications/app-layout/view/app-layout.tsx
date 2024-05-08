@@ -9,7 +9,7 @@ export default defineComponent({
   setup() {
     const { theme, direction, setTheme, setDirection, clearTheme } = useTheme();
 
-    const { user, isLogin, clearAuth } = useAuth();
+    const { isLogin, clearAuth } = useAuth();
 
     const themeIcon = computed(() => {
       if (theme.value === 'light') {
@@ -55,7 +55,6 @@ export default defineComponent({
       clearAuth();
     };
     return {
-      user,
       theme,
       themeIcon,
       directionText,
@@ -104,17 +103,9 @@ export default defineComponent({
       );
     };
 
-    const User = () => {
-      return <div class="setting-user theme-text">{this.user?.email}</div>;
-    };
-
     const SettingView = () => {
       return (
         <div class="app-setting">
-          {Title('用户')}
-          <div class="ui-card m-t-1">
-            <User />
-          </div>
           {Title('基础')}
           <div class="ui-card m-t-1">
             <Theme />

@@ -5,6 +5,8 @@ export interface AppEntry {
   title: string;
   logo: string;
   inner: boolean; // 是否是内部应用
+  linkUrl?: string;
+  isLogin?: boolean;
   description?: string;
 }
 

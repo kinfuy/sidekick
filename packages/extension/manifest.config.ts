@@ -6,8 +6,7 @@ export default defineManifest(() => {
     manifest_version: 3,
     name: 'Sidekick',
     version: '0.0.1',
-    description:
-      'The fish in the browser are free, flexible, and efficient. A super efficient personal assistant',
+    description: '专注于开发与测试的浏览器工具集',
     icons: {
       '16': 'src/assets/logo.png',
       '48': 'src/assets/logo.png',
@@ -39,7 +38,7 @@ export default defineManifest(() => {
       'alarms',
       'cookies',
     ],
-    host_permissions: ['https://*/', 'localhost:9000'],
+    host_permissions: ['https://*/', 'http://*/'],
     web_accessible_resources: isDev
       ? []
       : [
