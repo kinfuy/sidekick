@@ -7,6 +7,7 @@ import { envConfig } from './config';
 import { EmailService } from './service/email.service';
 import { LoginService } from './service/login.service';
 import { SubscriptionModule } from './subscription/subscription.module';
+import { SubscriptionService } from './subscription/subscription.service';
 
 
 @Module({

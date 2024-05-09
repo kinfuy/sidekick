@@ -9,5 +9,6 @@ import { Activation } from './entities/activation.entity';
   imports: [TypeOrmModule.forFeature([Subscription, Activation])],
   controllers: [SubscriptionController],
   providers: [SubscriptionService],
+  exports: [SubscriptionService],
 })
 export class SubscriptionModule {}

@@ -11,8 +11,7 @@ import { Activation } from './entities/activation.entity';
 @Injectable()
 export class SubscriptionService {
   constructor(
-    @InjectRepository(Subscription)
-    private subscription: Repository<Subscription>,
+    @InjectRepository(Subscription)  private subscription: Repository<Subscription>,
     @InjectRepository(Activation) private activation: Repository<Activation>,
   ) {}
 
