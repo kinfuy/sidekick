@@ -56,7 +56,7 @@ export default defineConfig({
     cssMinify: false,
     assetsInlineLimit: 0,
     rollupOptions: {
-      input: ['popup.html', 'login.html'],
+      input: ['popup.html', 'login.html', 'setting.html'],
       output: {
         assetFileNames: `assets/[name].[ext]`,
       },
