@@ -209,6 +209,7 @@ const login = () => {
             avatar: res.data.avatar,
             name: res.data.name,
             description: res.data.description,
+            vip: res.data.vip,
           });
           clearActiveTab();
         }
@@ -234,6 +235,7 @@ const register = () => {
             avatar: res.data.avatar,
             name: res.data.name,
             description: res.data.description,
+            vip: res.data.vip,
           });
           clearActiveTab();
         }
@@ -282,6 +284,7 @@ const verifyEmail = () => {
             avatar: res.data.avatar,
             name: res.data.name,
             description: res.data.description,
+            vip: res.data.vip,
           });
           clearActiveTab();
         } else {

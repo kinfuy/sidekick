@@ -21,6 +21,7 @@ export class LoginService {
       .where({ email: email, isDelete: false })
       .addSelect('user.password')
       .getOne();
+      
 
     if (user) {
       const pwd = blueimpMd5(`${email}${password}`);

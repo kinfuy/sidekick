@@ -3,7 +3,7 @@ import { PartialType } from '@nestjs/mapped-types';
 
 export class CreateSubscriptionDto {
     code: string
-    userId: number
+    email: string
 }
 
 export class UpdateSubscriptionDto extends PartialType(CreateSubscriptionDto) {}

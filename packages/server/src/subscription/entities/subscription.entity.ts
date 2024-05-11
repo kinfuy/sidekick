@@ -13,7 +13,7 @@ export class Subscription {
      id: number;
 
      @Column({ default: null })
-     userId: number; // 用户id
+     email: string; // 用户id
 
      @Column() // 1: 激活码 2：付费用户
      form: number;

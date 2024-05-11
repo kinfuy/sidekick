@@ -1,18 +1,22 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/user.dto';
+import { ActivationVipDto, CreateUserDto } from './dto/user.dto';
 import { UpdateUserDto } from './dto/user.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get('create')
-  create(@Body() createUserDto: CreateUserDto) {
+  @Post('create')
+  create(@Param() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 
-  @Get()
+  @Post('activationVip')
+  activationVip(@Param() activationVipDto: ActivationVipDto) {
+    return this.userService.activationVip(activationVipDto);
+  }
+
   findAll() {
     return this.userService.findAll();
   }

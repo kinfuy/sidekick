@@ -46,3 +46,15 @@ export const verifyEmailApi = async (data: object) => {
   });
   return await res.json();
 };
+
+export const activationVipApi = async (data: object) => {
+  const res = await fetch(`${api_url}/user/activationVip`, {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(data),
+  });
+  return await res.json();
+};

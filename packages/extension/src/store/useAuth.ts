@@ -11,6 +11,7 @@ export interface UserStore {
     avatar: string;
     name: string;
     description?: string;
+    vip: number;
   };
 }
 
@@ -42,6 +43,40 @@ export const useAuth = () => {
 
   const user = computed(() => userStore.value.user);
 
+  const vip = computed(() => {
+    const { user } = userStore.value;
+    if (user?.vip) {
+      switch (user.vip) {
+        case 1:
+          return {
+            name: '月卡会员',
+            value: 1,
+          };
+        case 2:
+          return {
+            name: '季卡会员',
+            value: 2,
+          };
+        case 3:
+          return {
+            name: '年卡会员',
+            value: 3,
+          };
+        case 4:
+          return {
+            name: '周体验卡',
+            value: 4,
+          };
+        case 99:
+          return {
+            name: '永久会员',
+            value: 99,
+          };
+      }
+    }
+    return null;
+  });
+
   const setUser = (user: UserStore['user']) => {
     userStore.value.user = user;
     userStore.value.isLogin = true;
@@ -70,6 +105,7 @@ export const useAuth = () => {
   return {
     isLogin,
     user,
+    vip,
     save,
     setUser,
     clearAuth,

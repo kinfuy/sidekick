@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import { ActivationVipDto, CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -16,8 +16,15 @@ export class UserService {
     return this.userRepository.save(createUserDto);
   }
 
-  getSubscription(id: number) {
+  getSubscription(id: string) {
     return this.subscriptionService.getSubscription(id);
+  }
+
+  async activationVip(activationVipDto: ActivationVipDto) {
+    const res = await this.subscriptionService.createByCode({
+      code: activationVipDto.code,
+      email: activationVipDto.email,
+    });
   }
 
   findAll() {

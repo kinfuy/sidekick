@@ -25,7 +25,7 @@ export class SubscriptionService {
   }
 
   async createByCode(createSubscriptionDto: CreateSubscriptionDto) {
-    const { code, userId } = createSubscriptionDto;
+    const { code, email } = createSubscriptionDto;
     const activation = await this.activation.findOne({ where: { code: code } });
     if (!activation) {
       return {
@@ -43,16 +43,16 @@ export class SubscriptionService {
     subscription.form = 1;
     subscription.type = activation.type;
     subscription.startTime = new Date();
-    subscription.userId = userId;
+    subscription.email = email;
     subscription.createTime = new Date();
     subscription.updateTime = new Date();
     await this.subscription.save(subscription);
   }
 
-  async getSubscription(userId: number) {
+  async getSubscription(email: string) {
     const subscription = await this.subscription.findOne({
       select: ['type', 'endTime'],
-      where: { userId: userId },
+      where: { email: email },
     });
 
     return {
