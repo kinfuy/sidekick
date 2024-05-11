@@ -70,6 +70,7 @@ import { computed, ref, watch } from 'vue';
 import { useTheme } from '@store/useTheme';
 import { md5 } from '@utils/base64';
 import { clearActiveTab, getChromeUrl } from '@utils';
+import type { UserInfo } from '@store/useAuth';
 import { useAuth } from '@store/useAuth';
 import logo from '@/assets/logo.png';
 import {
@@ -194,63 +195,54 @@ const createQuery = () => {
   return {};
 };
 
-const login = () => {
+const login = async () => {
   const check = checkForm('all');
   if (!check) return;
   const query = createQuery();
-  loginApi(query)
-    .then((res) => {
-      if (res.code === '000000') {
-        if (res.data?.confirm) {
-          mode.value = 'confirm';
-        } else {
-          setUser({
-            email: model.value.email,
-            avatar: res.data.avatar,
-            name: res.data.name,
-            description: res.data.description,
-            vip: res.data.vip,
-          });
-          clearActiveTab();
-        }
-      } else {
-        errorTips.value = res.message || '登录失败';
-      }
-    })
-    .catch((err) => {
+  const user = await loginApi<UserInfo & { confirm: boolean }>(query).catch(
+    (err) => {
       errorTips.value = err.message || '登录失败';
-    });
+    },
+  );
+  debugger;
+  if (user) {
+    if (user.confirm) {
+      mode.value = 'confirm';
+    } else {
+      setUser({
+        email: model.value.email,
+        avatar: user.avatar,
+        name: user.name,
+        description: user.description,
+        subscription: user.subscription,
+      });
+      clearActiveTab();
+    }
+  }
 };
 
-const register = () => {
+const register = async () => {
   const check = checkForm('all');
   if (!check) return;
   const query = createQuery();
-  registerApi(query)
-    .then((res) => {
-      if (res.code === '000000') {
-        if (res.data) {
-          setUser({
-            email: model.value.email,
-            avatar: res.data.avatar,
-            name: res.data.name,
-            description: res.data.description,
-            vip: res.data.vip,
-          });
-          clearActiveTab();
-        }
-      } else {
-        errorTips.value = res.message || '注册失败';
-      }
-    })
-    .catch((err) => {
-      errorTips.value = err.message || '注册失败';
+  const user = await registerApi<UserInfo>(query).catch((err) => {
+    errorTips.value = err.message || '注册失败';
+  });
+
+  if (user) {
+    setUser({
+      email: model.value.email,
+      avatar: user.avatar,
+      name: user.name,
+      description: user.description,
     });
+    clearActiveTab();
+  }
 };
 
 const count = ref(60);
 
-const sendCode = () => {
+const sendCode = async () => {
   const check = checkForm('all');
   if (!check) return;
   if (count.value < 60) return;
@@ -263,7 +255,7 @@ const sendCode = () => {
     }
   }, 1000);
 
-  sendCodeApi({
+  await sendCodeApi({
     email: model.value.email,
   }).catch((err) => {
     clearInterval(timer);
@@ -271,44 +263,30 @@ const sendCode = () => {
   });
 };
 
-const verifyEmail = () => {
+const verifyEmail = async () => {
   const check = checkForm('all');
   if (!check) return;
   const query = createQuery();
-  verifyEmailApi(query)
-    .then((res) => {
-      if (res.code === '000000') {
-        if (res.data) {
-          setUser({
-            email: model.value.email,
-            avatar: res.data.avatar,
-            name: res.data.name,
-            description: res.data.description,
-            vip: res.data.vip,
-          });
-          clearActiveTab();
-        } else {
-          errorTips.value = res.message || '验证失败';
-        }
-      } else {
-        errorTips.value = res.message || '验证失败';
-      }
-    })
-    .catch((err) => {
-      errorTips.value = err.message || '验证失败';
+  const user = await verifyEmailApi<UserInfo>(query).catch((err) => {
+    errorTips.value = err.message || '验证失败';
+  });
+
+  if (user) {
+    setUser({
+      email: model.value.email,
+      avatar: user.avatar,
+      name: user.name,
+      description: user.description,
+      subscription: user.subscription,
     });
+    clearActiveTab();
+  }
 };
 
 const btnAction = () => {
-  if (mode.value === 'login') {
-    login();
-  }
-  if (mode.value === 'register') {
-    register();
-  }
-  if (mode.value === 'confirm') {
-    verifyEmail();
-  }
+  if (mode.value === 'login') login();
+  if (mode.value === 'register') register();
+  if (mode.value === 'confirm') verifyEmail();
 };
 watch(
   () => mode.value,

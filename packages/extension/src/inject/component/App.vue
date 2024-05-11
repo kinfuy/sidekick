@@ -66,7 +66,7 @@ import logo from '@assets/logo16.png';
 import { useTheme } from '@store/useTheme';
 import { useApp } from '@store/useApp';
 import { useAuth } from '@store/useAuth';
-import { getChromeUrl } from '@utils';
+import { getChromeUrl, injectPostMessage } from '@utils';
 import type { AppEntry } from '@/types/core-app.type';
 
 const { theme, direction, posY, setTheme, setPosY } = useTheme();
@@ -135,13 +135,23 @@ const current = ref();
 
 const { isLogin } = useAuth();
 
+const openPage = (url: string) => {
+  injectPostMessage({
+    from: 'app_inject',
+    code: 'onOpenChromeUrl',
+    data: {
+      openUrl: url,
+    },
+  });
+};
+
 const appClick = async (tool: AppEntry) => {
   if (!isLogin.value && tool.isLogin) {
-    window.open(getChromeUrl('login.html'));
+    openPage('login.html');
     return;
   }
   if (tool.linkUrl) {
-    window.open(tool.linkUrl);
+    openPage('setting.html');
     return;
   }
   if (current.value?.name && tool.name !== current.value.name) {
@@ -163,5 +173,6 @@ provide('appContent', {
   setDialog: (val: boolean) => {
     isVisable.value = val;
   },
+  openPage,
 });
 </script>

@@ -1,4 +1,4 @@
-import set from '@assets/image/set.svg';
+import home from '@assets/image/home.svg';
 import { WebNotice } from './web-notice';
 import { AppLayout } from './app-layout';
 import type { App, AppEntry } from '@/types/core-app.type';
@@ -9,9 +9,10 @@ const linkApp: AppEntry[] = [
   {
     name: 'AppSetting',
     title: '设置',
-    logo: chrome.runtime.getURL(set),
+    logo: chrome.runtime.getURL(home),
     inner: true,
-    linkUrl: chrome.runtime.getURL('setting.html'),
+    isLogin: true,
+    linkUrl: 'setting.html',
   },
 ];
 

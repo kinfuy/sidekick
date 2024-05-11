@@ -18,7 +18,7 @@ export class Activation {
      @Column()
      effective: boolean; // 是否有效
 
-     @Column() // 激活码类型 1: 月卡 2：周卡 3：年卡 99：永久
+     @Column() // 激活码类型 1: 月卡 2：季卡 3：年卡 4：周体验卡 99：永久
      type: number;
 
      @CreateDateColumn({ type: 'timestamp' })

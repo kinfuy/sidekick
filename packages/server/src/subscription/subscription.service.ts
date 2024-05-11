@@ -51,7 +51,7 @@ export class SubscriptionService {
 
   async getSubscription(email: string) {
     const subscription = await this.subscription.findOne({
-      select: ['type', 'endTime'],
+      select: ['type','form','startTime','lastTime', 'endTime'],
       where: { email: email },
     });
 

@@ -6,29 +6,38 @@ import { Repository } from 'typeorm';
 import * as blueimpMd5 from 'blueimp-md5';
 import { responseCode } from '../Config/const';
 import { EmailService } from './email.service';
+import { SubscriptionService } from '../subscription/subscription.service';
 
 @Injectable()
 export class LoginService {
   constructor(
     @InjectRepository(User) private userModel: Repository<User>,
     private readonly emailService: EmailService,
+    private readonly subscriptionService: SubscriptionService,
   ) {}
 
   async login(params: LoginDto) {
     const { email, password } = params;
     const user = await this.userModel
       .createQueryBuilder('user')
+      .select(['user.id', 'user.email', 'user.sex', 'user.mobile','user.name'])
       .where({ email: email, isDelete: false })
       .addSelect('user.password')
       .getOne();
       
+    const {data} = await this.subscriptionService.getSubscription(email);
 
     if (user) {
       const pwd = blueimpMd5(`${email}${password}`);
       if (user.password === pwd) {
         return {
           data: {
-            ...user,
+            email: user.email,
+            sex: user.sex,
+            mobile: user.mobile,
+            id: user.id,
+            name: user.name,
+            subscription: data
           },
           message: '登录成功',
           code: responseCode.SUCCESS,

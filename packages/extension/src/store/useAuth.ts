@@ -3,16 +3,24 @@ import { storage } from '@utils/chrome';
 
 const STORE_KEY = 'userStore';
 
+export interface UserInfo {
+  email: string;
+  avatar: string;
+  name: string;
+  description?: string;
+  subscription?: {
+    type: number;
+    form: number;
+    startTime: string;
+    lastTime: string;
+    endTime: string;
+  };
+}
+
 export interface UserStore {
   isLogin: boolean;
   lastLoginTime?: string;
-  user?: {
-    email: string;
-    avatar: string;
-    name: string;
-    description?: string;
-    vip: number;
-  };
+  user?: UserInfo;
 }
 
 const defaultStore = (): UserStore => {
@@ -45,8 +53,8 @@ export const useAuth = () => {
 
   const vip = computed(() => {
     const { user } = userStore.value;
-    if (user?.vip) {
-      switch (user.vip) {
+    if (user?.subscription) {
+      switch (user.subscription.type) {
         case 1:
           return {
             name: '月卡会员',

@@ -1,60 +1,21 @@
-const api_url = 'http://localhost:9000';
-export const loginApi = async (data: object) => {
-  const res = await fetch(`${api_url}/login`, {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify(data),
-  });
-  return await res.json();
+import axios from './axios';
+
+export const loginApi = async <T>(data: object): Promise<T> => {
+  return await axios.post(`/login`, data);
 };
 
-export const registerApi = async (data: object) => {
-  const res = await fetch(`${api_url}/register`, {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify(data),
-  });
-  return await res.json();
+export const registerApi = async <T>(data: object): Promise<T> => {
+  return await axios.post(`/register`, data);
 };
 
-export const sendCodeApi = async (data: object) => {
-  const res = await fetch(`${api_url}/verifyCode`, {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify(data),
-  });
-  return await res.json();
+export const sendCodeApi = async <T>(data: object): Promise<T> => {
+  return await axios.post(`/verifyCode`, data);
 };
 
-export const verifyEmailApi = async (data: object) => {
-  const res = await fetch(`${api_url}/verifyEmail`, {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify(data),
-  });
-  return await res.json();
+export const verifyEmailApi = async <T>(data: object): Promise<T> => {
+  return await axios.post(`/verifyEmail`, data);
 };
 
-export const activationVipApi = async (data: object) => {
-  const res = await fetch(`${api_url}/user/activationVip`, {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify(data),
-  });
-  return await res.json();
+export const activationVipApi = async <T>(data: object): Promise<T> => {
+  return await axios.post(`/user/activationVip`, data);
 };

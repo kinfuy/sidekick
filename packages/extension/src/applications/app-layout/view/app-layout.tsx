@@ -3,7 +3,6 @@ import { useTheme } from '@store/useTheme';
 import { useAuth } from '@store/useAuth';
 import dark from '@assets/image/dark.svg';
 import light from '@assets/image/light.svg';
-import { getChromeUrl } from '@utils';
 export default defineComponent({
   name: 'AppSetting',
   setup() {
@@ -39,13 +38,13 @@ export default defineComponent({
       return '右侧';
     });
 
-    const { setDialog } = inject('appContent') as any;
+    const { setDialog, openPage } = inject('appContent') as any;
 
     watchEffect(() => {
       if (!isLogin.value) {
         setDialog(false);
         setTimeout(() => {
-          window.open(getChromeUrl('login.html'));
+          openPage('login.html');
         }, 0);
       }
     });
