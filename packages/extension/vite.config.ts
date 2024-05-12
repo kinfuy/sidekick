@@ -64,5 +64,17 @@ export default defineConfig({
   },
   server: {
     port: 8000,
+    proxy: {
+      // '/api': {
+      //   target: 'http://server.kinfuy.cn:9000',
+      //   changeOrigin: true,
+      //   rewrite: (path) => path.replace(/^\/api/, ''),
+      // },
+      '/api': {
+        target: 'http://localhost:9000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
   },
 });

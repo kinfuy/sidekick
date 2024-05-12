@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { LoginService } from './service/login.service';
 import { LoginDto, RegisterDto, VerifyCodeDto } from './dto/login.dto';
-import { responseCode } from './Config/const';
+import { responseCode } from './config/const';
 
 @Controller('')
 export class AppController {

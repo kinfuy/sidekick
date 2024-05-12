@@ -4,7 +4,7 @@ import { User } from '../user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as blueimpMd5 from 'blueimp-md5';
-import { responseCode } from '../Config/const';
+import { responseCode } from '../config/const';
 import { EmailService } from './email.service';
 import { SubscriptionService } from '../subscription/subscription.service';
 

@@ -8,16 +8,15 @@ export interface ResponseOption {
 }
 
 const instance: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:9000',
+  baseURL: 'api',
   timeout: 10000,
 });
 
 instance.defaults.headers.post['Content-Type'] =
   'application/x-www-form-urlencoded';
 
-axios.interceptors.response.use(
+instance.interceptors.response.use(
   (response) => {
-    debugger;
     if (response.data.code === '000000') {
       return Promise.resolve(response.data.data);
     } else {

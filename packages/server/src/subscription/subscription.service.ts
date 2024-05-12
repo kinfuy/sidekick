@@ -54,13 +54,18 @@ export class SubscriptionService {
       select: ['type','form','startTime','lastTime', 'endTime'],
       where: { email: email },
     });
-
-    return {
-      success: true,
-      data: {
-        type: subscription.type,
-        endTime: subscription.endTime,
+    if(subscription){
+      return {
+        success: true,
+        data: {
+          type: subscription.type,
+          endTime: subscription.endTime,
+        }
       }
+    }
+    return {
+      success: false,
+      data: null
     }
   }
 }

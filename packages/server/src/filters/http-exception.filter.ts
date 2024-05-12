@@ -4,7 +4,7 @@ import {
   ExceptionFilter,
   HttpException,
 } from '@nestjs/common';
-import { responseCode } from '../Config/const';
+import { responseCode } from '../config/const';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
