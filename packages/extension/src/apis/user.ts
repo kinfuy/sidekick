@@ -1,21 +1,21 @@
-import axios from './axios';
+import request from './axios';
 
 export const loginApi = async <T>(data: object): Promise<T> => {
-  return await axios.post(`/login`, data);
+  return await request.post(`/login`, data);
 };
 
 export const registerApi = async <T>(data: object): Promise<T> => {
-  return await axios.post(`/register`, data);
+  return await request.post(`/register`, data);
 };
 
 export const sendCodeApi = async <T>(data: object): Promise<T> => {
-  return await axios.post(`/verifyCode`, data);
+  return await request.post(`/verifyCode`, data);
 };
 
 export const verifyEmailApi = async <T>(data: object): Promise<T> => {
-  return await axios.post(`/verifyEmail`, data);
+  return await request.post(`/verifyEmail`, data);
 };
 
 export const activationVipApi = async <T>(data: object): Promise<T> => {
-  return await axios.post(`/user/activationVip`, data);
+  return await request.post(`/user/activationVip`, data);
 };

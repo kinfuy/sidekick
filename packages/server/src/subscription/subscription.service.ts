@@ -57,10 +57,7 @@ export class SubscriptionService {
     if(subscription){
       return {
         success: true,
-        data: {
-          type: subscription.type,
-          endTime: subscription.endTime,
-        }
+        data: subscription
       }
     }
     return {

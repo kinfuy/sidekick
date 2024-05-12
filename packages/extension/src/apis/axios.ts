@@ -8,12 +8,22 @@ export interface ResponseOption {
 }
 
 const instance: AxiosInstance = axios.create({
-  baseURL: 'api',
+  baseURL: 'http://localhost:9000',
   timeout: 10000,
 });
 
 instance.defaults.headers.post['Content-Type'] =
   'application/x-www-form-urlencoded';
+
+// 请求拦截器
+instance.interceptors.request.use(
+  (request) => {
+    return request;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
 
 instance.interceptors.response.use(
   (response) => {

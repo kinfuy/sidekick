@@ -20,12 +20,12 @@ export class LoginService {
     const { email, password } = params;
     const user = await this.userModel
       .createQueryBuilder('user')
-      .select(['user.id', 'user.email', 'user.sex', 'user.mobile','user.name'])
+      .select(['user.id', 'user.email', 'user.sex', 'user.mobile', 'user.name'])
       .where({ email: email, isDelete: false })
       .addSelect('user.password')
       .getOne();
-      
-    const {data} = await this.subscriptionService.getSubscription(email);
+
+    const { data } = await this.subscriptionService.getSubscription(email);
 
     if (user) {
       const pwd = blueimpMd5(`${email}${password}`);
@@ -37,7 +37,7 @@ export class LoginService {
             mobile: user.mobile,
             id: user.id,
             name: user.name,
-            subscription: data
+            subscription: data,
           },
           message: '登录成功',
           code: responseCode.SUCCESS,

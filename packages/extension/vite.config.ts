@@ -63,6 +63,7 @@ export default defineConfig({
     },
   },
   server: {
+    host: 'localhost',
     port: 8000,
     proxy: {
       // '/api': {
@@ -72,8 +73,12 @@ export default defineConfig({
       // },
       '/api': {
         target: 'http://localhost:9000',
+        rewrite: (path) => {
+          const p = path.replace(/^\/api/, '');
+          console.log(p);
+          return p;
+        },
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },
