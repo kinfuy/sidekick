@@ -1,5 +1,6 @@
 import type { Application } from '@/types/core-app.type';
 import {
+  createWindow,
   createtab,
   getChromeUrl,
   sendMessageToContentScript,
@@ -23,8 +24,12 @@ export const SuffixCoreApp = (): Application => {
         },
       });
     },
-    onOpenChromeUrl: ({ openUrl }) => {
-      createtab(getChromeUrl(openUrl));
+    onOpenChromeUrl: ({ openUrl, extra }) => {
+      createtab(getChromeUrl(openUrl), extra);
+    },
+
+    onOpenWindow: ({ openUrl, extra }) => {
+      createWindow(getChromeUrl(openUrl), extra);
     },
   };
 };

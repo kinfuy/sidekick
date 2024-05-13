@@ -135,23 +135,35 @@ const current = ref();
 
 const { isLogin } = useAuth();
 
-const openPage = (url: string) => {
+const openPage = (code: string, url: string, extra: any = {}) => {
   injectPostMessage({
     from: 'app_inject',
-    code: 'onOpenChromeUrl',
+    code,
     data: {
       openUrl: url,
+      extra,
     },
+  });
+};
+
+const openLogin = () => {
+  openPage('onOpenWindow', 'login.html', {
+    focused: true,
+    width: 500,
+    height: 680,
+    left: 400,
+    top: 100,
+    type: 'panel',
   });
 };
 
 const appClick = async (tool: AppEntry) => {
   if (!isLogin.value && tool.isLogin) {
-    openPage('login.html');
+    openLogin();
     return;
   }
   if (tool.linkUrl) {
-    openPage('setting.html');
+    openPage('onOpenChromeUrl', 'setting.html');
     return;
   }
   if (current.value?.name && tool.name !== current.value.name) {
@@ -174,5 +186,6 @@ provide('appContent', {
     isVisable.value = val;
   },
   openPage,
+  openLogin,
 });
 </script>

@@ -35,8 +35,12 @@ export const clearActiveTab = async () => {
 };
 
 // 创建tab
-export const createtab = async (url: string) => {
-  return chrome.tabs.create({ url });
+export const createtab = async (url: string, options: any = {}) => {
+  return chrome.tabs.create({ url, ...options });
+};
+// 创建新窗口
+export const createWindow = async (url: string, options: any = {}) => {
+  return chrome.windows.create({ url, ...options });
 };
 
 /**

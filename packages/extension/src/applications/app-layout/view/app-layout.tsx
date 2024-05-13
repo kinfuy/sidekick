@@ -38,13 +38,13 @@ export default defineComponent({
       return '右侧';
     });
 
-    const { setDialog, openPage } = inject('appContent') as any;
+    const { setDialog, openLogin } = inject('appContent') as any;
 
     watchEffect(() => {
       if (!isLogin.value) {
         setDialog(false);
         setTimeout(() => {
-          openPage('login.html');
+          openLogin();
         }, 0);
       }
     });
