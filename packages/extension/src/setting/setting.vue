@@ -6,24 +6,27 @@
         <span class="logo-title">SildKick</span>
       </div>
       <div class="silder-list">
-        <a class="silder-item" href="#userInfo">用户信息</a>
-        <a class="silder-item" href="#help">帮助与反馈</a>
-        <a class="silder-item" href="#about">关于</a>
+        <div
+          v-for="setting in settingList"
+          :key="setting.name"
+          class="silder-item"
+          :class="{ 'item-active': active === setting.name }"
+          @click="active = setting.name"
+        >
+          {{ setting.title }}
+        </div>
       </div>
     </div>
     <div class="setting-right">
-      <a name="userInfo" class="setting-title">用户信息</a>
-      <UserSetting class="setting-content" />
-      <a name="help" class="setting-title">帮助与反馈</a>
-      <HelpSetting class="setting-content" />
-      <a name="about" class="setting-title">关于</a>
-      <AboutSetting class="setting-content" />
+      <div class="setting-title">{{ current.title }}</div>
+      <current.com class="setting-content" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useTheme } from '@store/useTheme';
+import { computed, reactive, ref } from 'vue';
 import UserSetting from './components/UserSetting.vue';
 import HelpSetting from './components/HelpSetting.vue';
 import AboutSetting from './components/AboutSetting.vue';
@@ -32,4 +35,28 @@ import logo from '@/assets/logo.png';
 const logoIcon = chrome.runtime.getURL(logo);
 
 const { theme } = useTheme();
+
+const active = ref('userInfo');
+
+const settingList = reactive([
+  {
+    title: '基础信息',
+    name: 'userInfo',
+    com: UserSetting,
+  },
+  {
+    title: '帮助与反馈',
+    name: 'help',
+    com: HelpSetting,
+  },
+  {
+    title: '关于',
+    name: 'about',
+    com: AboutSetting,
+  },
+]);
+
+const current = computed(() => {
+  return settingList.find((item) => item.name === active.value)!;
+});
 </script>

@@ -42,8 +42,13 @@
                 border-radius: 4px;
                 line-height: 32px;
                 padding: 0 16px;
+                cursor: pointer;
 
                 &:hover {
+                    background-color: var(--primary-color-fade-20);
+                }
+
+                &.item-active {
                     background-color: var(--primary-color-fade-20);
                 }
             }
@@ -53,14 +58,14 @@
     .setting-right {
         flex-grow: 0;
         width: calc(100vw - 256px);
-        padding: 0 56px;
+        padding: 0 44px;
         max-width: 768px;
         padding-top: 24px;
 
         .setting-title {
             display: block;
             font-size: 22px;
-            margin-bottom: 12px;
+            margin: 12px;
         }
 
         .setting-content {
