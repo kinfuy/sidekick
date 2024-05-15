@@ -1,24 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { LoginDto, RegisterDto, VerifyCodeDto } from '../dto/login.dto';
 import { User } from '../user/entities/user.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import * as blueimpMd5 from 'blueimp-md5';
 import { responseCode } from '../config/const';
 import { EmailService } from './email.service';
 import { SubscriptionService } from '../subscription/subscription.service';
+import { UserService } from 'src/user/user.service';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class LoginService {
   constructor(
-    @InjectRepository(User) private userModel: Repository<User>,
+    private readonly userService: UserService,
     private readonly emailService: EmailService,
     private readonly subscriptionService: SubscriptionService,
+    private readonly authService: AuthService,
   ) {}
 
   async login(params: LoginDto) {
     const { email, password } = params;
-    const user = await this.userModel
+    const user = await this.userService
       .createQueryBuilder('user')
       .select(['user.id', 'user.email', 'user.sex', 'user.mobile', 'user.name'])
       .where({ email: email, isDelete: false })
@@ -27,11 +28,22 @@ export class LoginService {
 
     const { data } = await this.subscriptionService.getSubscription(email);
 
+    const { access_token } = await this.authService.getToken(
+      { email: email },
+      '30d',
+    );
+    const { access_token: refresh_token } = await this.authService.getToken(
+      { email: email },
+      '1d',
+    );
+
     if (user) {
       const pwd = blueimpMd5(`${email}${password}`);
       if (user.password === pwd) {
         return {
           data: {
+            token: access_token,
+            refresh_token: refresh_token,
             email: user.email,
             sex: user.sex,
             mobile: user.mobile,
@@ -62,21 +74,34 @@ export class LoginService {
 
   async register(params: RegisterDto) {
     const { email, password } = params;
-    const oldUser = await this.userModel.findOne({
-      where: { email: email },
-    });
+    const oldUser = await this.userService.findByEmail(email);
     const user = oldUser ?? new User();
     if (!oldUser) {
       user.email = email;
     }
     user.updateTime = new Date();
     user.password = blueimpMd5(`${email}${password}`);
-    this.userModel.save(user);
+    this.userService.save(user);
+
+    const { access_token } = await this.authService.getToken(
+      { email: email },
+      '30d',
+    );
+    const { access_token: refresh_token } = await this.authService.getToken(
+      { email: email },
+      '1d',
+    );
+
     return {
       data: {
-        email: email,
-        avatar: '',
-        description: '',
+        token: access_token,
+        refresh_token: refresh_token,
+        email: user.email,
+        sex: user.sex,
+        mobile: user.mobile,
+        id: user.id,
+        name: user.name,
+        subscription: null,
       },
       message: '注册成功',
       code: responseCode.SUCCESS,
@@ -109,4 +134,6 @@ export class LoginService {
   async verifyEmail(params: RegisterDto) {
     return this.register(params);
   }
+
+  async getToken(email: string) {}
 }

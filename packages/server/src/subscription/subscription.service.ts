@@ -7,6 +7,33 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Subscription } from './entities/subscription.entity';
 import { Repository } from 'typeorm';
 import { Activation } from './entities/activation.entity';
+import dayjs from 'dayjs'
+
+
+/**
+ * 根据激活码设置有效期
+ * @param val 
+ * @param type 
+ * @returns 
+ */
+const setEffectTime = (val:Date, type: number) => {
+    if(type === 1){
+        return dayjs(val).add(1, 'month').toDate()
+    }
+    if(type === 2){
+        return dayjs(val).add(3, 'month').toDate()
+    }
+    if(type === 3){
+        return dayjs(val).add(1, 'year').toDate()
+    }
+    if(type === 4){
+        return dayjs(val).add(1, 'week').toDate()
+    }
+    if(type === 99){
+        return dayjs('2999-12-31').toDate()
+    }
+    return val
+}
 
 @Injectable()
 export class SubscriptionService {
@@ -43,6 +70,7 @@ export class SubscriptionService {
     subscription.form = 1;
     subscription.type = activation.type;
     subscription.startTime = new Date();
+    subscription.endTime = setEffectTime(new Date(), activation.type);
     subscription.email = email;
     subscription.createTime = new Date();
     subscription.updateTime = new Date();
@@ -57,7 +85,10 @@ export class SubscriptionService {
     if(subscription){
       return {
         success: true,
-        data: subscription
+        data: {
+          ...subscription,
+          isEffective: subscription.endTime.getTime() > new Date().getTime()
+        }
       }
     }
     return {

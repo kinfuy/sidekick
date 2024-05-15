@@ -1,9 +1,12 @@
 import { computed, onUnmounted, ref, toRaw } from 'vue';
 import { storage } from '@utils/chrome';
+import dayjs from 'dayjs';
 
 const STORE_KEY = 'userStore';
 
 export interface UserInfo {
+  token: string;
+  refreshToken: string;
   email: string;
   avatar: string;
   name: string;
@@ -14,12 +17,13 @@ export interface UserInfo {
     startTime: string;
     lastTime: string;
     endTime: string;
+    isEffective: boolean;
   };
 }
 
 export interface UserStore {
   isLogin: boolean;
-  lastLoginTime?: string;
+  lastLoginTime?: Date;
   user?: UserInfo;
 }
 
@@ -38,6 +42,12 @@ export const useAuth = () => {
     set(STORE_KEY, JSON.stringify(toRaw(userStore.value)));
   };
 
+  const autoLogin = () => {
+    if (dayjs(userStore.value.lastLoginTime).add(1, 'day').isBefore(dayjs())) {
+      console.log('autoLogin');
+    }
+  };
+
   const sync = async () => {
     let store: UserStore = defaultStore();
     const _store = await get<UserStore>(STORE_KEY);
@@ -45,6 +55,7 @@ export const useAuth = () => {
       store = _store as UserStore;
     }
     userStore.value = store;
+    autoLogin();
   };
 
   const isLogin = computed(() => userStore.value.isLogin);
@@ -88,7 +99,7 @@ export const useAuth = () => {
   const setUser = (user: UserStore['user']) => {
     userStore.value.user = user;
     userStore.value.isLogin = true;
-    userStore.value.lastLoginTime = new Date().getTime().toString();
+    userStore.value.lastLoginTime = new Date();
     save();
   };
 

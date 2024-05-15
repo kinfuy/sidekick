@@ -8,7 +8,8 @@ import { EmailService } from './service/email.service';
 import { LoginService } from './service/login.service';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { SubscriptionService } from './subscription/subscription.service';
-
+import { AuthService } from './service/auth.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -30,6 +31,6 @@ import { SubscriptionService } from './subscription/subscription.service';
     SubscriptionModule,
   ],
   controllers: [AppController],
-  providers: [AppService, EmailService, LoginService],
+  providers: [AppService, EmailService, LoginService, AuthService, JwtService],
 })
 export class AppModule {}

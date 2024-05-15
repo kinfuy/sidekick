@@ -11,7 +11,7 @@
             <span v-if="vip?.name" class="vip-tag">{{ vip?.name }}</span>
           </div>
           <div v-if="vip?.endTime" class="vip-time">
-            <span class="m-r-1">有效期：</span>
+            <span class="vip-expire">有效期：</span>
             <span>{{ formatTime(vip.endTime) }}</span>
           </div>
         </template>
@@ -74,8 +74,12 @@ const login = () => {
 }
 
 .user-operate {
-  width: 80px;
+  min-width: 40px;
   flex-shrink: 1;
+}
+
+.vip-expire {
+  margin-right: 4px;
 }
 
 .vip-time {

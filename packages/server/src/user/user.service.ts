@@ -8,38 +8,35 @@ import { SubscriptionService } from '../subscription/subscription.service';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
-    private readonly subscriptionService: SubscriptionService,
+    @InjectRepository(User) private userModel: Repository<User>,
   ) {}
 
+
   create(createUserDto: CreateUserDto) {
-    return this.userRepository.save(createUserDto);
+    return this.userModel.save(createUserDto);
   }
 
-  getSubscription(id: string) {
-    return this.subscriptionService.getSubscription(id);
+  save(user: User) {
+    return this.userModel.save(user);
   }
 
-  async activationVip(activationVipDto: ActivationVipDto) {
-    const res = await this.subscriptionService.createByCode({
-      code: activationVipDto.code,
-      email: activationVipDto.email,
-    });
+  createQueryBuilder(name: string) {
+    return this.userModel.createQueryBuilder(name);
   }
 
   findAll() {
-    return `This action returns all user`;
+    return this.userModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findByEmail(email: string) {
+    return this.userModel.findOne({ where: { email: email } });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.userModel.update(id, updateUserDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.userModel.update(id, { isDelete: true });
   }
 }

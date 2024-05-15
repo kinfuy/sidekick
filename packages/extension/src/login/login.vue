@@ -210,6 +210,8 @@ const login = async () => {
       mode.value = 'confirm';
     } else {
       setUser({
+        token: user.token,
+        refreshToken: user.refreshToken,
         email: model.value.email,
         avatar: user.avatar,
         name: user.name,
@@ -231,6 +233,8 @@ const register = async () => {
 
   if (user) {
     setUser({
+      token: user.token,
+      refreshToken: user.refreshToken,
       email: model.value.email,
       avatar: user.avatar,
       name: user.name,
@@ -273,6 +277,8 @@ const verifyEmail = async () => {
 
   if (user) {
     setUser({
+      token: user.token,
+      refreshToken: user.refreshToken,
       email: model.value.email,
       avatar: user.avatar,
       name: user.name,
