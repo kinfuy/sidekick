@@ -11,10 +11,11 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.9.0",
-    "blueimp-md5": "^2.19.0",
-    "vue": "^3.3.1",
     "axios": "^1.6.8",
-    "dayjs": "^1.11.11"
+    "blueimp-md5": "^2.19.0",
+    "dayjs": "^1.11.11",
+    "element-plus": "^2.7.3",
+    "vue": "^3.3.1"
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "2.0.0-beta.18",
@@ -32,6 +33,8 @@
     "postcss-nesting": "^11.2.2",
     "prettier": "^2.8.8",
     "process": "^0.11.10",
+    "unplugin-auto-import": "^0.17.6",
+    "unplugin-vue-components": "^0.27.0",
     "vite": "^4.2.0",
     "vite-plugin-shadowcss": "^0.0.4",
     "vite-plugin-shortcuts": "^0.1.0",

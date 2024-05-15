@@ -30,7 +30,7 @@ instance.interceptors.response.use(
     if (response.data.code === '000000') {
       return Promise.resolve(response.data.data);
     } else {
-      return Promise.reject(response.data.message);
+      return Promise.reject(Error(response.data.message));
     }
   },
   (error) => {

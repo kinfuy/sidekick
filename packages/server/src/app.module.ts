@@ -9,7 +9,7 @@ import { LoginService } from './service/login.service';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { SubscriptionService } from './subscription/subscription.service';
 import { AuthService } from './service/auth.service';
-import { JwtService } from '@nestjs/jwt';
+import {  JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [

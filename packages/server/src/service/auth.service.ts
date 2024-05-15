@@ -19,6 +19,8 @@ export class AuthService {
     return {
       access_token: await this.jwtService.signAsync(payload, {
         expiresIn: expiresIn,
+        secret: 'sidekick_secret',
+        privateKey: 'sidekick_privateKey',
       }),
     };
   }

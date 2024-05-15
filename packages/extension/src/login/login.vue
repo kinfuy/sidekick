@@ -204,7 +204,6 @@ const login = async () => {
       errorTips.value = err.message || '登录失败';
     },
   );
-  debugger;
   if (user) {
     if (user.confirm) {
       mode.value = 'confirm';

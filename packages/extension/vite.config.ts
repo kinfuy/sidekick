@@ -6,6 +6,9 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import { shortcutsPlugin } from 'vite-plugin-shortcuts';
 import vuejsx from '@vitejs/plugin-vue-jsx';
 import { shadowDomCssPlugin } from 'vite-plugin-shadowcss';
+import AutoImport from 'unplugin-auto-import/vite';
+import Components from 'unplugin-vue-components/vite';
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import manifest from './manifest.config';
 
 export const isDev = process.env.NODE_ENV !== 'production';
@@ -23,6 +26,12 @@ export default defineConfig({
     vue(),
     vuejsx(),
     crx({ manifest }),
+    AutoImport({
+      resolvers: [ElementPlusResolver()],
+    }),
+    Components({
+      resolvers: [ElementPlusResolver()],
+    }),
     shadowDomCssPlugin({
       alias: {
         '@': resolve('./src'),

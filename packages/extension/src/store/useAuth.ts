@@ -4,6 +4,15 @@ import dayjs from 'dayjs';
 
 const STORE_KEY = 'userStore';
 
+export interface Subscription {
+  type: number;
+  form: number;
+  startTime: string;
+  lastTime: string;
+  endTime: string;
+  isEffective: boolean;
+}
+
 export interface UserInfo {
   token: string;
   refreshToken: string;
@@ -11,14 +20,7 @@ export interface UserInfo {
   avatar: string;
   name: string;
   description?: string;
-  subscription?: {
-    type: number;
-    form: number;
-    startTime: string;
-    lastTime: string;
-    endTime: string;
-    isEffective: boolean;
-  };
+  subscription?: Subscription;
 }
 
 export interface UserStore {
@@ -62,7 +64,7 @@ export const useAuth = () => {
 
   const user = computed(() => userStore.value.user);
 
-  const vip = computed(() => {
+  const subscription = computed(() => {
     const { user } = userStore.value;
     if (user?.subscription) {
       switch (user.subscription.type) {
@@ -96,10 +98,15 @@ export const useAuth = () => {
     return null;
   });
 
-  const setUser = (user: UserStore['user']) => {
+  const setUser = (user: UserInfo) => {
     userStore.value.user = user;
     userStore.value.isLogin = true;
     userStore.value.lastLoginTime = new Date();
+    save();
+  };
+
+  const setSubscription = (subscription: Subscription) => {
+    userStore.value.user!.subscription = subscription;
     save();
   };
 
@@ -124,9 +131,10 @@ export const useAuth = () => {
   return {
     isLogin,
     user,
-    vip,
+    subscription,
     save,
     setUser,
     clearAuth,
+    setSubscription,
   };
 };

@@ -7,10 +7,7 @@ import { SubscriptionService } from '../subscription/subscription.service';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(User) private userModel: Repository<User>,
-  ) {}
-
+  constructor(@InjectRepository(User) private userModel: Repository<User>) {}
 
   create(createUserDto: CreateUserDto) {
     return this.userModel.save(createUserDto);
@@ -34,6 +31,10 @@ export class UserService {
 
   update(id: number, updateUserDto: UpdateUserDto) {
     return this.userModel.update(id, updateUserDto);
+  }
+
+  updateByeEmail(email: string, updateUserDto: UpdateUserDto) {
+    return this.userModel.update({ email: email }, updateUserDto);
   }
 
   remove(id: number) {

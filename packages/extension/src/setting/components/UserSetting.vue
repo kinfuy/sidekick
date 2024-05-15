@@ -8,15 +8,34 @@
         <template v-else>
           <div>
             <span>{{ user?.email }}</span>
-            <span v-if="vip?.name" class="vip-tag">{{ vip?.name }}</span>
+            <span
+              v-if="subscription?.name"
+              class="vip-tag"
+              :class="{ 'vip-expire': !subscription?.isEffective }"
+            >
+              {{ subscription?.name }}
+            </span>
           </div>
-          <div v-if="vip?.endTime" class="vip-time">
-            <span class="vip-expire">有效期：</span>
-            <span>{{ formatTime(vip.endTime) }}</span>
+          <div v-if="subscription?.endTime" class="subscription-time">
+            <span class="subscription-expire">
+              <span class="subscription-expire-text">
+                {{ subscription?.isEffective ? '有效期' : '过期于' }}：
+              </span>
+            </span>
+            <span class="subscription-expire-text">
+              {{ formatTime(subscription.endTime) }}
+            </span>
           </div>
         </template>
       </div>
       <div class="user-operate">
+        <div
+          v-if="!subscription || !subscription.isEffective"
+          class="btn-text"
+          @click="handleActivate"
+        >
+          激活
+        </div>
         <div v-if="isLogin" class="btn-text" @click="logout">退出</div>
       </div>
     </div>
@@ -24,15 +43,18 @@
 </template>
 
 <script lang="ts" setup>
+import { activationVipApi } from '@apis/user';
+import type { Subscription } from '@store/useAuth';
 import { useAuth } from '@store/useAuth';
 import { sendMessageToExtension } from '@utils';
 import dayjs from 'dayjs';
+import { ElMessage } from 'element-plus';
 
 const formatTime = (str: string) => {
   return dayjs(str).format('YYYY-MM-DD');
 };
 
-const { user, vip, clearAuth, isLogin } = useAuth();
+const { user, subscription, clearAuth, isLogin, setSubscription } = useAuth();
 
 const logout = () => {
   clearAuth();
@@ -55,6 +77,21 @@ const login = () => {
     },
   });
 };
+
+const handleActivate = async () => {
+  if (!isLogin.value) return;
+  const res = await activationVipApi<Subscription>({
+    email: user.value!.email,
+    code: 'KFCV50',
+  }).catch((err) => {
+    ElMessage.error(err.message);
+  });
+  if (res) {
+    debugger;
+    setSubscription(res);
+    ElMessage.success('激活成功');
+  }
+};
 </script>
 
 <style lang="less" scoped>
@@ -74,16 +111,27 @@ const login = () => {
 }
 
 .user-operate {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
   min-width: 40px;
   flex-shrink: 1;
+  .btn-text {
+    white-space: nowrap;
+    margin-left: 8px;
+  }
+}
+
+.subscription-time {
+  color: #999;
+  font-size: 12px;
 }
 
 .vip-expire {
-  margin-right: 4px;
+  background: #999;
 }
 
-.vip-time {
+.subscription-expire-text {
   color: #999;
-  font-size: 12px;
 }
 </style>
