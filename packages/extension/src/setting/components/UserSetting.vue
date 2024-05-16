@@ -29,32 +29,44 @@
         </template>
       </div>
       <div class="user-operate">
-        <div
-          v-if="!subscription || !subscription.isEffective"
-          class="btn-text"
-          @click="handleActivate"
-        >
-          激活
-        </div>
         <div v-if="isLogin" class="btn-text" @click="logout">退出</div>
+      </div>
+    </div>
+
+    <div class="user-setting-content m-t-2">
+      <Sinput
+        v-model="activateCode"
+        class="user-setting-code"
+        placeholder="输入激活码激活会员"
+      />
+      <div
+        v-if="(!subscription || !subscription.isEffective) && isLogin"
+        class="btn-text"
+        @click="handleActivate"
+      >
+        激活
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
 import { activationVipApi } from '@apis/user';
 import type { Subscription } from '@store/useAuth';
 import { useAuth } from '@store/useAuth';
 import { sendMessageToExtension } from '@utils';
 import dayjs from 'dayjs';
-import { ElMessage } from 'element-plus';
+import { ElButton, ElMessage } from 'element-plus';
+import Sinput from '@/components/common/Input';
 
 const formatTime = (str: string) => {
   return dayjs(str).format('YYYY-MM-DD');
 };
 
 const { user, subscription, clearAuth, isLogin, setSubscription } = useAuth();
+
+const activateCode = ref('');
 
 const logout = () => {
   clearAuth();
@@ -79,10 +91,10 @@ const login = () => {
 };
 
 const handleActivate = async () => {
-  if (!isLogin.value) return;
+  if (!isLogin.value && !activateCode.value) return;
   const res = await activationVipApi<Subscription>({
     email: user.value!.email,
-    code: 'KFCV50',
+    code: activateCode.value,
   }).catch((err) => {
     ElMessage.error(err.message);
   });
@@ -100,6 +112,9 @@ const handleActivate = async () => {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: var(--bg-color-second);
 }
 
 .user-info {
@@ -116,6 +131,7 @@ const handleActivate = async () => {
   flex-wrap: nowrap;
   min-width: 40px;
   flex-shrink: 1;
+
   .btn-text {
     white-space: nowrap;
     margin-left: 8px;
@@ -133,5 +149,9 @@ const handleActivate = async () => {
 
 .subscription-expire-text {
   color: #999;
+}
+
+.user-setting-code {
+  width: calc(100% - 120px);
 }
 </style>
