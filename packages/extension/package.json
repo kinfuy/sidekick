@@ -13,6 +13,7 @@
     "@vueuse/core": "^10.9.0",
     "axios": "^1.6.8",
     "blueimp-md5": "^2.19.0",
+    "canvas-confetti": "^1.9.3",
     "dayjs": "^1.11.11",
     "element-plus": "^2.7.3",
     "vue": "^3.3.1"
@@ -21,6 +22,7 @@
     "@crxjs/vite-plugin": "2.0.0-beta.18",
     "@rollup/pluginutils": "^5.0.2",
     "@types/blueimp-md5": "^2.18.2",
+    "@types/canvas-confetti": "1.6.4",
     "@types/node": "^18.15.9",
     "@vitejs/plugin-vue": "^4.2.0",
     "@vitejs/plugin-vue-jsx": "^3.0.1",

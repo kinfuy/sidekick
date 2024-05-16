@@ -33,19 +33,16 @@
       </div>
     </div>
 
-    <div class="user-setting-content m-t-2">
+    <div
+      v-if="(!subscription || !subscription.isEffective) && isLogin"
+      class="user-setting-content m-t-2"
+    >
       <Sinput
         v-model="activateCode"
         class="user-setting-code"
         placeholder="输入激活码激活会员"
       />
-      <div
-        v-if="(!subscription || !subscription.isEffective) && isLogin"
-        class="btn-text"
-        @click="handleActivate"
-      >
-        激活
-      </div>
+      <div class="btn-text" @click="handleActivate">激活</div>
     </div>
   </div>
 </template>
@@ -58,6 +55,7 @@ import { useAuth } from '@store/useAuth';
 import { sendMessageToExtension } from '@utils';
 import dayjs from 'dayjs';
 import { ElButton, ElMessage } from 'element-plus';
+import { star } from '@utils/fire';
 import Sinput from '@/components/common/Input';
 
 const formatTime = (str: string) => {
@@ -91,7 +89,7 @@ const login = () => {
 };
 
 const handleActivate = async () => {
-  if (!isLogin.value && !activateCode.value) return;
+  if (!isLogin.value || !activateCode.value) return;
   const res = await activationVipApi<Subscription>({
     email: user.value!.email,
     code: activateCode.value,
@@ -99,8 +97,8 @@ const handleActivate = async () => {
     ElMessage.error(err.message);
   });
   if (res) {
-    debugger;
     setSubscription(res);
+    star();
     ElMessage.success('激活成功');
   }
 };
