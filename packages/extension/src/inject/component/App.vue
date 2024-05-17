@@ -1,5 +1,5 @@
 <template>
-  <div class="sidekick-app" style="opacity: 0" :class="[theme]">
+  <div class="sidekick-app" style="display: none" :class="[theme]">
     <div
       ref="kitRef"
       class="kit-tool-warper"
@@ -66,7 +66,7 @@ import logo from '@assets/logo16.png';
 import { useTheme } from '@store/useTheme';
 import { useApp } from '@store/useApp';
 import { useAuth } from '@store/useAuth';
-import { getChromeUrl, injectPostMessage } from '@utils';
+import { injectPostMessage } from '@utils';
 import type { AppEntry } from '@/types/core-app.type';
 
 const { theme, direction, posY, setTheme, setPosY } = useTheme();

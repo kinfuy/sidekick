@@ -8,6 +8,7 @@ export interface AppEntry {
   linkUrl?: string;
   isLogin?: boolean;
   description?: string;
+  width?: string;
 }
 
 export interface CoreApp extends AppEntry {

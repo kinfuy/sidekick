@@ -1,5 +1,9 @@
 <template>
-  <div v-if="stateVisable" :class="`sidekick-dialog sidekick-${direction}`">
+  <div
+    v-if="stateVisable"
+    :class="`sidekick-dialog sidekick-${direction}`"
+    :style="{ width: tool.width || '400px' }"
+  >
     <div class="sidekick-dialog-header">
       <span></span>
       <span class="sidekick-dialog-title">
@@ -26,9 +30,11 @@
 </template>
 
 <script lang="ts" setup>
+import type { PropType } from 'vue';
 import { ref, watch } from 'vue';
 import { useAuth } from '@store/useAuth';
 import Empty from '../Empty/Empty';
+import type { AppEntry } from '@/types/core-app.type';
 
 const props = defineProps({
   modelValue: {
@@ -40,7 +46,7 @@ const props = defineProps({
     default: 'left',
   },
   tool: {
-    type: Object,
+    type: Object as PropType<AppEntry>,
     default: () => ({}),
   },
 });

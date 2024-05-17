@@ -28,11 +28,11 @@ export const useApp = () => {
     if (_store && JSON.stringify(_store) !== '{}') {
       store = _store as AppStore;
     }
-    appsRaw.forEach((a) => {
-      if (!store.apps.find((s) => s.name === a.name)) {
-        store.apps.push(a);
-      }
-    });
+    // appsRaw.forEach((a) => {
+    //   if (!store.apps.find((s) => s.name === a.name)) {
+    //     store.apps.push(a);
+    //   }
+    // });
     appStore.value = defaultStore ?? store;
   };
 
