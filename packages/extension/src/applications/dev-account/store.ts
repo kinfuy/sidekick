@@ -3,7 +3,7 @@ export interface DevAccountStoreInstance {}
 export interface WebEnv {
   name: string;
   alias?: string;
-  urlMatch: string;
+  url: string;
 }
 
 export interface WebUser {
