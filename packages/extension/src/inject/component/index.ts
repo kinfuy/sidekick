@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import { install } from '@applications/install';
+import { contentInstall } from '@applications/install';
 import App from './App.vue';
 
 const APP_SELCTOR = 'sidekick-extension';
@@ -29,7 +29,7 @@ export const initInject = () => {
 
   const app = createApp(App);
 
-  install(app);
+  contentInstall(app);
 
   app.mount(root);
 };

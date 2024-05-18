@@ -1,6 +1,10 @@
 import type { App } from 'vue';
-import DevAccount from './view/inject/dev-account.vue';
+import Content from './view/inject/dev-account.vue';
+import Popup from './view/popup/dev-account.vue';
+export const devAccountContentInstall = (app: App) => {
+  app.component('InjectDevAccount', Content);
+};
 
-export default (app: App) => {
-  app.component('InjectDevAccount', DevAccount);
+export const devAccountPopupInstall = (app: App) => {
+  app.component('PopupDevAccount', Popup);
 };

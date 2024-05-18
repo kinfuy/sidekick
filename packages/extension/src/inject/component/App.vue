@@ -35,6 +35,7 @@
             :key="app.name"
             :title="app.title"
             :logo="app.logo"
+            :active="app.name === current?.name"
             @click="appClick(app)"
           />
         </div>

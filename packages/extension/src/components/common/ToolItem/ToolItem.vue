@@ -1,5 +1,5 @@
 <template>
-  <div class="sidekick-tool btn">
+  <div class="sidekick-tool btn" :class="{ 'tool-active': active }">
     <img class="sidekick-tool-logo" :src="logo" :title="title" />
   </div>
 </template>
@@ -14,6 +14,9 @@ defineProps({
   },
   logo: {
     type: String,
+  },
+  active: {
+    type: Boolean,
   },
 });
 </script>

@@ -23,7 +23,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { useWebNoticeStore } from '../store';
+import { useWebNoticeStore } from '../../store';
 
 const { current } = useWebNoticeStore();
 
