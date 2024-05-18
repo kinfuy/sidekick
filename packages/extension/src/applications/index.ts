@@ -19,6 +19,7 @@ const linkApp: AppEntry[] = [
 
 export const appsRaw: AppEntry[] = [
   ...apps.map((a) => ({
+    ...a,
     name: a.name,
     title: a.title,
     logo: a.logo,
