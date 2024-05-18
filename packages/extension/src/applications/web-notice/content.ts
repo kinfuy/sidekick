@@ -1,5 +1,5 @@
 import { useWebNoticeStore } from './store';
-import Notice from './components/notice.vue';
+import Notice from './extra/notice.vue';
 import { createApp } from '@/components/vue-component';
 
 export const initNotice = async () => {

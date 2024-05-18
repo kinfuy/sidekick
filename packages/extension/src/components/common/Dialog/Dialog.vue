@@ -24,7 +24,7 @@
     </div>
     <div class="sidekick-dialog-body">
       <Empty v-if="!tool.name"></Empty>
-      <component :is="tool.name" v-else></component>
+      <component :is="`Inject${tool.name}`" v-else></component>
     </div>
   </div>
 </template>

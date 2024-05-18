@@ -1,6 +1,6 @@
 import { defineComponent, ref, watch } from 'vue';
-import { useWebNoticeStore } from '../store';
-import { initNotice } from '../content';
+import { useWebNoticeStore } from '../../store';
+import { initNotice } from '../../content';
 import Sinput from '@/components/common/Input';
 export default defineComponent({
   name: 'WebNotice',
