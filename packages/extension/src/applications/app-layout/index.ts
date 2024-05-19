@@ -7,6 +7,7 @@ export const AppLayout: App = {
   logo: chrome.runtime.getURL(layout),
   inner: true,
   isLogin: true,
+  contentApp: true,
   description: '布局',
   hooks: {},
 };

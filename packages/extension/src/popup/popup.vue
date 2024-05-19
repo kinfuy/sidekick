@@ -29,8 +29,6 @@ const { popupApps } = useApp();
 
 const current = ref(popupApps.value[0]);
 
-console.log(popupApps);
-
 const appClick = (app: AppEntry) => {};
 </script>
 
@@ -38,20 +36,21 @@ const appClick = (app: AppEntry) => {};
 .popup-app {
   display: flex;
   width: 500px;
-  height: 400px;
+  height: 460px;
+  overflow: hidden;
   .popup-slider {
     display: flex;
     align-items: center;
     flex-direction: column;
-    flex-grow: 0;
+    flex-shrink: 1;
     padding: 10px;
     height: 100%;
     width: 50px;
     border-right: 1px solid #f4f4f4;
     background-color: var(--bg-color-primary);
   }
-  .popop-content {
-    flex-grow: 1;
+  .popup-content {
+    flex-grow: 0;
     width: 100%;
     height: 100%;
   }

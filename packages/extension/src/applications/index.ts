@@ -13,6 +13,7 @@ const linkApp: AppEntry[] = [
     logo: chrome.runtime.getURL(set),
     inner: true,
     isLogin: true,
+    contentApp: true,
     linkUrl: 'setting.html',
   },
 ];

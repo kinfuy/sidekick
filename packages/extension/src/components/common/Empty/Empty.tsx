@@ -17,7 +17,8 @@ export default defineComponent({
     return (
       <div class="empty-view">
         <img class="empty-img" src={this.img} />
-        <span class="empty-text">{this.text}</span>
+        {this.text ? <span class="empty-text">{this.text}</span> : null}
+        {this.$slots.default && this.$slots.default()}
       </div>
     );
   },

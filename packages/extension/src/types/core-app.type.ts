@@ -7,9 +7,10 @@ export interface AppEntry {
   inner: boolean; // 是否是内部应用
   linkUrl?: string;
   isLogin?: boolean;
-  isPopup?: boolean;
   description?: string;
   width?: string;
+  popupApp?: boolean;
+  contentApp?: boolean;
 }
 
 export interface CoreApp extends AppEntry {

@@ -7,6 +7,7 @@ export const WebNotice: App = {
   title: 'Env Notice',
   inner: false,
   logo: chrome.runtime.getURL(notice),
+  contentApp: true,
   hooks: {
     onActiveChange: () => {
       sendMessageToContentScript({

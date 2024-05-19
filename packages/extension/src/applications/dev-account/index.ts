@@ -7,6 +7,6 @@ export const DevAccount: App = {
   logo: chrome.runtime.getURL(account),
   inner: false,
   width: '600px',
-  isPopup: true,
+  popupApp: true,
   hooks: {},
 };

@@ -18,11 +18,22 @@
     --primary-color-fade-80: fade(@mainColor, 80%);
     --primary-color-fade-100: fade(@mainColor, 100%);
     --el-color-primary: @mainColor;
+
+
+    .el-button {
+        --el-button-hover-bg-color: var(--primary-color-tint-90);
+        --el-button-hover-border-color: var(--primary-color-fade-40);
+        --el-button-hover-link-text-color: var(--primary-color-fade-60);
+    }
+
+    /* stylelint-disable-next-line selector-class-pattern */
+    .el-link.el-link--primary {
+        --el-link-hover-text-color: var(--primary-color-fade-60);
+    }
 }
 
 .light {
-    .theme(#5C8374);
-
+    .theme(#40A578);
     // text
 
     --text-color-higiht: #333;

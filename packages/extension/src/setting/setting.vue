@@ -27,6 +27,7 @@
 <script lang="ts" setup>
 import { useTheme } from '@store/useTheme';
 import { computed, reactive, ref } from 'vue';
+import devAccount from '@applications/dev-account/view/setting/dev-account.vue';
 import UserSetting from './components/UserSetting.vue';
 import HelpSetting from './components/HelpSetting.vue';
 import AboutSetting from './components/AboutSetting.vue';
@@ -38,7 +39,23 @@ const { theme } = useTheme();
 
 const active = ref('userInfo');
 
+const init = () => {
+  const query = window.location.search;
+  const params = new URLSearchParams(query);
+  const tab = params.get('menu');
+  if (tab) {
+    active.value = tab;
+  }
+};
+
+init();
+
 const settingList = reactive([
+  {
+    title: 'Dev Account',
+    name: 'devAccount',
+    com: devAccount,
+  },
   {
     title: '基础信息',
     name: 'userInfo',
