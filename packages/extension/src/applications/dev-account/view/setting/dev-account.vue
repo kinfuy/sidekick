@@ -6,7 +6,7 @@
       <ElButton size="small">导出</ElButton>
     </div>
     <ElTable :data="webs" style="width: 100%">
-      <ElTableColumn prop="name" label="平台" width="120" />
+      <ElTableColumn prop="name" label="平台" :min-width="120" />
       <ElTableColumn prop="env" label="环境">
         <template #default="{ row }">
           <span>
@@ -39,7 +39,7 @@
             :model-value="row.autoLogin"
             size="small"
             @change="
-              (val) => handleUpdate(row.name, { autoLogin: val as boolean })
+              (val) => handleUpdate({ id: row.id, autoLogin: val as boolean })
             "
           ></ElSwitch>
         </template>
@@ -53,7 +53,7 @@
             :model-value="row.isActive"
             size="small"
             @change="
-              (val) => handleUpdate(row.name, { isActive: val as boolean })
+              (val) => handleUpdate({ id: row.id, isActive: val as boolean })
             "
           ></ElSwitch>
         </template>
@@ -101,6 +101,7 @@
     <EditWeb ref="editWebRef" @save="handleUpdate" />
     <UserSetting ref="userSettingRef" @save="handleUpdate" />
     <EnvSetting ref="envSettingRef" @save="handleUpdate" />
+    <SurperSetting ref="surperSettingRef" @save="handleUpdate" />
   </div>
 </template>
 
@@ -118,10 +119,12 @@ import { ref } from 'vue';
 import EditWeb from './edit-web.vue';
 import UserSetting from './user-setting.vue';
 import EnvSetting from './env-setting.vue';
+import SurperSetting from './super-setting.vue';
 
 const editWebRef = ref();
 const userSettingRef = ref();
 const envSettingRef = ref();
+const surperSettingRef = ref();
 const { webs, addOrUpdateWeb, removeWeb } = useDevAccountStore();
 const handleEdit = (row?: WebInfo) => {
   editWebRef.value.show(row);
@@ -136,14 +139,14 @@ const handleEnv = (row: WebInfo) => {
 };
 
 const handleSupper = (row?: WebInfo) => {
-  editWebRef.value.show(row);
+  surperSettingRef.value.show(row);
 };
-const handleUpdate = (name: string, update: Partial<WebInfo>) => {
-  addOrUpdateWeb(name, update);
+const handleUpdate = (update: Partial<WebInfo>) => {
+  addOrUpdateWeb(update);
 };
 
 const handleDelete = (row: WebInfo) => {
-  removeWeb(row.name);
+  removeWeb(row.id);
 };
 </script>
 

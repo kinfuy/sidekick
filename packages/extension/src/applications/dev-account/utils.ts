@@ -4,7 +4,9 @@ import type { LoginMatchRule, MatchRule, WebUser } from './store';
 export const elementCssSelector = (css: string[]): HTMLElement | null => {
   let el = null;
   for (let i = 0; i < css.length; i++) {
-    el = document.body.querySelector(css[i]) as HTMLElement;
+    try {
+      el = document.body.querySelector(css[i]) as HTMLElement;
+    } catch (error) {}
     if (el) break;
   }
   return el;
@@ -13,7 +15,9 @@ export const elementCssSelector = (css: string[]): HTMLElement | null => {
 export const elementXPath = (xpath: string[]) => {
   let el = null;
   for (let i = 0; i < xpath.length; i++) {
-    el = getElementByXpath(xpath[i]) as HTMLElement;
+    try {
+      el = getElementByXpath(xpath[i]) as HTMLElement;
+    } catch (error) {}
     if (el) break;
   }
   return el;
@@ -22,9 +26,11 @@ export const elementXPath = (xpath: string[]) => {
 export const elementPlaceholder = (placeholder: string[]) => {
   let el = null;
   for (let i = 0; i < placeholder.length; i++) {
-    el = document.querySelector(
-      `input[placeholder*="${placeholder[i]}"]`,
-    ) as HTMLElement;
+    try {
+      el = document.querySelector(
+        `input[placeholder*="${placeholder[i]}"]`,
+      ) as HTMLElement;
+    } catch (error) {}
     if (el) break;
   }
   return el;

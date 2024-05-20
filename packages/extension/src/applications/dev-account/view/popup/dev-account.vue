@@ -19,13 +19,13 @@
 import { ElTabPane, ElTabs } from 'element-plus';
 import { ref, watch } from 'vue';
 import set from '@assets/image/set.svg';
-import { getChromeUrl } from '@utils';
+import { getActiveTab, getChromeUrl } from '@utils';
 import { useDevAccountStore } from '../../store';
 import UserDashboard from './user-dashboard.vue';
 import WebDashboard from './web-dashboard.vue';
 const setIcon = chrome.runtime.getURL(set);
 
-const { matchWeb, setMatch } = useDevAccountStore();
+const { matchWeb, getMatch, setMatch } = useDevAccountStore();
 
 const activeTab = ref('web');
 
@@ -33,6 +33,15 @@ const switchUser = (name: string) => {
   activeTab.value = 'user';
   setMatch(name);
 };
+
+const init = async () => {
+  const { url } = await getActiveTab();
+  if (!url) return;
+  const web = getMatch(url);
+  setMatch(web?.name);
+};
+
+init();
 
 watch(
   () => activeTab.value,

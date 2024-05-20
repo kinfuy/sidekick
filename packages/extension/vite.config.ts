@@ -84,7 +84,6 @@ export default defineConfig({
         target: 'http://localhost:9000',
         rewrite: (path) => {
           const p = path.replace(/^\/api/, '');
-          console.log(p);
           return p;
         },
         changeOrigin: true,

@@ -21,8 +21,7 @@ import ToolItem from '@components/common/ToolItem/ToolItem.vue';
 import { useApp } from '@store/useApp';
 import { useTheme } from '@store/useTheme';
 import { ref } from 'vue';
-import { getActiveTab, sendMessageToExtension } from '@utils';
-import { useDevAccountStore } from '@applications/dev-account/store';
+import { sendMessageToExtension } from '@utils';
 import type { AppEntry } from '@/types/core-app.type';
 sendMessageToExtension({
   from: 'POPUP_VIEW',
@@ -30,15 +29,6 @@ sendMessageToExtension({
   data: {},
 });
 
-const init = async () => {
-  const { url } = await getActiveTab();
-  if (!url) return;
-  const { getMatch, setMatch } = useDevAccountStore();
-  const web = getMatch(url);
-  setMatch(web?.name);
-};
-
-init();
 const { theme } = useTheme();
 
 const { popupApps } = useApp();

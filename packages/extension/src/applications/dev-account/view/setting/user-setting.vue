@@ -1,5 +1,5 @@
 <template>
-  <ElDrawer v-model="drawer" title="用户管理">
+  <ElDrawer v-model="drawer" title="用户管理" @close="handleClose">
     <div class="user-header">
       <span>用户库</span>
       <ElButton link type="primary" @click="addUser">新增用户</ElButton>
@@ -23,7 +23,7 @@
         <ElFormItem label="账户">
           <ElInput v-model="editForm.name" placeholder="请输入登录账户" />
         </ElFormItem>
-        <ElFormItem label="password">
+        <ElFormItem label="密码">
           <ElInput v-model="editForm.password" placeholder="请输入登录密码" />
         </ElFormItem>
         <ElFormItem label="角色">
@@ -46,6 +46,7 @@
 
 <script lang="ts" setup>
 import type { WebInfo, WebUser } from '@applications/dev-account/store';
+import { uuid } from '@utils';
 import {
   ElButton,
   ElDivider,
@@ -56,7 +57,7 @@ import {
   ElSwitch,
   ElTag,
 } from 'element-plus';
-import { computed, ref, toRaw } from 'vue';
+import { computed, ref } from 'vue';
 
 const emit = defineEmits(['save']);
 
@@ -68,6 +69,7 @@ const title = computed(() => {
 const drawer = ref(false);
 
 const editForm = ref({
+  id: '',
   name: '',
   role: '',
   isDefault: false,
@@ -75,6 +77,7 @@ const editForm = ref({
 });
 
 const reset = () => {
+  editForm.value.id = '';
   editForm.value.name = '';
   editForm.value.role = '';
   editForm.value.isDefault = false;
@@ -89,30 +92,52 @@ const addUser = () => {
 const editUser = (user: WebUser) => {
   reset();
   viewType.value = 'edit';
+  editForm.value.id = user.id;
   editForm.value.name = user.name;
   editForm.value.role = user.role || '';
   editForm.value.isDefault = user.isDefault || false;
   editForm.value.password = user.password;
 };
 
-const webName = ref('');
+const webId = ref('');
 const webUsers = ref<WebUser[]>([]);
 const show = (row: WebInfo) => {
   drawer.value = true;
   webUsers.value = row?.users || [];
-  webName.value = row?.name || '';
+  webId.value = row?.id || '';
 };
 
 const handleSave = () => {
-  webUsers.value.push({
-    ...editForm.value,
+  if (editForm.value.id) {
+    webUsers.value = webUsers.value.map((item) => {
+      if (item.id === editForm.value.id) {
+        return JSON.parse(JSON.stringify(editForm.value));
+      }
+      return item;
+    });
+  } else {
+    webUsers.value.push({
+      ...editForm.value,
+      id: uuid(),
+    });
+  }
+  emit('save', {
+    id: webId.value,
+    users: JSON.parse(JSON.stringify(webUsers.value)),
   });
-  emit('save', webName.value, { users: toRaw(webUsers.value) });
   reset();
 };
 const handleDelete = (env: WebUser) => {
-  webUsers.value = webUsers.value.filter((item) => item.name !== env.name);
-  emit('save', webName.value, { users: toRaw(webUsers.value) });
+  webUsers.value = webUsers.value.filter((item) => item.id !== env.id);
+  emit('save', {
+    id: webId.value,
+    users: JSON.parse(JSON.stringify(webUsers.value)),
+  });
+};
+
+const handleClose = () => {
+  drawer.value = false;
+  viewType.value = '';
 };
 
 defineExpose({ show });

@@ -1,4 +1,4 @@
-import { storage } from '@utils';
+import { storage, uuid } from '@utils';
 import { computed, ref, toRaw } from 'vue';
 import { webList } from './defaultUser';
 import { defaultMatchRule } from './config';
@@ -9,12 +9,14 @@ export interface MatchRule {
 }
 
 export interface WebEnv {
+  id: string;
   name: string;
   alias?: string;
   url: string;
 }
 
 export interface WebUser {
+  id: string;
   name: string;
   password: string;
   isDefault?: boolean;
@@ -29,6 +31,7 @@ export interface LoginMatchRule {
   validate: MatchRule;
 }
 export interface WebInfo {
+  id: string;
   name: string;
   autoLogin: boolean;
   code: string;
@@ -69,41 +72,45 @@ export const useDevAccountStore = () => {
 
   sync();
 
-  const addOrUpdateWeb = (name: string, rawWeb: Partial<WebInfo>) => {
+  const addOrUpdateWeb = (rawWeb: Partial<WebInfo>) => {
     const web = toRaw(rawWeb);
-    const index = store.value.webs.findIndex((w) => w.name === name);
-    if (index > -1) {
-      store.value.webs[index] = { ...store.value.webs[index], ...web };
+    if (rawWeb.id) {
+      const index = store.value.webs.findIndex((w) => w.id === rawWeb.id);
+      if (index > -1) {
+        store.value.webs[index] = { ...store.value.webs[index], ...web };
+      }
     } else {
       store.value.webs.push({
+        id: uuid(),
+        name: web.name || '',
         isActive: web.isActive ?? true,
         autoLogin: web.autoLogin ?? true,
         code: web.code ?? 'code',
         match: web.match ?? defaultMatchRule,
         envs: web.envs ?? [],
         users: web.users ?? [],
-        name,
       });
     }
+
     save();
   };
 
-  const removeWeb = (name: string) => {
-    store.value.webs = store.value.webs.filter((w) => w.name !== name);
+  const removeWeb = (id: string) => {
+    store.value.webs = store.value.webs.filter((w) => w.id !== id);
     save();
   };
 
-  const removeUser = (webName: string, name: string) => {
+  const removeUser = (webId: string, userId: string) => {
     store.value.webs
-      .find((w) => w.name === webName)
-      ?.users?.filter((u) => u.name !== name);
+      .find((w) => w.id === webId)
+      ?.users?.filter((u) => u.id !== userId);
     save();
   };
 
-  const removeEnv = (webName: string, name: string) => {
+  const removeEnv = (webId: string, useId: string) => {
     store.value.webs
-      .find((w) => w.name === webName)
-      ?.envs?.filter((u) => u.name !== name);
+      .find((w) => w.id === webId)
+      ?.envs?.filter((u) => u.id !== useId);
     save();
   };
 

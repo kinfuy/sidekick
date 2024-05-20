@@ -8,7 +8,6 @@ const initContent = () => {
   initInject();
   const timer = setTimeout(() => {
     const isExist = initInject();
-    console.log('isExist', isExist);
     if (isExist) clearTimeout(timer);
   }, 100);
 };

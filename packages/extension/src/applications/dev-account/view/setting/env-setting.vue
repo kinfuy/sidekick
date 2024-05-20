@@ -1,5 +1,5 @@
 <template>
-  <ElDrawer v-model="drawer" title="环境管理">
+  <ElDrawer v-model="drawer" title="环境管理" @close="handleClose">
     <div class="env-header">
       <span>环境库</span>
       <ElButton link type="primary" @click="addEnv">新增环境</ElButton>
@@ -40,6 +40,7 @@
 
 <script lang="ts" setup>
 import type { WebEnv, WebInfo } from '@applications/dev-account/store';
+import { uuid } from '@utils';
 import {
   ElButton,
   ElDivider,
@@ -61,6 +62,7 @@ const title = computed(() => {
 const drawer = ref(false);
 
 const editForm = ref({
+  id: '',
   name: '',
   url: '',
 });
@@ -68,6 +70,7 @@ const editForm = ref({
 const reset = () => {
   editForm.value.name = '';
   editForm.value.url = '';
+  editForm.value.id = '';
 };
 
 const addEnv = () => {
@@ -78,28 +81,51 @@ const addEnv = () => {
 const editEnv = (env: WebEnv) => {
   reset();
   viewType.value = 'edit';
+  editForm.value.id = env.id;
   editForm.value.name = env.name;
   editForm.value.url = env.url;
 };
 
-const webName = ref('');
+const webId = ref('');
 const webEnvs = ref<WebEnv[]>([]);
 const show = (row: WebInfo) => {
   drawer.value = true;
-  webName.value = row?.name || '';
+  webId.value = row?.id || '';
   webEnvs.value = row?.envs || [];
 };
 
 const handleSave = () => {
-  webEnvs.value.push({
-    ...editForm.value,
+  if (editForm.value.id) {
+    webEnvs.value = webEnvs.value.map((item) => {
+      if (item.id === editForm.value.id) {
+        return JSON.parse(JSON.stringify(editForm.value));
+      }
+      return item;
+    });
+  } else {
+    webEnvs.value.push({
+      ...editForm.value,
+      id: uuid(),
+    });
+  }
+  emit('save', {
+    id: webId.value,
+    envs: JSON.parse(JSON.stringify(webEnvs.value)),
   });
-  emit('save', webName.value, { envs: toRaw(webEnvs.value) });
+  reset();
 };
 
 const handleDelete = (env: WebEnv) => {
-  webEnvs.value = webEnvs.value.filter((item) => item.name !== env.name);
-  emit('save', webName.value, { envs: toRaw(webEnvs.value) });
+  webEnvs.value = webEnvs.value.filter((item) => item.id !== env.id);
+  emit('save', {
+    id: webId.value,
+    envs: JSON.parse(JSON.stringify(webEnvs.value)),
+  });
+};
+
+const handleClose = () => {
+  drawer.value = false;
+  viewType.value = '';
 };
 
 defineExpose({ show });

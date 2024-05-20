@@ -33,6 +33,7 @@ const title = computed(() => {
 const drawer = ref(false);
 
 const editForm = ref({
+  id: '',
   name: '',
   code: '',
 });
@@ -40,13 +41,14 @@ const editForm = ref({
 const show = (row: WebInfo) => {
   viewType.value = row ? 'edit' : 'add';
   drawer.value = true;
+  editForm.value.id = row?.id || '';
   editForm.value.name = row?.name || '';
   editForm.value.code = row?.code || '';
 };
 
 const handleSave = () => {
   drawer.value = false;
-  emit('save', editForm.value.name, editForm.value);
+  emit('save', editForm.value);
 };
 
 defineExpose({ show });
