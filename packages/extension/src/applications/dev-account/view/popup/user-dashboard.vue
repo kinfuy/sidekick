@@ -1,8 +1,8 @@
 <template>
   <div class="user-dashboard">
-    <ElScrollbar height="340px" class="user-list">
-      <Empty v-if="!matchWeb?.users?.length" />
-      <div v-else class="user-list">
+    <Empty v-if="!matchWeb?.users?.length" />
+    <ElScrollbar v-else height="340px" class="user-list">
+      <div class="user-list">
         <div
           v-for="user in matchWeb?.users"
           :key="user.name"

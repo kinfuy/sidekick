@@ -1,10 +1,10 @@
 <template>
   <div class="web-dashboard">
-    <ElScrollbar height="340px" class="web-list">
-      <Empty v-if="activeWebs?.length === 0" text="">
-        <ElLink type="primary">暂无数据，快去创建一个平台吧</ElLink>
-      </Empty>
-      <div v-else class="web-list">
+    <Empty v-if="activeWebs?.length === 0" text="">
+      <ElLink type="primary">暂无数据，快去创建一个平台吧</ElLink>
+    </Empty>
+    <ElScrollbar v-else height="340px" class="web-list">
+      <div class="web-list">
         <div v-for="web in activeWebs" :key="web.name" class="web-item">
           <div class="web-info">
             <ElLink @click="() => handleEnv(web.envs[0])">{{
