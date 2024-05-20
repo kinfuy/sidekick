@@ -56,7 +56,7 @@ import {
   ElSwitch,
   ElTag,
 } from 'element-plus';
-import { computed, ref } from 'vue';
+import { computed, ref, toRaw } from 'vue';
 
 const emit = defineEmits(['save']);
 
@@ -107,12 +107,12 @@ const handleSave = () => {
   webUsers.value.push({
     ...editForm.value,
   });
-  emit('save', webName.value, { users: webUsers });
+  emit('save', webName.value, { users: toRaw(webUsers.value) });
   reset();
 };
 const handleDelete = (env: WebUser) => {
   webUsers.value = webUsers.value.filter((item) => item.name !== env.name);
-  emit('save', webName.value, { users: webUsers.value });
+  emit('save', webName.value, { users: toRaw(webUsers.value) });
 };
 
 defineExpose({ show });

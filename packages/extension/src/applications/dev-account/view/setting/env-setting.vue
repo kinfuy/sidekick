@@ -49,7 +49,7 @@ import {
   ElInput,
   ElTag,
 } from 'element-plus';
-import { computed, ref } from 'vue';
+import { computed, ref, toRaw } from 'vue';
 
 const emit = defineEmits(['save']);
 
@@ -94,12 +94,12 @@ const handleSave = () => {
   webEnvs.value.push({
     ...editForm.value,
   });
-  emit('save', webName.value, { envs: webEnvs });
+  emit('save', webName.value, { envs: toRaw(webEnvs.value) });
 };
 
 const handleDelete = (env: WebEnv) => {
   webEnvs.value = webEnvs.value.filter((item) => item.name !== env.name);
-  emit('save', webName.value, { envs: webEnvs.value });
+  emit('save', webName.value, { envs: toRaw(webEnvs.value) });
 };
 
 defineExpose({ show });

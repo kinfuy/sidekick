@@ -69,7 +69,8 @@ export const useDevAccountStore = () => {
 
   sync();
 
-  const addOrUpdateWeb = (name: string, web: Partial<WebInfo>) => {
+  const addOrUpdateWeb = (name: string, rawWeb: Partial<WebInfo>) => {
+    const web = toRaw(rawWeb);
     const index = store.value.webs.findIndex((w) => w.name === name);
     if (index > -1) {
       store.value.webs[index] = { ...store.value.webs[index], ...web };
