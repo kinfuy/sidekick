@@ -17,7 +17,6 @@ export const WebNotice: App = {
       });
     },
     async onDocLoad() {
-      console.log('WebNotice onDocLoad');
       sendMessageToContentScript({
         from: 'background',
         code: 'WebNotice',
@@ -32,8 +31,6 @@ export const WebNotice: App = {
       });
     },
     async onDocVisibilitychange() {
-      console.log('WebNotice onDocVisibilitychange');
-
       sendMessageToContentScript({
         from: 'background',
         code: 'WebNotice',

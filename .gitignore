@@ -6,3 +6,5 @@ account-config.ts
 .env
 
 *.pem
+
+defaultUser.ts

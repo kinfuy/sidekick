@@ -1,5 +1,7 @@
 .theme(@mainColor: #5C8374) {
     --primary-color: @mainColor;
+    --primary-color-tint-5: tint(@mainColor, 5%);
+    --primary-color-tint-10: tint(@mainColor, 0%);
     --primary-color-tint-20: tint(@mainColor, 20%);
     --primary-color-tint-40: tint(@mainColor, 40%);
     --primary-color-tint-60: tint(@mainColor, 60%);
@@ -24,16 +26,27 @@
         --el-button-hover-bg-color: var(--primary-color-tint-90);
         --el-button-hover-border-color: var(--primary-color-fade-40);
         --el-button-hover-link-text-color: var(--primary-color-fade-60);
+        --el-button-text-color: var(--el-color-primary);
+    }
+
+    .el-button.is-plain {
+        --el-button-bg-color: var(--primary-color-tint-92);
+        --el-button-border-color: var(--primary-color-fade-60);
     }
 
     /* stylelint-disable-next-line selector-class-pattern */
     .el-link.el-link--primary {
         --el-link-hover-text-color: var(--primary-color-fade-60);
     }
+
+    /* stylelint-disable-next-line selector-class-pattern */
+    .el-drawer__header {
+        margin-bottom: 0 !important;
+    }
 }
 
 .light {
-    .theme(#40A578);
+    .theme(#7071E8);
     // text
 
     --text-color-higiht: #333;

@@ -35,16 +35,43 @@
       </ElTableColumn>
       <ElTableColumn prop="autoLogin" label="自动登录" width="80">
         <template #default="{ row }">
-          <ElSwitch :model-value="row.autoLogin" size="small"></ElSwitch>
+          <ElSwitch
+            :model-value="row.autoLogin"
+            size="small"
+            @change="(val) => handleUpdate(row, { autoLogin: val as boolean })"
+          ></ElSwitch>
         </template>
       </ElTableColumn>
       <ElTableColumn prop="isActive" label="状态" width="80">
         <template #default="{ row }">
-          <ElSwitch :model-value="row.isActive" size="small"></ElSwitch>
+          <ElSwitch
+            inline-prompt
+            active-text="启用"
+            inactive-text="禁用"
+            :model-value="row.isActive"
+            size="small"
+            @change="(val) => handleUpdate(row, { isActive: val as boolean })"
+          ></ElSwitch>
         </template>
       </ElTableColumn>
-      <ElTableColumn fixed="right" label="操作" width="220">
+      <ElTableColumn fixed="right" label="操作" width="280">
         <template #default="{ row }">
+          <ElButton
+            link
+            type="primary"
+            size="small"
+            @click="() => handleUser(row)"
+          >
+            用户
+          </ElButton>
+          <ElButton
+            link
+            type="primary"
+            size="small"
+            @click="() => handleEnv(row)"
+          >
+            环境
+          </ElButton>
           <ElButton
             link
             type="primary"
@@ -60,12 +87,14 @@
             size="small"
             @click="() => handleSupper(row)"
           >
-            高级配置
+            高级
           </ElButton>
         </template>
       </ElTableColumn>
     </ElTable>
     <EditWeb ref="editWebRef" />
+    <UserSetting ref="userSettingRef" />
+    <EnvSetting ref="envSettingRef" />
   </div>
 </template>
 
@@ -81,14 +110,33 @@ import {
 } from 'element-plus';
 import { ref } from 'vue';
 import EditWeb from './edit-web.vue';
+import UserSetting from './user-setting.vue';
+import EnvSetting from './env-setting.vue';
 
 const editWebRef = ref();
-const { webs } = useDevAccountStore();
+const userSettingRef = ref();
+const envSettingRef = ref();
+const { webs, addOrUpdateWeb } = useDevAccountStore();
 const handleEdit = (row?: WebInfo) => {
   editWebRef.value.show(row);
 };
+
+const handleUser = (row: WebInfo) => {
+  userSettingRef.value.show(row);
+};
+
+const handleEnv = (row: WebInfo) => {
+  envSettingRef.value.show(row);
+};
+
 const handleSupper = (row?: WebInfo) => {
   editWebRef.value.show(row);
+};
+const handleUpdate = (row: WebInfo, update: Partial<WebInfo>) => {
+  addOrUpdateWeb({
+    ...row,
+    ...update,
+  });
 };
 </script>
 
@@ -97,13 +145,16 @@ const handleSupper = (row?: WebInfo) => {
   display: flex;
   margin-bottom: 10px;
   justify-content: flex-end;
+
   .btn-text {
     margin-right: 10px;
   }
 }
+
 .env-tag {
   margin-right: 10px;
 }
+
 .user-tag {
   margin-right: 10px;
 }

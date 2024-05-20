@@ -43,6 +43,15 @@ watch(
   },
 );
 
+watch(
+  () => matchWeb.value,
+  (web) => {
+    if (web) {
+      activeTab.value = 'user';
+    }
+  },
+);
+
 const handleSet = () => {
   window.open(getChromeUrl('setting.html?menu=devAccount'), '_blank');
 };
@@ -52,20 +61,23 @@ const handleSet = () => {
 .dev-account {
   padding: 10px;
 }
+
 .dev-account-header {
   height: 28px;
   position: relative;
+
   .dev-account-title {
     font-size: 16px;
     line-height: 28px;
     text-align: center;
   }
+
   .dev-account-set {
     position: absolute;
     right: 10px;
     top: 6px;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     cursor: pointer;
   }
 }

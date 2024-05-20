@@ -1,0 +1,123 @@
+<template>
+  <ElDrawer v-model="drawer" title="用户管理">
+    <div class="user-header">
+      <span>用户库</span>
+      <ElButton link type="primary" @click="addUser">新增用户</ElButton>
+    </div>
+    <div class="user-list">
+      <ElTag
+        v-for="user in webUsers"
+        :key="user.name"
+        type="info"
+        closable
+        @click="editUser(user)"
+        >{{ user.name }}</ElTag
+      >
+    </div>
+
+    <div v-if="viewType" class="user-form">
+      <ElDivider></ElDivider>
+      <div class="user-title">{{ title }}</div>
+      <ElForm label-width="auto" :model="editForm">
+        <ElFormItem label="账户">
+          <ElInput v-model="editForm.name" placeholder="请输入登录账户" />
+        </ElFormItem>
+        <ElFormItem label="password">
+          <ElInput v-model="editForm.password" placeholder="请输入登录密码" />
+        </ElFormItem>
+        <ElFormItem label="角色">
+          <ElInput v-model="editForm.role" placeholder="请输入角色" />
+        </ElFormItem>
+        <ElFormItem label="默认用户">
+          <ElSwitch v-model="editForm.isDefault" />
+        </ElFormItem>
+      </ElForm>
+    </div>
+  </ElDrawer>
+</template>
+
+<script lang="ts" setup>
+import type { WebInfo, WebUser } from '@applications/dev-account/store';
+import {
+  ElButton,
+  ElDivider,
+  ElDrawer,
+  ElForm,
+  ElFormItem,
+  ElInput,
+  ElSwitch,
+  ElTag,
+} from 'element-plus';
+import { computed, ref } from 'vue';
+
+const viewType = ref();
+
+const title = computed(() => {
+  return viewType.value === 'add' ? '新增用户' : '编辑用户';
+});
+const drawer = ref(false);
+
+const editForm = ref({
+  name: '',
+  role: '',
+  isDefault: false,
+  password: '',
+});
+
+const reset = () => {
+  editForm.value.name = '';
+  editForm.value.role = '';
+  editForm.value.isDefault = false;
+  editForm.value.password = '';
+};
+
+const addUser = () => {
+  reset();
+  viewType.value = 'add';
+};
+
+const editUser = (user: WebUser) => {
+  reset();
+  viewType.value = 'edit';
+  editForm.value.name = user.name;
+  editForm.value.role = user.role || '';
+  editForm.value.isDefault = user.isDefault || false;
+  editForm.value.password = user.password;
+};
+
+const webUsers = ref<WebUser[]>([]);
+const show = (row: WebInfo) => {
+  drawer.value = true;
+  webUsers.value = row?.users || [];
+};
+
+defineExpose({ show });
+</script>
+
+<style lang="less" scoped>
+.user-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 12px;
+
+  .el-tag {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+}
+
+.user-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user-form {
+  margin-top: 12px;
+
+  .user-title {
+    margin-bottom: 12px;
+  }
+}
+</style>

@@ -32,10 +32,14 @@ const handleLogin = (web: any, user: any) => {
     code: 'DevAccount',
     from: 'popup',
     data: {
-      web,
-      user,
+      key: 'user-login',
+      data: {
+        web,
+        user,
+      },
     },
   });
+  window.close();
 };
 </script>
 
@@ -43,8 +47,10 @@ const handleLogin = (web: any, user: any) => {
 .user-list {
   display: flex;
   flex-wrap: wrap;
+
   .user-item {
     margin-right: 10px;
+
     .user-info {
       display: inline-block;
       padding: 4px 8px;
@@ -53,14 +59,16 @@ const handleLogin = (web: any, user: any) => {
       background-color: #f4f4f4;
       cursor: pointer;
       color: #999;
+
       &:hover {
         background-color: var(--primary-color-tint-80);
       }
     }
+
     .user-role {
       margin-right: 8px;
       font-size: 14px;
-      color: #115e24;
+      color: var(--primary-color);
     }
   }
 }

@@ -1,6 +1,6 @@
 import { storage } from '@utils';
 import { computed, ref, toRaw } from 'vue';
-import { defaultMatchRule } from './config';
+import { webList } from './defaultUser';
 export interface MatchRule {
   cssSeletor: string[];
   placeholder: string[];
@@ -43,38 +43,7 @@ export interface DevAccountStoreInstance {
 
 const STORE_KEY = 'devAccountStore';
 const store = ref<DevAccountStoreInstance>({
-  webs: [
-    {
-      name: 'AI 语音',
-      autoLogin: true,
-      code: '',
-      match: defaultMatchRule,
-      isActive: true,
-      envs: [
-        {
-          name: 'dev1',
-          url: 'https://www.baidu.com',
-        },
-        {
-          name: 'dev2',
-          url: 'https://www.baidu.com',
-        },
-      ],
-      users: [
-        {
-          name: 'admin',
-          password: '123456',
-          isDefault: true,
-          role: 'admin',
-        },
-        {
-          name: 'user',
-          password: '123456',
-          role: 'user',
-        },
-      ],
-    },
-  ],
+  webs: webList,
 });
 
 const matchWeb = ref<WebInfo>();
@@ -87,14 +56,14 @@ export const useDevAccountStore = () => {
   };
 
   const sync = async () => {
-    // let _store: DevAccountStoreInstance = {
-    //   webs: [],
-    // };
-    // const devAccount = await get<DevAccountStoreInstance>(STORE_KEY);
-    // if (devAccount && JSON.stringify(devAccount) !== '{}') {
-    //   _store = devAccount;
-    // }
-    // store.value = _store;
+    let _store: DevAccountStoreInstance = {
+      webs: webList,
+    };
+    const devAccount = await get<DevAccountStoreInstance>(STORE_KEY);
+    if (devAccount && JSON.stringify(devAccount) !== '{}') {
+      _store = devAccount;
+    }
+    store.value = _store;
   };
 
   sync();
@@ -109,6 +78,10 @@ export const useDevAccountStore = () => {
     save();
   };
 
+  const activeWebs = computed(() => {
+    return store.value.webs.filter((w) => w.isActive);
+  });
+
   const webs = computed(() => {
     return store.value.webs;
   });
@@ -121,10 +94,19 @@ export const useDevAccountStore = () => {
     matchWeb.value = store.value.webs.find((w) => w.name === web);
   };
 
+  const getMatch = (url: string) => {
+    return store.value.webs.find((web) => {
+      if (web.envs?.some((u) => url.includes(u.url))) return true;
+      return false;
+    });
+  };
+
   return {
     webs,
     addOrUpdateWeb,
     matchWeb,
     setMatch,
+    getMatch,
+    activeWebs,
   };
 };

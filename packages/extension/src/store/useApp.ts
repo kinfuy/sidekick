@@ -53,8 +53,6 @@ export const useApp = () => {
     return true;
   };
 
-  console.log('apps', apps);
-
   sync();
 
   return {
