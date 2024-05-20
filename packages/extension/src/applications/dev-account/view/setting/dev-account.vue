@@ -38,7 +38,9 @@
           <ElSwitch
             :model-value="row.autoLogin"
             size="small"
-            @change="(val) => handleUpdate(row, { autoLogin: val as boolean })"
+            @change="
+              (val) => handleUpdate(row.name, { autoLogin: val as boolean })
+            "
           ></ElSwitch>
         </template>
       </ElTableColumn>
@@ -50,7 +52,9 @@
             inactive-text="禁用"
             :model-value="row.isActive"
             size="small"
-            @change="(val) => handleUpdate(row, { isActive: val as boolean })"
+            @change="
+              (val) => handleUpdate(row.name, { isActive: val as boolean })
+            "
           ></ElSwitch>
         </template>
       </ElTableColumn>
@@ -80,7 +84,9 @@
           >
             编辑
           </ElButton>
-          <ElButton link type="danger" size="small">删除</ElButton>
+          <ElButton link type="danger" size="small" @click="handleDelete(row)"
+            >删除</ElButton
+          >
           <ElButton
             link
             type="info"
@@ -92,9 +98,9 @@
         </template>
       </ElTableColumn>
     </ElTable>
-    <EditWeb ref="editWebRef" />
-    <UserSetting ref="userSettingRef" />
-    <EnvSetting ref="envSettingRef" />
+    <EditWeb ref="editWebRef" @save="handleUpdate" />
+    <UserSetting ref="userSettingRef" @save="handleUpdate" />
+    <EnvSetting ref="envSettingRef" @save="handleUpdate" />
   </div>
 </template>
 
@@ -116,7 +122,7 @@ import EnvSetting from './env-setting.vue';
 const editWebRef = ref();
 const userSettingRef = ref();
 const envSettingRef = ref();
-const { webs, addOrUpdateWeb } = useDevAccountStore();
+const { webs, addOrUpdateWeb, removeWeb } = useDevAccountStore();
 const handleEdit = (row?: WebInfo) => {
   editWebRef.value.show(row);
 };
@@ -132,11 +138,12 @@ const handleEnv = (row: WebInfo) => {
 const handleSupper = (row?: WebInfo) => {
   editWebRef.value.show(row);
 };
-const handleUpdate = (row: WebInfo, update: Partial<WebInfo>) => {
-  addOrUpdateWeb({
-    ...row,
-    ...update,
-  });
+const handleUpdate = (name: string, update: Partial<WebInfo>) => {
+  addOrUpdateWeb(name, update);
+};
+
+const handleDelete = (row: WebInfo) => {
+  removeWeb(row.name);
 };
 </script>
 

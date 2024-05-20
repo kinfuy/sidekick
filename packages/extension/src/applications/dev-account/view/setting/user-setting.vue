@@ -10,6 +10,7 @@
         :key="user.name"
         type="info"
         closable
+        @close="() => handleDelete(user)"
         @click="editUser(user)"
         >{{ user.name }}</ElTag
       >
@@ -31,6 +32,13 @@
         <ElFormItem label="默认用户">
           <ElSwitch v-model="editForm.isDefault" />
         </ElFormItem>
+        <ElFormItem>
+          <div class="w-full flex justify-end align-center">
+            <ElButton plain size="small" type="primary" @click="handleSave">
+              保存
+            </ElButton>
+          </div>
+        </ElFormItem>
       </ElForm>
     </div>
   </ElDrawer>
@@ -49,6 +57,8 @@ import {
   ElTag,
 } from 'element-plus';
 import { computed, ref } from 'vue';
+
+const emit = defineEmits(['save']);
 
 const viewType = ref();
 
@@ -85,10 +95,24 @@ const editUser = (user: WebUser) => {
   editForm.value.password = user.password;
 };
 
+const webName = ref('');
 const webUsers = ref<WebUser[]>([]);
 const show = (row: WebInfo) => {
   drawer.value = true;
   webUsers.value = row?.users || [];
+  webName.value = row?.name || '';
+};
+
+const handleSave = () => {
+  webUsers.value.push({
+    ...editForm.value,
+  });
+  emit('save', webName.value, { users: webUsers });
+  reset();
+};
+const handleDelete = (env: WebUser) => {
+  webUsers.value = webUsers.value.filter((item) => item.name !== env.name);
+  emit('save', webName.value, { users: webUsers });
 };
 
 defineExpose({ show });

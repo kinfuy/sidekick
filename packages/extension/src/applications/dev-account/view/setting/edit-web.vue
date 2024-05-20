@@ -1,20 +1,29 @@
 <template>
   <ElDrawer v-model="drawer" :title="title">
-    <el-form label-width="auto" :model="editForm">
-      <el-form-item label="平台">
-        <el-input v-model="editForm.name" placeholder="请输入平台名称" />
-      </el-form-item>
-      <el-form-item label="验证码">
-        <el-input v-model="editForm.code" placeholder="请输入验证码" />
-      </el-form-item>
-    </el-form>
+    <ElForm label-width="auto" :model="editForm">
+      <ElFormItem label="平台">
+        <ElInput v-model="editForm.name" placeholder="请输入平台名称" />
+      </ElFormItem>
+      <ElFormItem label="验证码">
+        <ElInput v-model="editForm.code" placeholder="请输入验证码" />
+      </ElFormItem>
+      <ElFormItem>
+        <div class="w-full flex justify-end align-center">
+          <ElButton plain size="small" type="primary" @click="handleSave">
+            保存
+          </ElButton>
+        </div>
+      </ElFormItem>
+    </ElForm>
   </ElDrawer>
 </template>
 
 <script lang="ts" setup>
 import type { WebInfo } from '@applications/dev-account/store';
-import { ElDrawer } from 'element-plus';
+import { ElButton, ElDrawer, ElForm, ElFormItem, ElInput } from 'element-plus';
 import { computed, ref } from 'vue';
+
+const emit = defineEmits(['save']);
 
 const viewType = ref('add');
 
@@ -27,11 +36,17 @@ const editForm = ref({
   name: '',
   code: '',
 });
+
 const show = (row: WebInfo) => {
   viewType.value = row ? 'edit' : 'add';
   drawer.value = true;
   editForm.value.name = row?.name || '';
   editForm.value.code = row?.code || '';
+};
+
+const handleSave = () => {
+  drawer.value = false;
+  emit('save', editForm.value.name, editForm.value);
 };
 
 defineExpose({ show });

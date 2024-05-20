@@ -10,6 +10,7 @@
         :key="env.name"
         type="info"
         closable
+        @close="() => handleDelete(env)"
         @click="editEnv(env)"
         >{{ env.name }}</ElTag
       >
@@ -25,6 +26,13 @@
         <ElFormItem label="URL">
           <ElInput v-model="editForm.url" placeholder="请输入url" />
         </ElFormItem>
+        <ElFormItem>
+          <div class="w-full flex justify-end align-center">
+            <ElButton plain size="small" type="primary" @click="handleSave">
+              保存
+            </ElButton>
+          </div>
+        </ElFormItem>
       </ElForm>
     </div>
   </ElDrawer>
@@ -39,10 +47,11 @@ import {
   ElForm,
   ElFormItem,
   ElInput,
-  ElSwitch,
   ElTag,
 } from 'element-plus';
 import { computed, ref } from 'vue';
+
+const emit = defineEmits(['save']);
 
 const viewType = ref();
 
@@ -73,10 +82,24 @@ const editEnv = (env: WebEnv) => {
   editForm.value.url = env.url;
 };
 
+const webName = ref('');
 const webEnvs = ref<WebEnv[]>([]);
 const show = (row: WebInfo) => {
   drawer.value = true;
+  webName.value = row?.name || '';
   webEnvs.value = row?.envs || [];
+};
+
+const handleSave = () => {
+  webEnvs.value.push({
+    ...editForm.value,
+  });
+  emit('save', webName.value, { envs: webEnvs });
+};
+
+const handleDelete = (env: WebEnv) => {
+  webEnvs.value = webEnvs.value.filter((item) => item.name !== env.name);
+  emit('save', webName.value, { envs: webEnvs });
 };
 
 defineExpose({ show });
