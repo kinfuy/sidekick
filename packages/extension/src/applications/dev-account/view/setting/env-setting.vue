@@ -99,7 +99,7 @@ const handleSave = () => {
 
 const handleDelete = (env: WebEnv) => {
   webEnvs.value = webEnvs.value.filter((item) => item.name !== env.name);
-  emit('save', webName.value, { envs: webEnvs });
+  emit('save', webName.value, { envs: webEnvs.value });
 };
 
 defineExpose({ show });

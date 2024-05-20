@@ -112,7 +112,7 @@ const handleSave = () => {
 };
 const handleDelete = (env: WebUser) => {
   webUsers.value = webUsers.value.filter((item) => item.name !== env.name);
-  emit('save', webName.value, { users: webUsers });
+  emit('save', webName.value, { users: webUsers.value });
 };
 
 defineExpose({ show });

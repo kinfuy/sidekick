@@ -75,7 +75,6 @@ export const useDevAccountStore = () => {
       store.value.webs[index] = { ...store.value.webs[index], ...web };
     } else {
       store.value.webs.push({
-        ...web,
         isActive: web.isActive ?? true,
         autoLogin: web.autoLogin ?? true,
         code: web.code ?? 'code',
