@@ -15,6 +15,7 @@
               :key="env.name"
               type="primary"
               class="env-tag"
+              @click="() => handleOpen(env)"
             >
               {{ env.name }}
             </ElLink>
@@ -106,7 +107,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { WebInfo } from '@applications/dev-account/store';
+import type { WebEnv, WebInfo } from '@applications/dev-account/store';
 import { useDevAccountStore } from '@applications/dev-account/store';
 import {
   ElButton,
@@ -136,6 +137,10 @@ const handleUser = (row: WebInfo) => {
 
 const handleEnv = (row: WebInfo) => {
   envSettingRef.value.show(row);
+};
+
+const handleOpen = (web: WebEnv) => {
+  window.open(`http://${web.url}`, '_blank');
 };
 
 const handleSupper = (row?: WebInfo) => {

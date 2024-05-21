@@ -73,8 +73,8 @@ export const useDevAccountStore = () => {
   sync();
 
   const addOrUpdateWeb = (rawWeb: Partial<WebInfo>) => {
-    const web = toRaw(rawWeb);
-    if (rawWeb.id) {
+    const web = JSON.parse(JSON.stringify(rawWeb)) as WebInfo;
+    if (web.id) {
       const index = store.value.webs.findIndex((w) => w.id === rawWeb.id);
       if (index > -1) {
         store.value.webs[index] = { ...store.value.webs[index], ...web };
@@ -91,7 +91,7 @@ export const useDevAccountStore = () => {
         users: web.users ?? [],
       });
     }
-
+    debugger;
     save();
   };
 
