@@ -40,12 +40,12 @@ export const useApp = () => {
     appStore.value.apps.filter((a) => !a.inner && a.contentApp),
   );
 
-  const innerApps = computed(() => {
+  const innerApps = computed<AppEntry[]>(() => {
     return appStore.value.apps.filter((a) => a.inner);
   });
 
   // popup app
-  const popupApps = computed(() => {
+  const popupApps = computed<AppEntry[]>(() => {
     return appStore.value.apps.filter((a) => a.popupApp);
   });
 

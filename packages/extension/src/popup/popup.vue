@@ -11,7 +11,7 @@
       />
     </div>
     <div class="popup-content">
-      <component :is="`Popup${current.name}`"></component>
+      <component :is="`Popup${current.name}`" v-if="current"></component>
     </div>
   </div>
 </template>
@@ -20,7 +20,7 @@
 import ToolItem from '@components/common/ToolItem/ToolItem.vue';
 import { useApp } from '@store/useApp';
 import { useTheme } from '@store/useTheme';
-import { ref } from 'vue';
+import { onBeforeUnmount, ref } from 'vue';
 import { sendMessageToExtension } from '@utils';
 import type { AppEntry } from '@/types/core-app.type';
 sendMessageToExtension({
@@ -33,16 +33,28 @@ const { theme } = useTheme();
 
 const { popupApps } = useApp();
 
-const current = ref(popupApps.value[0]);
+const current = ref<AppEntry>();
 
 const appClick = (app: AppEntry) => {};
+
+onBeforeUnmount(() => {
+  sendMessageToExtension({
+    from: 'POPUP_VIEW',
+    code: 'onPopupClose',
+    data: {},
+  });
+  current.value = undefined;
+});
+
+current.value = popupApps.value[0];
 </script>
 
 <style lang="less" scoped>
 .popup-app {
   display: flex;
   width: 500px;
-  height: 460px;
+  min-height: 200px;
+  max-height: 460px;
   overflow: hidden;
 
   .popup-slider {

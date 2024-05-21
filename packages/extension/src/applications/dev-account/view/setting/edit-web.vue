@@ -1,10 +1,10 @@
 <template>
   <ElDrawer v-model="drawer" :title="title">
-    <ElForm label-width="auto" :model="editForm">
-      <ElFormItem label="平台">
+    <ElForm ref="editFormRef" label-width="auto" :model="editForm">
+      <ElFormItem label="平台" required prop="name">
         <ElInput v-model="editForm.name" placeholder="请输入平台名称" />
       </ElFormItem>
-      <ElFormItem label="验证码">
+      <ElFormItem label="验证码" prop="code">
         <ElInput v-model="editForm.code" placeholder="请输入验证码" />
       </ElFormItem>
       <ElFormItem>
@@ -46,9 +46,12 @@ const show = (row: WebInfo) => {
   editForm.value.code = row?.code || '';
 };
 
+const editFormRef = ref<InstanceType<typeof ElForm>>();
 const handleSave = () => {
-  drawer.value = false;
-  emit('save', editForm.value);
+  editFormRef.value?.validate().then(() => {
+    drawer.value = false;
+    emit('save', editForm.value);
+  });
 };
 
 defineExpose({ show });

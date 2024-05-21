@@ -19,12 +19,16 @@
     <div v-if="viewType" class="user-form">
       <ElDivider></ElDivider>
       <div class="user-title">{{ title }}</div>
-      <ElForm label-width="auto" :model="editForm">
-        <ElFormItem label="账户">
+      <ElForm ref="editFormRef" label-width="auto" :model="editForm">
+        <ElFormItem label="账户" required prop="name">
           <ElInput v-model="editForm.name" placeholder="请输入登录账户" />
         </ElFormItem>
-        <ElFormItem label="密码">
-          <ElInput v-model="editForm.password" placeholder="请输入登录密码" />
+        <ElFormItem label="密码" required prop="password">
+          <ElInput
+            v-model="editForm.password"
+            type="password"
+            placeholder="请输入登录密码"
+          />
         </ElFormItem>
         <ElFormItem label="角色">
           <ElInput v-model="editForm.role" placeholder="请输入角色" />
@@ -107,25 +111,28 @@ const show = (row: WebInfo) => {
   webId.value = row?.id || '';
 };
 
+const editFormRef = ref<InstanceType<typeof ElForm>>();
 const handleSave = () => {
-  if (editForm.value.id) {
-    webUsers.value = webUsers.value.map((item) => {
-      if (item.id === editForm.value.id) {
-        return JSON.parse(JSON.stringify(editForm.value));
-      }
-      return item;
+  editFormRef.value?.validate().then(() => {
+    if (editForm.value.id) {
+      webUsers.value = webUsers.value.map((item) => {
+        if (item.id === editForm.value.id) {
+          return JSON.parse(JSON.stringify(editForm.value));
+        }
+        return item;
+      });
+    } else {
+      webUsers.value.push({
+        ...editForm.value,
+        id: uuid(),
+      });
+    }
+    emit('save', {
+      id: webId.value,
+      users: JSON.parse(JSON.stringify(webUsers.value)),
     });
-  } else {
-    webUsers.value.push({
-      ...editForm.value,
-      id: uuid(),
-    });
-  }
-  emit('save', {
-    id: webId.value,
-    users: JSON.parse(JSON.stringify(webUsers.value)),
+    reset();
   });
-  reset();
 };
 const handleDelete = (env: WebUser) => {
   webUsers.value = webUsers.value.filter((item) => item.id !== env.id);

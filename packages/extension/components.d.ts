@@ -8,17 +8,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Dialog: typeof import('./src/components/common/Dialog/Dialog.vue')['default']
-    ElButto: typeof import('element-plus/es')['ElButto']
-    ElButton: typeof import('element-plus/es')['ElButton']
-    ElDrawer: typeof import('element-plus/es')['ElDrawer']
-    ElForm: typeof import('element-plus/es')['ElForm']
-    ElFormItem: typeof import('element-plus/es')['ElFormItem']
-    ElInput: typeof import('element-plus/es')['ElInput']
-    ElPopconfirm: typeof import('element-plus/es')['ElPopconfirm']
-    ElTable: typeof import('element-plus/es')['ElTable']
-    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
-    ElTabPane: typeof import('element-plus/es')['ElTabPane']
-    ElTag: typeof import('element-plus/es')['ElTag']
     Fluorescence: typeof import('./src/components/common/Fluorescence/Fluorescence.vue')['default']
     ToolItem: typeof import('./src/components/common/ToolItem/ToolItem.vue')['default']
   }
