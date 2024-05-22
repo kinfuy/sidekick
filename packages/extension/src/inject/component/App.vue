@@ -159,10 +159,10 @@ const openLogin = () => {
 };
 
 const appClick = async (tool: AppEntry) => {
-  if (!isLogin.value && tool.isLogin) {
-    openLogin();
-    return;
-  }
+  // if (!isLogin.value && tool.isLogin) {
+  //   openLogin();
+  //   return;
+  // }
   if (tool.linkUrl) {
     openPage('onOpenChromeUrl', 'setting.html');
     return;

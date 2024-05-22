@@ -1,4 +1,4 @@
-import { computed, defineComponent, inject, watchEffect } from 'vue';
+import { computed, defineComponent } from 'vue';
 import { useTheme } from '@store/useTheme';
 import { useAuth } from '@store/useAuth';
 import dark from '@assets/image/dark.svg';
@@ -8,7 +8,7 @@ export default defineComponent({
   setup() {
     const { theme, direction, setTheme, setDirection, clearTheme } = useTheme();
 
-    const { isLogin, clearAuth } = useAuth();
+    const { clearAuth } = useAuth();
 
     const themeIcon = computed(() => {
       if (theme.value === 'light') {
@@ -36,17 +36,6 @@ export default defineComponent({
     const directionText = computed(() => {
       if (direction.value === 'left') return '左侧';
       return '右侧';
-    });
-
-    const { setDialog, openLogin } = inject('appContent') as any;
-
-    watchEffect(() => {
-      if (!isLogin.value) {
-        setDialog(false);
-        setTimeout(() => {
-          openLogin();
-        }, 0);
-      }
     });
 
     const clearStore = async () => {

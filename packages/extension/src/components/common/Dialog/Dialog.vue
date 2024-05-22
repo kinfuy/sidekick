@@ -6,7 +6,7 @@
   >
     <div class="sidekick-dialog-header">
       <span></span>
-      <span class="sidekick-dialog-title">
+      <span v-if="isLogin" class="sidekick-dialog-title">
         <img class="tool-logo" :src="tool.logo" />
         <span> {{ tool.title }}</span>
       </span>
@@ -23,7 +23,8 @@
       </svg>
     </div>
     <div class="sidekick-dialog-body">
-      <Empty v-if="!tool.name"></Empty>
+      <Cover v-if="!isLogin && tool.isLogin" :is-inject="true"> </Cover>
+      <Empty v-else-if="!tool.name"></Empty>
       <component :is="`Inject${tool.name}`" v-else></component>
     </div>
   </div>
@@ -33,6 +34,7 @@
 import type { PropType } from 'vue';
 import { ref, watch } from 'vue';
 import { useAuth } from '@store/useAuth';
+import Cover from '@components/common/Cover/Cover.vue';
 import Empty from '../Empty/Empty';
 import type { AppEntry } from '@/types/core-app.type';
 
