@@ -109,7 +109,7 @@ const show = (row: WebInfo) => {
 };
 
 const handleSave = () => {
-  emit('save', {
+  const data = {
     id: superConfig.value.id,
     match: {
       account: recover(editForm.value.account),
@@ -117,7 +117,8 @@ const handleSave = () => {
       validate: recover(editForm.value.validate),
       loginBtn: recover(editForm.value.loginBtn),
     },
-  });
+  };
+  emit('save', JSON.parse(JSON.stringify(data)));
   drawer.value = false;
 };
 

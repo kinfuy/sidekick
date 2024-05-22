@@ -20,10 +20,10 @@
       <ElDivider></ElDivider>
       <div class="env-title">{{ title }}</div>
       <ElForm label-width="auto" :model="editForm">
-        <ElFormItem label="名称">
+        <ElFormItem label="名称" required prop="name">
           <ElInput v-model="editForm.name" placeholder="请输入环境名称" />
         </ElFormItem>
-        <ElFormItem label="URL">
+        <ElFormItem label="URL" prop="url" required>
           <ElInput v-model="editForm.url" placeholder="请输入url" />
         </ElFormItem>
         <ElFormItem>

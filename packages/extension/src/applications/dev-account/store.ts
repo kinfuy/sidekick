@@ -1,6 +1,5 @@
 import { storage, uuid } from '@utils';
 import { computed, ref, toRaw } from 'vue';
-import { webList } from './defaultUser';
 import { defaultMatchRule } from './config';
 export interface MatchRule {
   cssSeletor: string[];
@@ -43,11 +42,13 @@ export interface WebInfo {
 
 export interface DevAccountStoreInstance {
   webs: WebInfo[];
+  version: string;
 }
 
 const STORE_KEY = 'devAccountStore';
 const store = ref<DevAccountStoreInstance>({
-  webs: webList,
+  webs: [],
+  version: '1.0.0',
 });
 
 const matchWeb = ref<WebInfo>();
@@ -61,7 +62,8 @@ export const useDevAccountStore = () => {
 
   const sync = async () => {
     let _store: DevAccountStoreInstance = {
-      webs: webList,
+      webs: [],
+      version: '1.0.0',
     };
     const devAccount = await get<DevAccountStoreInstance>(STORE_KEY);
     if (devAccount && JSON.stringify(devAccount) !== '{}') {
@@ -73,8 +75,8 @@ export const useDevAccountStore = () => {
   sync();
 
   const addOrUpdateWeb = (rawWeb: Partial<WebInfo>) => {
-    const web = toRaw(rawWeb);
-    if (rawWeb.id) {
+    const web = JSON.parse(JSON.stringify(rawWeb)) as WebInfo;
+    if (web.id) {
       const index = store.value.webs.findIndex((w) => w.id === rawWeb.id);
       if (index > -1) {
         store.value.webs[index] = { ...store.value.webs[index], ...web };
@@ -91,7 +93,6 @@ export const useDevAccountStore = () => {
         users: web.users ?? [],
       });
     }
-
     save();
   };
 
@@ -137,7 +138,43 @@ export const useDevAccountStore = () => {
     });
   };
 
+  const exportConfig = () => {
+    return store.value;
+  };
+
+  const importConfig = (
+    config: DevAccountStoreInstance,
+    type: 'update' | 'replace',
+  ) => {
+    if (type === 'replace') {
+      store.value = config;
+    }
+    if (type === 'update') {
+      const webs = [] as WebInfo[];
+      store.value.webs.forEach((w) => {
+        const web = config.webs.find((x) => x.id === w.id);
+        if (web) {
+          webs.push({ ...w, ...web });
+        }
+      });
+      config.webs.forEach((w) => {
+        const web = store.value.webs.find((x) => x.id === w.id);
+        if (!web) {
+          webs.push(w);
+        }
+      });
+      store.value.version = config.version;
+      store.value.webs = webs;
+    }
+    save();
+  };
+
+  const version = computed(() => {
+    return store.value.version;
+  });
+
   return {
+    version,
     webs,
     addOrUpdateWeb,
     matchWeb,
@@ -147,5 +184,7 @@ export const useDevAccountStore = () => {
     removeWeb,
     removeUser,
     removeEnv,
+    exportConfig,
+    importConfig,
   };
 };

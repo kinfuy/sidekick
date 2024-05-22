@@ -2,8 +2,8 @@
   <div class="dev-account">
     <div class="operate-list">
       <ElButton size="small" @click="() => handleEdit()">添加平台</ElButton>
-      <ElButton size="small">导入</ElButton>
-      <ElButton size="small">导出</ElButton>
+      <ElButton size="small" @click="handleImport">导入</ElButton>
+      <ElButton size="small" @click="handleExport">导出</ElButton>
     </div>
     <ElTable :data="webs" style="width: 100%">
       <ElTableColumn prop="name" label="平台" :min-width="120" />
@@ -15,6 +15,7 @@
               :key="env.name"
               type="primary"
               class="env-tag"
+              @click="() => handleOpen(env)"
             >
               {{ env.name }}
             </ElLink>
@@ -102,11 +103,13 @@
     <UserSetting ref="userSettingRef" @save="handleUpdate" />
     <EnvSetting ref="envSettingRef" @save="handleUpdate" />
     <SurperSetting ref="surperSettingRef" @save="handleUpdate" />
+    <ImportSetting ref="importSettingRef" />
+    <ExportSetting ref="exportSettingRef" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { WebInfo } from '@applications/dev-account/store';
+import type { WebEnv, WebInfo } from '@applications/dev-account/store';
 import { useDevAccountStore } from '@applications/dev-account/store';
 import {
   ElButton,
@@ -120,11 +123,15 @@ import EditWeb from './edit-web.vue';
 import UserSetting from './user-setting.vue';
 import EnvSetting from './env-setting.vue';
 import SurperSetting from './super-setting.vue';
+import ImportSetting from './import-setting.vue';
+import ExportSetting from './export-setting.vue';
 
 const editWebRef = ref();
 const userSettingRef = ref();
 const envSettingRef = ref();
 const surperSettingRef = ref();
+const importSettingRef = ref();
+const exportSettingRef = ref();
 const { webs, addOrUpdateWeb, removeWeb } = useDevAccountStore();
 const handleEdit = (row?: WebInfo) => {
   editWebRef.value.show(row);
@@ -138,6 +145,10 @@ const handleEnv = (row: WebInfo) => {
   envSettingRef.value.show(row);
 };
 
+const handleOpen = (web: WebEnv) => {
+  window.open(`http://${web.url}`, '_blank');
+};
+
 const handleSupper = (row?: WebInfo) => {
   surperSettingRef.value.show(row);
 };
@@ -147,6 +158,14 @@ const handleUpdate = (update: Partial<WebInfo>) => {
 
 const handleDelete = (row: WebInfo) => {
   removeWeb(row.id);
+};
+
+const handleImport = () => {
+  importSettingRef.value.show();
+};
+
+const handleExport = () => {
+  exportSettingRef.value.show();
 };
 </script>
 

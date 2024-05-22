@@ -6,17 +6,17 @@ export interface PostMessage {
 
 export const storage = {
   set: (key: string, value: string) => {
-    return chrome.storage.sync.set({ [key]: value });
+    return chrome.storage.local.set({ [key]: value });
   },
   get: async <T>(key: string) => {
-    const store = await chrome.storage.sync.get(key);
+    const store = await chrome.storage.local.get(key);
     return store[key] ? (JSON.parse(store[key]) as T) : ({} as T);
   },
   remove: (key: string) => {
-    chrome.storage.sync.remove(key);
+    chrome.storage.local.remove(key);
   },
   clear: (): void => {
-    chrome.storage.sync.clear();
+    chrome.storage.local.clear();
   },
 };
 
