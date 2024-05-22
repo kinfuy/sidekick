@@ -8,7 +8,6 @@ import { responseCode } from '../config/const';
 export class UserController {
   constructor(private readonly userService: UserService, private readonly subscriptionService: SubscriptionService) {}
 
-
   @Post('activationVip')
   async activationVip(@Body() activationVipDto: ActivationVipDto) {
     const res = await this.subscriptionService.createByCode({

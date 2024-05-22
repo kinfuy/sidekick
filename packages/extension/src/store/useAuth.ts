@@ -1,6 +1,6 @@
 import { computed, onUnmounted, ref, toRaw } from 'vue';
 import { storage } from '@utils/chrome';
-import dayjs from 'dayjs';
+import { refreshTokenApi } from '@/apis/user';
 
 const STORE_KEY = 'userStore';
 
@@ -44,11 +44,7 @@ export const useAuth = () => {
     set(STORE_KEY, JSON.stringify(toRaw(userStore.value)));
   };
 
-  const autoLogin = () => {
-    if (dayjs(userStore.value.lastLoginTime).add(1, 'day').isBefore(dayjs())) {
-      console.log('autoLogin');
-    }
-  };
+  const isLogin = computed(() => userStore.value.isLogin);
 
   const sync = async () => {
     let store: UserStore = defaultStore();
@@ -57,10 +53,7 @@ export const useAuth = () => {
       store = _store as UserStore;
     }
     userStore.value = store;
-    autoLogin();
   };
-
-  const isLogin = computed(() => userStore.value.isLogin);
 
   const user = computed(() => userStore.value.user);
 
@@ -121,7 +114,30 @@ export const useAuth = () => {
     }
   };
 
+  const refreshToken = async () => {
+    if (isLogin.value) {
+      const res = await refreshTokenApi<{
+        token: string;
+        refreshToken: string;
+      }>({
+        email: userStore.value.user!.email,
+        refreshToken: userStore.value.user!.refreshToken,
+        token: userStore.value.user!.token,
+      }).catch(() => {
+        // clearAuth();
+      });
+      if (res) {
+        userStore.value.user!.token = res.token;
+        userStore.value.user!.refreshToken = res.refreshToken;
+        save();
+      } else {
+        clearAuth();
+      }
+    }
+  };
+
   chrome.storage.onChanged.addListener(syncStore);
+
   sync();
 
   onUnmounted(() => {
@@ -136,5 +152,6 @@ export const useAuth = () => {
     setUser,
     clearAuth,
     setSubscription,
+    refreshToken,
   };
 };

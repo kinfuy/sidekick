@@ -20,6 +20,11 @@ export class AppController {
   async login(@Body() parmas: LoginDto) {
     return this.loginService.login(parmas);
   }
+
+  @Post('refreshToken')
+  async refreshToken(@Body() parmas: any) {
+    return this.loginService.getToken(parmas);
+  }
   
 
   @Post('register')

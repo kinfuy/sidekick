@@ -43,7 +43,7 @@ export class LoginService {
         return {
           data: {
             token: access_token,
-            refresh_token: refresh_token,
+            refreshToken: refresh_token,
             email: user.email,
             sex: user.sex,
             mobile: user.mobile,
@@ -135,5 +135,32 @@ export class LoginService {
     return this.register(params);
   }
 
-  async getToken(email: string) {}
+  async getToken({ email, token }) {
+    const isInvalid = await this.authService.verifyToken(token);
+    if(isInvalid){
+      const { access_token } = await this.authService.getToken(
+        { email: email },
+        '30d',
+      );
+      const { access_token: refreshToken } = await this.authService.getToken(
+        { email: email },
+        '1d',
+      );
+      return {
+        data: {
+          token: access_token,
+          refreshToken
+        },
+        message: '获取成功',
+        code: responseCode.SUCCESS,
+      };
+    }else{
+      return {
+        data: null,
+        message: '获取失败',
+        code: responseCode.FAIL,
+      };
+    }
+   
+  }
 }

@@ -1,3 +1,4 @@
+import { useAlarmManger } from '@core/alarm-manage';
 import { triggerApplicationHooks } from '../core/application';
 import { chromeAddListenerMessage } from '../utils';
 
@@ -26,3 +27,7 @@ chrome.contextMenus.onClicked.addListener((e, tab) => {
 chrome.tabs.onUpdated.addListener((...opt) => {
   triggerApplicationHooks('onTabUpdate', opt);
 });
+
+const { add } = useAlarmManger();
+
+add('refresh-token', { periodInMinutes: 1 });

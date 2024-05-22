@@ -6,7 +6,7 @@
   >
     <div class="sidekick-dialog-header">
       <span></span>
-      <span v-if="isLogin" class="sidekick-dialog-title">
+      <span v-if="isLogin || !tool.isLogin" class="sidekick-dialog-title">
         <img class="tool-logo" :src="tool.logo" />
         <span> {{ tool.title }}</span>
       </span>

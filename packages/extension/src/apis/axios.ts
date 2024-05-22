@@ -1,6 +1,8 @@
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 
+export const baseURL = 'http://localhost:9000';
+
 export interface ResponseOption {
   status: number;
   message: string;
@@ -8,7 +10,7 @@ export interface ResponseOption {
 }
 
 const instance: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:9000',
+  baseURL,
   timeout: 10000,
 });
 

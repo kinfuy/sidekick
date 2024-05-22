@@ -1,5 +1,4 @@
-import request from './axios';
-
+import request, { baseURL } from './axios';
 export const loginApi = async <T>(data: object): Promise<T> => {
   return await request.post(`/login`, data);
 };
@@ -18,4 +17,15 @@ export const verifyEmailApi = async <T>(data: object): Promise<T> => {
 
 export const activationVipApi = async <T>(data: object): Promise<T> => {
   return await request.post(`/user/activationVip`, data);
+};
+
+export const refreshTokenApi = async <T>(data: object): Promise<T> => {
+  const rst = await fetch(`${baseURL}/refreshToken`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  return await rst.json();
 };

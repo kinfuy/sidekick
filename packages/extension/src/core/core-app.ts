@@ -1,3 +1,4 @@
+import { useAuth } from '@store/useAuth';
 import type { Application } from '@/types/core-app.type';
 import {
   createWindow,
@@ -9,6 +10,12 @@ import {
 export const PreCoreApp = (): Application => {
   return {
     name: 'pre-core-app',
+    onAlarms: (opt: chrome.alarms.Alarm) => {
+      if (opt.name === 'refresh-token') {
+        const { refreshToken } = useAuth();
+        refreshToken();
+      }
+    },
   };
 };
 
