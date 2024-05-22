@@ -5,6 +5,7 @@ export const devAccount = (option: {
   key: string;
   data: { web: WebInfo; user?: WebUser };
 }) => {
+  debugger;
   const { key } = option;
   const { web, user } = option.data;
   if (key === 'user-login' && user) {

@@ -109,7 +109,6 @@ const show = (row: WebInfo) => {
 };
 
 const handleSave = () => {
-  debugger;
   const data = {
     id: superConfig.value.id,
     match: {

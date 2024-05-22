@@ -1,6 +1,5 @@
 import { storage, uuid } from '@utils';
 import { computed, ref, toRaw } from 'vue';
-import { webList } from './defaultUser';
 import { defaultMatchRule } from './config';
 export interface MatchRule {
   cssSeletor: string[];
@@ -48,7 +47,7 @@ export interface DevAccountStoreInstance {
 
 const STORE_KEY = 'devAccountStore';
 const store = ref<DevAccountStoreInstance>({
-  webs: webList,
+  webs: [],
   version: '1.0.0',
 });
 
@@ -63,7 +62,7 @@ export const useDevAccountStore = () => {
 
   const sync = async () => {
     let _store: DevAccountStoreInstance = {
-      webs: webList,
+      webs: [],
       version: '1.0.0',
     };
     const devAccount = await get<DevAccountStoreInstance>(STORE_KEY);
@@ -94,7 +93,6 @@ export const useDevAccountStore = () => {
         users: web.users ?? [],
       });
     }
-    debugger;
     save();
   };
 
