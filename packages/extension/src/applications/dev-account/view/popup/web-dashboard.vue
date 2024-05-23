@@ -1,7 +1,9 @@
 <template>
   <div class="web-dashboard">
     <Empty v-if="activeWebs?.length === 0" text="">
-      <ElLink type="primary">暂无数据，快去创建一个平台吧</ElLink>
+      <ElLink type="primary" @click="handleSetting"
+        >暂无数据，快去创建一个平台吧</ElLink
+      >
     </Empty>
     <ElScrollbar v-else height="340px" class="web-list">
       <div class="web-list">
@@ -39,6 +41,7 @@
 import type { WebEnv } from '@applications/dev-account/store';
 import { useDevAccountStore } from '@applications/dev-account/store';
 import { ElButton, ElLink, ElScrollbar } from 'element-plus';
+import { inject } from 'vue';
 import Empty from '@/components/common/Empty/Empty';
 const emit = defineEmits(['setMatch']);
 
@@ -49,6 +52,10 @@ const setMatchWeb = (name: string) => {
 
 const handleEnv = (web: WebEnv) => {
   window.open(`http://${web.url}`, '_blank');
+};
+const { openSet } = inject('appContent') as any;
+const handleSetting = () => {
+  openSet();
 };
 </script>
 

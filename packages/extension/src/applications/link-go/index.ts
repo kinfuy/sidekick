@@ -6,8 +6,7 @@ export const LinkGo: App = {
   name: 'LinkGo',
   title: '超链直达',
   logo: getChromeUrl(link),
-  inner: false,
-  popupApp: true,
+  inner: true,
   hooks: {
     onContentInit: async () => {
       sendMessageToContentScriptAllTabs({

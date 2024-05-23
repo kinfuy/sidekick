@@ -41,12 +41,16 @@ export const useApp = () => {
   );
 
   const innerApps = computed<AppEntry[]>(() => {
-    return appStore.value.apps.filter((a) => a.inner);
+    return appStore.value.apps.filter((a) => a.inner && a.contentApp);
   });
 
   // popup app
   const popupApps = computed<AppEntry[]>(() => {
     return appStore.value.apps.filter((a) => a.popupApp);
+  });
+
+  const settingApps = computed(() => {
+    return appStore.value.apps.filter((a) => a.settingApp);
   });
 
   const isAppActive = () => {
@@ -61,5 +65,6 @@ export const useApp = () => {
     apps,
     innerApps,
     popupApps,
+    settingApps,
   };
 };

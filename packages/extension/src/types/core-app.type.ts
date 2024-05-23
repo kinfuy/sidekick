@@ -11,6 +11,7 @@ export interface AppEntry {
   width?: string;
   popupApp?: boolean;
   contentApp?: boolean;
+  settingApp?: boolean;
 }
 
 export interface CoreApp extends AppEntry {

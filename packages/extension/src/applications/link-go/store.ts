@@ -11,7 +11,7 @@ export interface LinkGoStoreInstance {
   linkRules: LinkRule[];
 }
 
-const store = ref<LinkGoStoreInstance>({
+const defaultStore: LinkGoStoreInstance = {
   linkRules: [
     {
       type: 'string',
@@ -26,21 +26,23 @@ const store = ref<LinkGoStoreInstance>({
       value: '/transfer?(?<target>.+)/', // https://blog.51cto.com/
     },
   ],
-});
+};
+
+const store = ref<LinkGoStoreInstance>(defaultStore);
+
 export const useLinkGoStore = () => {
   const { get, set } = storage;
   const save = () => {
     set(STORE_KEY, JSON.stringify(toRaw(store.value)));
   };
   const sync = async () => {
-    let _store: LinkGoStoreInstance = {
-      linkRules: [],
-    };
-    const devAccount = await get<LinkGoStoreInstance>(STORE_KEY);
-    if (devAccount && JSON.stringify(devAccount) !== '{}') {
-      _store = devAccount;
+    let _store: LinkGoStoreInstance = defaultStore;
+    const linkGo = await get<LinkGoStoreInstance>(STORE_KEY);
+    if (linkGo && JSON.stringify(linkGo) !== '{}') {
+      _store = linkGo;
     }
     store.value = _store;
+    console.log('sync', store.value);
   };
 
   sync();

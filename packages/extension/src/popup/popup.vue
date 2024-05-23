@@ -1,29 +1,32 @@
 <template>
-  <div class="popup-app" :class="[theme]">
-    <div class="popup-slider">
-      <ToolItem
-        v-for="app in popupApps"
-        :key="app.name"
-        :title="app.title"
-        :logo="app.logo"
-        :active="app.name === current?.name"
-        @click="appClick(app)"
-      />
+  <ElConfigProvider size="small">
+    <div class="popup-app" :class="[theme]">
+      <div class="popup-slider">
+        <ToolItem
+          v-for="app in popupApps"
+          :key="app.name"
+          :title="app.title"
+          :logo="app.logo"
+          :active="app.name === current?.name"
+          @click="appClick(app)"
+        />
+      </div>
+      <div class="popup-content">
+        <img class="popup-set" :src="setIcon" @click="handleSet" />
+        <component :is="`Popup${current.name}`" v-if="current"></component>
+      </div>
     </div>
-    <div class="popup-content">
-      <img class="popup-set" :src="setIcon" @click="handleSet" />
-      <component :is="`Popup${current.name}`" v-if="current"></component>
-    </div>
-  </div>
+  </ElConfigProvider>
 </template>
 
 <script lang="ts" setup>
 import ToolItem from '@components/common/ToolItem/ToolItem.vue';
 import { useApp } from '@store/useApp';
 import { useTheme } from '@store/useTheme';
-import { onBeforeUnmount, ref } from 'vue';
+import { onBeforeUnmount, provide, ref } from 'vue';
 import { getChromeUrl, sendMessageToExtension } from '@utils';
 import set from '@assets/image/set.svg';
+import { ElConfigProvider } from 'element-plus';
 import type { AppEntry } from '@/types/core-app.type';
 const setIcon = getChromeUrl(set);
 
@@ -55,9 +58,13 @@ onBeforeUnmount(() => {
 current.value = popupApps.value[0];
 
 const handleSet = () => {
-  const query = current.value ? `?menu=${current.value?.name}` : '';
+  const query = current.value ? `#${current.value?.name}` : '';
   window.open(getChromeUrl(`setting.html${query}`), '_blank');
 };
+
+provide('appContent', {
+  openSet: handleSet,
+});
 </script>
 
 <style lang="less" scoped>
