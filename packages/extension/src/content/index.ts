@@ -1,8 +1,11 @@
 import type { PostMessage } from '@utils';
 import { injectCustomScript, sendMessageToExtension } from '@utils';
 import { contentFunc } from '@applications/content';
+import { useTheme } from '@store/useTheme';
 import injectScript from '@/inject/index.ts?script&module';
-import { initInject } from '@/inject/component';
+import { initInject, removeInject } from '@/inject/component';
+
+const { bubble } = useTheme();
 
 const initContent = () => {
   initInject();
@@ -12,7 +15,11 @@ const initContent = () => {
   }, 100);
 };
 
-initContent();
+if (bubble.value) {
+  initContent();
+} else {
+  removeInject();
+}
 
 injectCustomScript(injectScript);
 

@@ -36,7 +36,7 @@ export default defineConfig({
       alias: {
         '@': resolve('./src'),
       },
-      log: true,
+      log: false,
       config: [
         {
           container: '#sidekick-extension',

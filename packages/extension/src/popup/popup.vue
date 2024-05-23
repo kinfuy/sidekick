@@ -11,6 +11,7 @@
       />
     </div>
     <div class="popup-content">
+      <img class="popup-set" :src="setIcon" @click="handleSet" />
       <component :is="`Popup${current.name}`" v-if="current"></component>
     </div>
   </div>
@@ -21,8 +22,11 @@ import ToolItem from '@components/common/ToolItem/ToolItem.vue';
 import { useApp } from '@store/useApp';
 import { useTheme } from '@store/useTheme';
 import { onBeforeUnmount, ref } from 'vue';
-import { sendMessageToExtension } from '@utils';
+import { getChromeUrl, sendMessageToExtension } from '@utils';
+import set from '@assets/image/set.svg';
 import type { AppEntry } from '@/types/core-app.type';
+const setIcon = getChromeUrl(set);
+
 sendMessageToExtension({
   from: 'POPUP_VIEW',
   code: 'onPopupOpen',
@@ -35,7 +39,9 @@ const { popupApps } = useApp();
 
 const current = ref<AppEntry>();
 
-const appClick = (app: AppEntry) => {};
+const appClick = (app: AppEntry) => {
+  current.value = app;
+};
 
 onBeforeUnmount(() => {
   sendMessageToExtension({
@@ -47,6 +53,11 @@ onBeforeUnmount(() => {
 });
 
 current.value = popupApps.value[0];
+
+const handleSet = () => {
+  const query = current.value ? `?menu=${current.value?.name}` : '';
+  window.open(getChromeUrl(`setting.html${query}`), '_blank');
+};
 </script>
 
 <style lang="less" scoped>
@@ -73,6 +84,16 @@ current.value = popupApps.value[0];
     flex-grow: 0;
     width: 100%;
     height: 100%;
+    position: relative;
+
+    .popup-set {
+      position: absolute;
+      right: 16px;
+      top: 10px;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
   }
 }
 </style>

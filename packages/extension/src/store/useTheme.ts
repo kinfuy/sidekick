@@ -5,6 +5,7 @@ export interface ThemeStore {
   mode: 'light' | 'dark';
   direction: 'left' | 'right';
   pos: { y: number };
+  bubble: boolean;
 }
 
 const STORE_KEY = 'themeStore';
@@ -13,6 +14,7 @@ const defaultStore: ThemeStore = {
   mode: 'light',
   direction: 'right',
   pos: { y: 100 },
+  bubble: true,
 };
 
 const themeStore = ref<ThemeStore>(JSON.parse(JSON.stringify(defaultStore)));
@@ -79,6 +81,15 @@ export const useTheme = () => {
     save();
   };
 
+  const bubble = computed(() => {
+    return themeStore.value.bubble;
+  });
+
+  const setBubble = (val: boolean) => {
+    themeStore.value.bubble = val;
+    save();
+  };
+
   sync();
   return {
     sync,
@@ -89,5 +100,7 @@ export const useTheme = () => {
     setDirection,
     setPosY,
     clearTheme,
+    bubble,
+    setBubble,
   };
 };

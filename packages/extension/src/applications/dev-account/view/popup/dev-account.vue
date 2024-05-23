@@ -2,7 +2,6 @@
   <div class="dev-account">
     <div class="dev-account-header">
       <div class="dev-account-title">{{ matchWeb?.name || 'Dev Account' }}</div>
-      <img class="dev-account-set" :src="setIcon" @click="handleSet" />
     </div>
     <ElTabs v-model="activeTab">
       <ElTabPane label="平台" name="web">
@@ -18,12 +17,11 @@
 <script lang="ts" setup>
 import { ElTabPane, ElTabs } from 'element-plus';
 import { ref, watch } from 'vue';
-import set from '@assets/image/set.svg';
-import { getActiveTab, getChromeUrl } from '@utils';
+
+import { getActiveTab } from '@utils';
 import { useDevAccountStore } from '../../store';
 import UserDashboard from './user-dashboard.vue';
 import WebDashboard from './web-dashboard.vue';
-const setIcon = chrome.runtime.getURL(set);
 
 const { matchWeb, getMatch, setMatch } = useDevAccountStore();
 
@@ -35,10 +33,14 @@ const switchUser = (name: string) => {
 };
 
 const init = async () => {
-  const { url } = await getActiveTab();
-  if (!url) return;
-  const web = getMatch(url);
-  setMatch(web?.name);
+  //  防止加载获取不到acticeUrl
+  const tiemr = setInterval(async () => {
+    const { url } = await getActiveTab();
+    if (!url) return;
+    const web = getMatch(url);
+    setMatch(web?.name);
+    clearInterval(tiemr);
+  }, 10);
 };
 
 init();
@@ -59,11 +61,10 @@ watch(
       activeTab.value = 'user';
     }
   },
+  {
+    immediate: true,
+  },
 );
-
-const handleSet = () => {
-  window.open(getChromeUrl('setting.html?menu=devAccount'), '_blank');
-};
 </script>
 
 <style lang="less" scoped>
@@ -73,21 +74,11 @@ const handleSet = () => {
 
 .dev-account-header {
   height: 28px;
-  position: relative;
 
   .dev-account-title {
     font-size: 16px;
     line-height: 28px;
     text-align: center;
-  }
-
-  .dev-account-set {
-    position: absolute;
-    right: 10px;
-    top: 6px;
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
   }
 }
 </style>

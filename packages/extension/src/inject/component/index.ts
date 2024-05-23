@@ -33,3 +33,8 @@ export const initInject = () => {
 
   app.mount(root);
 };
+
+export const removeInject = () => {
+  const app = document.body.querySelector(`#${APP_SELCTOR}`);
+  app && app.parentNode?.removeChild(app);
+};

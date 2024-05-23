@@ -2,9 +2,10 @@ import set from '@assets/image/set.svg';
 import { WebNotice } from './web-notice';
 import { AppLayout } from './app-layout';
 import { DevAccount } from './dev-account';
+import { LinkGo } from './link-go';
 import type { App, AppEntry } from '@/types/core-app.type';
 
-export const apps: App[] = [WebNotice, AppLayout, DevAccount];
+export const apps: App[] = [WebNotice, AppLayout, DevAccount, LinkGo];
 
 const linkApp: AppEntry[] = [
   {
