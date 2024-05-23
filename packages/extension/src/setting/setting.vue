@@ -57,6 +57,7 @@ const init = () => {
     }
   }
   active.value = settingApps.value[0].name;
+  window.location.href = `${window.location.href}#${active.value}`;
 };
 
 init();
