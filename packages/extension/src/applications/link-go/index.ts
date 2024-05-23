@@ -7,6 +7,7 @@ export const LinkGo: App = {
   title: '超链直达',
   logo: getChromeUrl(link),
   inner: true,
+  settingApp: true,
   hooks: {
     onContentInit: async () => {
       sendMessageToContentScriptAllTabs({

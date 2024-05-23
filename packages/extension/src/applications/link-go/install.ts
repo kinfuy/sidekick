@@ -1,6 +1,6 @@
 import type { App } from 'vue';
-import Popup from './view/popup/link-go.vue';
+import setting from './view/setting/link-go.vue';
 
-export const linkGoPopupInstall = (app: App) => {
-  app.component('PopupLinkGo', Popup);
+export const linkGoSettingInstall = (app: App) => {
+  app.component('SettingLinkGo', setting);
 };
