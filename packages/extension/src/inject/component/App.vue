@@ -58,7 +58,7 @@
 </template>
 
 <script lang="ts" setup>
-import { provide, ref, watch } from 'vue';
+import { provide, ref, watch, watchEffect } from 'vue';
 import Dialog from '@components/common/Dialog/Dialog.vue';
 import ToolItem from '@components/common/ToolItem/ToolItem.vue';
 import { useDraggable } from '@vueuse/core';
@@ -134,8 +134,6 @@ const leaveToolBar = (isBar: boolean = false) => {
 
 const current = ref();
 
-const { isLogin } = useAuth();
-
 const openPage = (code: string, url: string, extra: any = {}) => {
   injectPostMessage({
     from: 'app_inject',
@@ -188,5 +186,11 @@ provide('appContent', {
   },
   openPage,
   openLogin,
+});
+
+watchEffect(() => {
+  if (!isVisable.value) {
+    current.value = undefined;
+  }
 });
 </script>

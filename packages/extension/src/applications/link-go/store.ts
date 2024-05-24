@@ -42,7 +42,6 @@ export const useLinkGoStore = () => {
       _store = linkGo;
     }
     store.value = _store;
-    console.log('sync', store.value);
   };
 
   sync();

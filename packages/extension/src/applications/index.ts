@@ -4,9 +4,16 @@ import { WebNotice } from './web-notice';
 import { AppLayout } from './app-layout';
 import { DevAccount } from './dev-account';
 import { LinkGo } from './link-go';
+import { StoragePortal } from './storage-portal';
 import type { App, AppEntry } from '@/types/core-app.type';
 
-export const apps: App[] = [WebNotice, AppLayout, DevAccount, LinkGo];
+export const apps: App[] = [
+  WebNotice,
+  AppLayout,
+  DevAccount,
+  LinkGo,
+  StoragePortal,
+];
 
 const linkApp: AppEntry[] = [
   {
