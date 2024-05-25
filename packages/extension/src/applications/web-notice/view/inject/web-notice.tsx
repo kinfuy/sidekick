@@ -29,7 +29,7 @@ export default defineComponent({
         webNotice.value.style = {
           color: current.value?.style?.color || '#fa8919',
           animation: current.value?.style?.animation ?? true,
-          fontSize: current.value?.style?.fontSize || 48,
+          fontSize: current.value?.style?.fontSize || 32,
           borderWidth: current.value?.style?.borderWidth || 4,
         };
       },

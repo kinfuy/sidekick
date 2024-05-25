@@ -9,7 +9,5 @@ export const DevAccount: App = {
   width: '600px',
   popupApp: true,
   settingApp: true,
-  hooks: {
-    async onPopupOpen() {},
-  },
+  hooks: {},
 };

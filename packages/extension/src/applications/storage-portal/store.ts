@@ -1,8 +1,5 @@
-import { storage } from '@utils';
-import { computed, ref, toRaw } from 'vue';
-
-const STORE_KEY = 'storagePortalStore';
-
+import { clearAllCookie } from '@utils';
+import { computed, ref } from 'vue';
 export interface IStorageItem {
   key: string;
   val: any;
@@ -15,7 +12,7 @@ export interface IStorage {
 }
 
 export interface StoragePortalStoreInstance {
-  openWebSites: Array<{ label: string; value: string }>;
+  openWebSites: Array<{ title: string; url: string }>;
   storage: IStorage;
 }
 
@@ -29,29 +26,7 @@ const store = ref<StoragePortalStoreInstance>({
 } as StoragePortalStoreInstance);
 
 export const useStoragePortalStore = () => {
-  const { get, set } = storage;
-
-  const save = () => {
-    set(STORE_KEY, JSON.stringify(toRaw(store.value)));
-  };
-
-  const sync = async () => {
-    let _store: StoragePortalStoreInstance = {
-      openWebSites: [],
-      storage: {
-        cookie: [],
-        localStorage: [],
-        sessionStorage: [],
-      },
-    };
-    const storagePortal = await get<StoragePortalStoreInstance>(STORE_KEY);
-    if (storagePortal && JSON.stringify(storagePortal) !== '{}') {
-      _store = storagePortal;
-    }
-    store.value = _store;
-  };
-
-  sync();
+  // const { get, set } = storage;
 
   const clear = () => {};
 
@@ -60,22 +35,52 @@ export const useStoragePortalStore = () => {
       ...store.value.storage,
       ...data,
     };
-    save();
   };
 
-  const setTabs = (data: Array<{ label: string; value: string }>) => {
+  const setTabs = (data: Array<{ title: string; url: string }>) => {
     store.value.openWebSites = data;
-    save();
   };
 
   const currentStorage = computed(() => store.value.storage);
 
   const webs = computed(() => store.value.openWebSites);
+
+  const deleteItem = (
+    key: string,
+    type: 'cookie' | 'localStorage' | 'sessionStorage',
+  ) => {
+    store.value.storage[type] = store.value.storage[type].filter(
+      (i) => i.key !== key,
+    );
+    if (type === 'localStorage') {
+      window.localStorage.removeItem(key);
+    }
+    if (type === 'sessionStorage') {
+      window.sessionStorage.removeItem(key);
+    }
+    if (type === 'cookie') {
+      document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 GMT;`;
+    }
+  };
+
+  const clearAll = () => {
+    store.value.storage = {
+      cookie: [],
+      localStorage: [],
+      sessionStorage: [],
+    };
+    window.localStorage.clear();
+    window.sessionStorage.clear();
+    clearAllCookie();
+  };
+
   return {
     clear,
     setStore,
     setTabs,
     webs,
     currentStorage,
+    deleteItem,
+    clearAll,
   };
 };

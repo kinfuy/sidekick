@@ -2,7 +2,6 @@ import { getAllStorage, sendMessageToExtension } from '@utils';
 import { useStoragePortalStore } from './store';
 
 export const storagePortal = (opt: any) => {
-  debugger;
   if (opt.key === 'send-storage') {
     const _localStorage = getAllStorage(localStorage);
     const _sessionStorage = getAllStorage(sessionStorage);
@@ -45,17 +44,17 @@ export const storagePortal = (opt: any) => {
   }
 
   if (opt.key === 'get-tabs') {
-    const options: Array<{ label: string; value: string }> = [];
+    const options: Array<{ title: string; url: string }> = [];
     opt.data.openWebSites.forEach((o: any) => {
       const isExclude =
-        options.some((item) => item.value === new URL(o.url).host) ||
+        options.some((item) => item.url === new URL(o.url).host) ||
         new URL(o.url).host === new URL(window.location.href).host ||
         o.url.startsWith('chrome://');
 
       if (!isExclude) {
         options.push({
-          value: new URL(o.url).host,
-          label: o.title,
+          url: new URL(o.url).host,
+          title: o.title,
         });
       }
     });
