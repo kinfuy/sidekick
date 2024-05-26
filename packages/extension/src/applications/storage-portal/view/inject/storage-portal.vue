@@ -20,8 +20,11 @@
         >
           {{ stateVisable ? '关闭' : '开启' }}传送门
         </span>
-        <span class="btn btn-small btn-border" @click="handleClear">
+        <span class="btn btn-small btn-border m-r-1" @click="handleClear">
           清空
+        </span>
+        <span class="btn btn-small btn-border" @click="handleRefresh">
+          刷新
         </span>
       </div>
     </div>
@@ -157,6 +160,9 @@ const handleClear = () => {
   window.sessionStorage.clear();
   // clearAllCookie();
   clearAll();
+};
+
+const handleRefresh = () => {
   init();
 };
 
