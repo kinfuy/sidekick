@@ -1,8 +1,8 @@
 <template>
-  <div class="sidekick-fluorescence-container">
+  <div class="dev-tester-fluorescence-container">
     <div
-      class="sidekick-fluorescence"
-      :class="{ 'sidekick-diffuse': isDiffuse }"
+      class="dev-tester-fluorescence"
+      :class="{ 'dev-tester-diffuse': isDiffuse }"
     ></div>
   </div>
 </template>

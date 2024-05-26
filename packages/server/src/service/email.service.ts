@@ -39,7 +39,7 @@ export class EmailService {
   async sendCode(email: string,code:number) {
     await this.sendEmail({
       to: email,
-      subject: '【sidekick】注册验证码',
+      subject: '【DevTester】注册验证码',
       html: emailTemplate(code),
     });
   }
@@ -81,11 +81,11 @@ const emailTemplate = (code:number)=>{
   <body>  
       <div class="container">  
           <h2>尊敬的用户：</h2>  
-          <p>感谢您选择SideKick插件。</p>
+          <p>感谢您选择DevTester插件。</p>
           <p>您的验证码是：<span style="font-weight: bold;font-size: 20px; color: #3498db;">${code}</span>，请妥善保管。</p>  
           <p>若非本人操作，请忽略此邮件。</p>
           <p>期待您的使用与反馈，如有任何问题，请随时联系我们。</p>  
-          <p>祝您使用愉快！ SideKick插件团队</p>
+          <p>祝您使用愉快！ DevTester插件团队</p>
       </div>  
   </body>  
   </html>`

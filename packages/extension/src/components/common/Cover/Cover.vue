@@ -1,9 +1,9 @@
 <template>
-  <div class="sidekick-cover">
+  <div class="dev-tester-cover">
     <div class="logo-content">
       <img class="logo" :src="logoIcon" alt="logo" />
-      <span class="logo-title">SildKick</span>
-      <span>欢迎，请点击登录SildKick</span>
+      <span class="logo-title">DevTester</span>
+      <span>欢迎，请点击登录DevTester</span>
       <div class="cover-btn">
         <span class="login-btn" @click="openLogin">登录</span>
       </div>

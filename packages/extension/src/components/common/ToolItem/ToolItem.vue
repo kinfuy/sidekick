@@ -1,6 +1,6 @@
 <template>
-  <div class="sidekick-tool btn" :class="{ 'tool-active': active }">
-    <img class="sidekick-tool-logo" :src="logo" :title="title" />
+  <div class="dev-tester-tool btn" :class="{ 'tool-active': active }">
+    <img class="dev-tester-tool-logo" :src="logo" :title="title" />
   </div>
 </template>
 

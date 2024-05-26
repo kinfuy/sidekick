@@ -1,17 +1,17 @@
 <template>
   <div
     v-if="stateVisable"
-    :class="`sidekick-dialog sidekick-${direction}`"
+    :class="`dev-tester-dialog dev-tester-${direction}`"
     :style="{ width: tool.width || '400px' }"
   >
-    <div class="sidekick-dialog-header">
+    <div class="dev-tester-dialog-header">
       <span></span>
-      <span v-if="isLogin || !tool.isLogin" class="sidekick-dialog-title">
+      <span v-if="isLogin || !tool.isLogin" class="dev-tester-dialog-title">
         <img class="tool-logo" :src="tool.logo" />
         <span> {{ tool.title }}</span>
       </span>
       <svg
-        class="sidekick-dialog-close"
+        class="dev-tester-dialog-close"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 1024 1024"
         @click="close"
@@ -22,7 +22,7 @@
         ></path>
       </svg>
     </div>
-    <div class="sidekick-dialog-body">
+    <div class="dev-tester-dialog-body">
       <Cover v-if="!isLogin && tool.isLogin" :is-inject="true"> </Cover>
       <Empty v-else-if="!tool.name"></Empty>
       <component :is="`Inject${tool.name}`" v-else></component>

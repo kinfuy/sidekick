@@ -1,10 +1,10 @@
 <template>
-  <div class="sidekick-login" :class="[theme]">
-    <div class="sidekick-content">
-      <div class="sidekick-login-logo">
+  <div class="dev-tester-login" :class="[theme]">
+    <div class="dev-tester-content">
+      <div class="dev-tester-login-logo">
         <div class="logo-content">
           <img :src="logoIcon" alt="logo" />
-          <span class="logo-title">SildKick</span>
+          <span class="logo-title">DevTester</span>
         </div>
       </div>
       <div class="login-content">

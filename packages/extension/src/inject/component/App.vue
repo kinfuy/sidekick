@@ -1,5 +1,5 @@
 <template>
-  <div class="sidekick-app" style="display: none" :class="[theme]">
+  <div class="dev-tester-app" style="display: none" :class="[theme]">
     <div
       ref="kitRef"
       class="kit-tool-warper"
@@ -18,18 +18,18 @@
       </div>
     </div>
     <div
-      class="sidekick-kit"
+      class="dev-tester-kit"
       :class="[`${direction}-mode`]"
       @mouseenter="hoverToolBar"
       @mouseleave="() => leaveToolBar(true)"
     >
       <div
-        class="sidekick-tool-bar"
+        class="dev-tester-tool-bar"
         :class="{
-          'sidekick-active': isActive || isVisable,
+          'dev-tester-active': isActive || isVisable,
         }"
       >
-        <div class="sidekick-content">
+        <div class="dev-tester-content">
           <ToolItem
             v-for="app in apps"
             :key="app.name"
@@ -40,7 +40,7 @@
           />
         </div>
 
-        <div class="sidekick-footer">
+        <div class="dev-tester-footer">
           <span class="line" />
           <div
             v-for="innerApp in innerApps"

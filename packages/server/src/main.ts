@@ -11,7 +11,7 @@ async function bootstrap() {
 
   app.use(  
     session({  
-      secret: 'sidekick',
+      secret: 'dev-tester',
       resave: false, // 避免不必要的 session 更新  
       saveUninitialized: false, // 避免不必要的 session 创建  
       cookie: {  

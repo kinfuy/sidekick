@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 import { contentInstall } from '@applications/install';
 import App from './App.vue';
 
-const APP_SELCTOR = 'sidekick-extension';
+const APP_SELCTOR = 'dev-tester-extension';
 
 export const initInject = () => {
   const isExist = document.querySelector(`#${APP_SELCTOR}`);

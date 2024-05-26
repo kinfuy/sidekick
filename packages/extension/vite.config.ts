@@ -39,7 +39,7 @@ export default defineConfig({
       log: false,
       config: [
         {
-          container: '#sidekick-extension',
+          container: '#dev-tester-extension',
           output: 'assets/shadow-styles.css',
           retry: 3,
         },
