@@ -1,6 +1,7 @@
 <template>
   <div>传送门</div>
-  <div class="select-web">
+  <Empty v-if="!webs.length" />
+  <div v-else class="select-web">
     <div v-for="item in webs" :key="item.url" class="select-web-item">
       <a
         class="select-web-title link"
@@ -19,8 +20,8 @@
 </template>
 
 <script lang="ts" setup>
+import Empty from '@components/common/Empty/Empty';
 import type { PropType } from 'vue';
-import { ref } from 'vue';
 
 const props = defineProps({
   webs: {

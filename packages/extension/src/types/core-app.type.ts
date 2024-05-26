@@ -59,6 +59,7 @@ export interface Application extends Record<string, any> {
   onError?: (opt: { key: string; message: string }) => void;
   onOpenChromeUrl?: (opt: { openUrl: string; extra?: any }) => void;
   onOpenWindow?: (opt: { openUrl: string; extra?: any }) => void;
+  onCustomAction?: (opt: { key: string; data: any }) => void;
 }
 
 export interface App extends AppEntry {

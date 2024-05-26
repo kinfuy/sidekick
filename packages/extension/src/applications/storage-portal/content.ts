@@ -21,10 +21,13 @@ export const storagePortal = (opt: any) => {
   }
   if (opt.key === 'get-storage') {
     const { setStore } = useStoragePortalStore();
-    setStore({
-      sessionStorage: opt.data.opt.sessionStorage,
-      localStorage: opt.data.opt.localStorage,
-    });
+    setStore(
+      {
+        sessionStorage: opt.data.opt.sessionStorage,
+        localStorage: opt.data.opt.localStorage,
+      },
+      true,
+    );
   }
   if (opt.key === 'get-cookies') {
     const { setStore } = useStoragePortalStore();
@@ -40,7 +43,7 @@ export const storagePortal = (opt: any) => {
     cookies.forEach((c) => {
       if (c.key) rst.push(c);
     });
-    setStore({ cookie: rst });
+    setStore({ cookie: rst }, true);
   }
 
   if (opt.key === 'get-tabs') {

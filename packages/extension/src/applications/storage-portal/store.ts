@@ -1,4 +1,3 @@
-import { clearAllCookie } from '@utils';
 import { computed, ref } from 'vue';
 export interface IStorageItem {
   key: string;
@@ -26,15 +25,31 @@ const store = ref<StoragePortalStoreInstance>({
 } as StoragePortalStoreInstance);
 
 export const useStoragePortalStore = () => {
-  // const { get, set } = storage;
+  const syncLocal = () => {
+    const list = store.value.storage.cookie;
+    list.forEach((c: IStorageItem) => {
+      document.cookie = `${c.key}=${c.val}`;
+    });
+    if (store.value.storage.localStorage) {
+      store.value.storage.localStorage.forEach((storage: IStorageItem) => {
+        window.localStorage.setItem(storage.key, storage.val);
+      });
+    }
+    if (store.value.storage.sessionStorage) {
+      store.value.storage.sessionStorage.forEach((storage: IStorageItem) => {
+        window.sessionStorage.setItem(storage.key, storage.val);
+      });
+    }
+  };
 
-  const clear = () => {};
-
-  const setStore = (data: Partial<IStorage>) => {
+  const setStore = (data: Partial<IStorage>, sync?: boolean) => {
     store.value.storage = {
       ...store.value.storage,
       ...data,
     };
+    if (sync) {
+      syncLocal();
+    }
   };
 
   const setTabs = (data: Array<{ title: string; url: string }>) => {
@@ -69,13 +84,10 @@ export const useStoragePortalStore = () => {
       localStorage: [],
       sessionStorage: [],
     };
-    window.localStorage.clear();
-    window.sessionStorage.clear();
-    clearAllCookie();
   };
 
   return {
-    clear,
+    syncLocal,
     setStore,
     setTabs,
     webs,

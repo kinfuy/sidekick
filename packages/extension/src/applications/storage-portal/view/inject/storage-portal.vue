@@ -82,7 +82,7 @@
 </template>
 
 <script lang="ts" setup>
-import { getAllStorage, injectPostMessage } from '@utils';
+import { clearAllCookie, getAllStorage, injectPostMessage } from '@utils';
 import { computed, onMounted, ref } from 'vue';
 import { useStoragePortalStore } from '../../store';
 import KeyValue from './key-value.vue';
@@ -123,15 +123,39 @@ const init = () => {
   });
 };
 
+const deleteCookie = (cookies: string[]) => {
+  const targetUrl = new URL(window.location.href);
+  injectPostMessage({
+    from: 'app_inject',
+    code: 'onCustomAction',
+    data: {
+      key: 'clear-cookies',
+      data: {
+        targetUrl: `${targetUrl.protocol}//${targetUrl.host}`,
+        cookies,
+      },
+    },
+  });
+};
+
 const handleDelete = (
   key: string,
   type: 'localStorage' | 'sessionStorage' | 'cookie',
 ) => {
   deleteItem(key, type);
+  if (type === 'cookie') {
+    const cookies = [key];
+    deleteCookie(cookies);
+  }
   init();
 };
 
 const handleClear = () => {
+  const cookies = currentStorage.value.cookie.map((c) => c.key);
+  deleteCookie(cookies);
+  window.localStorage.clear();
+  window.sessionStorage.clear();
+  // clearAllCookie();
   clearAll();
   init();
 };

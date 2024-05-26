@@ -12,7 +12,6 @@ export const StoragePortal: App = {
   isLogin: false,
   logo: getChromeUrl(cookie),
   contentApp: true,
-  settingApp: true,
   width: '600px',
   hooks: {
     onGetData: async (data) => {
@@ -21,7 +20,6 @@ export const StoragePortal: App = {
         if (!targetUrl && !sourceUrl) return;
         const cookies = await chrome.cookies.getAll({ domain: targetUrl });
         const tabs = await chrome.tabs.query({ url: `*://${targetUrl}/*` });
-        debugger;
         if (tabs && tabs[0]?.id) {
           sendMessageToContentScriptById(tabs[0].id, {
             from: 'background',
@@ -59,6 +57,18 @@ export const StoragePortal: App = {
         code: 'StoragePortal',
         data: { key: 'get-storage', data },
       });
+    },
+    onCustomAction: async ({ data, key }) => {
+      if (key === 'clear-cookies') {
+        const { targetUrl, cookies } = data;
+        if (!targetUrl) return;
+        cookies.forEach(async (n: string) => {
+          await chrome.cookies.remove({
+            url: targetUrl,
+            name: n,
+          });
+        });
+      }
     },
   },
 };
