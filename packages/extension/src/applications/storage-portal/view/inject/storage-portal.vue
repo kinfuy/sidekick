@@ -2,9 +2,9 @@
   <div class="storage-portal">
     <div class="storage-portal-operation">
       <div class="web-info">
-        <div class="web-title">{{ currentWeb.title }}</div>
+        <div class="web-title theme-text">{{ currentWeb.title }}</div>
         <div class="web-url">
-          <span>{{ currentWeb.url }}</span>
+          <span class="theme-text-desc">{{ currentWeb.url }}</span>
           <template v-if="syncWeb.url">
             <span class="m-l-1 m-r-1">已从</span>
             <span>{{ syncWeb.url }}</span>
@@ -39,7 +39,7 @@
         >
           <span
             :class="[active === item.id ? 'active-text' : '']"
-            class="btn-text"
+            class="btn-text theme-text"
           >
             {{ item.name }}
           </span>
@@ -51,7 +51,7 @@
           class="storage-item"
         >
           <div class="storage-title">
-            <span class="storage-title-text">LocalStorage</span>
+            <span class="storage-title-text theme-text">LocalStorage</span>
           </div>
           <KeyValue
             :list="currentStorage.localStorage"
@@ -63,7 +63,7 @@
           class="storage-item"
         >
           <div class="storage-title">
-            <span class="storage-title-text">SessionStorage</span>
+            <span class="storage-title-text theme-text">SessionStorage</span>
           </div>
           <KeyValue
             :list="currentStorage.sessionStorage"
@@ -72,7 +72,7 @@
         </div>
         <div v-if="['all', 'Cookies'].includes(active)" class="storage-item">
           <div class="storage-title">
-            <span class="storage-title-text">Cookie</span>
+            <span class="storage-title-text theme-text">Cookie</span>
           </div>
           <KeyValue
             :list="currentStorage.cookie"
