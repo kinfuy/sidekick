@@ -8,7 +8,6 @@ export const devAccount = (option: {
   const { key } = option;
   const { web, user } = option.data;
   if (key === 'user-login' && user) {
-    debugger;
     autoInput({
       user,
       rules: web.match,
