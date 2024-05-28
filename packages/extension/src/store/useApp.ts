@@ -38,26 +38,30 @@ export const useApp = () => {
     appStore.value = store;
   };
 
+  const isAppActive = (name: string) => {
+    return !appStore.value.notEffects.includes(name);
+  };
+
   const apps = computed(() =>
-    appStore.value.apps.filter((a) => !a.inner && a.contentApp),
+    appStore.value.apps.filter(
+      (a) => !a.inner && a.contentApp && isAppActive(a.name),
+    ),
   );
 
   const innerApps = computed<AppEntry[]>(() => {
-    return appStore.value.apps.filter((a) => a.inner && a.contentApp);
+    return appStore.value.apps.filter(
+      (a) => a.inner && a.contentApp && isAppActive(a.name),
+    );
   });
 
   // popup app
   const popupApps = computed<AppEntry[]>(() => {
-    return appStore.value.apps.filter((a) => a.popupApp);
+    return appStore.value.apps.filter((a) => a.popupApp && isAppActive(a.name));
   });
 
   const settingApps = computed(() => {
     return appStore.value.apps.filter((a) => a.settingApp);
   });
-
-  const isAppActive = (name: string) => {
-    return !appStore.value.notEffects.includes(name);
-  };
 
   const updateNotEffect = (name: string, notEffect: boolean) => {
     if (notEffect) {
@@ -75,6 +79,7 @@ export const useApp = () => {
   sync();
 
   return {
+    sync,
     save,
     isAppActive,
     apps,

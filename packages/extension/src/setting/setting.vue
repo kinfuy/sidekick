@@ -20,7 +20,20 @@
         </div>
       </div>
       <div class="setting-right">
-        <div class="setting-title">{{ current?.title }}</div>
+        <div class="setting-title">
+          <span>{{ current?.title }}</span>
+          <ElSwitch
+            v-if="!current?.inner"
+            class="m-l-1"
+            active-text="启用"
+            inactive-text="禁用"
+            inline-prompt
+            :model-value="isAppActive(current.name)"
+            @change="
+              (value) => updateNotEffect(current.name, !value as boolean)
+            "
+          />
+        </div>
         <component :is="`Setting${current?.name}`" />
       </div>
     </template>
@@ -34,6 +47,7 @@ import { computed, ref } from 'vue';
 import { useAuth } from '@store/useAuth';
 import Cover from '@components/common/Cover/Cover.vue';
 import { useApp } from '@store/useApp';
+import { ElSwitch } from 'element-plus';
 
 import type { AppEntry } from '@/types/core-app.type';
 import logo from '@/assets/logo.png';
@@ -45,7 +59,7 @@ const { theme } = useTheme();
 
 const active = ref();
 
-const { settingApps } = useApp();
+const { settingApps, isAppActive, updateNotEffect } = useApp();
 
 const init = () => {
   const idx = window.location.href.lastIndexOf('#') > 0;

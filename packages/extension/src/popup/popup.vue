@@ -11,7 +11,7 @@
           @click="appClick(app)"
         />
       </div>
-      <div class="popup-content">
+      <div v-if="popupApps.length" class="popup-content">
         <img class="popup-set" :src="setIcon" @click="handleSet" />
         <component :is="`Popup${current.name}`" v-if="current"></component>
       </div>
@@ -23,7 +23,7 @@
 import ToolItem from '@components/common/ToolItem/ToolItem.vue';
 import { useApp } from '@store/useApp';
 import { useTheme } from '@store/useTheme';
-import { onBeforeUnmount, provide, ref } from 'vue';
+import { onBeforeUnmount, provide, ref, watchEffect } from 'vue';
 import { getChromeUrl, sendMessageToExtension } from '@utils';
 import set from '@assets/image/set.svg';
 import { ElConfigProvider } from 'element-plus';
@@ -61,6 +61,13 @@ const handleSet = () => {
   const query = current.value ? `#${current.value?.name}` : '';
   window.open(getChromeUrl(`setting.html${query}`), '_blank');
 };
+
+watchEffect(() => {
+  if (popupApps.value.length === 0) {
+    handleSet();
+    window.close();
+  }
+});
 
 provide('appContent', {
   openSet: handleSet,

@@ -66,10 +66,10 @@ import './App.less?shadow';
 import logo from '@assets/logo16.png';
 import { useTheme } from '@store/useTheme';
 import { useApp } from '@store/useApp';
-import { useAuth } from '@store/useAuth';
 import { injectPostMessage } from '@utils';
 import type { AppEntry } from '@/types/core-app.type';
 
+const { sync } = useApp();
 const { theme, direction, posY, setTheme, setPosY } = useTheme();
 
 const kitRef = ref();
@@ -123,6 +123,12 @@ const hoverToolBar = () => {
   }, 1000);
 };
 
+watchEffect(() => {
+  if (isActive.value) {
+    sync();
+  }
+});
+
 const leaveToolBar = (isBar: boolean = false) => {
   if ((!isBar && isActive.value) || isDragging.value) return; // 侧边栏打开 logo 离开不关闭
   clearTimeout(openTimer);
@@ -157,10 +163,6 @@ const openLogin = () => {
 };
 
 const appClick = async (tool: AppEntry) => {
-  // if (!isLogin.value && tool.isLogin) {
-  //   openLogin();
-  //   return;
-  // }
   if (tool.linkUrl) {
     openPage('onOpenChromeUrl', 'setting.html');
     return;
