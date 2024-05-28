@@ -34,7 +34,11 @@
             "
           />
         </div>
-        <component :is="`Setting${current?.name}`" />
+        <component
+          :is="`Setting${current?.name}`"
+          v-if="hasSettingAppView.includes(current?.name) || current?.inner"
+        />
+        <Empty v-else text="暂无配置项" />
       </div>
     </template>
   </div>
@@ -48,7 +52,9 @@ import { useAuth } from '@store/useAuth';
 import Cover from '@components/common/Cover/Cover.vue';
 import { useApp } from '@store/useApp';
 import { ElSwitch } from 'element-plus';
+import { hasSettingAppView } from '@applications/install';
 
+import Empty from '@components/common/Empty/Empty';
 import type { AppEntry } from '@/types/core-app.type';
 import logo from '@/assets/logo.png';
 const logoIcon = chrome.runtime.getURL(logo);

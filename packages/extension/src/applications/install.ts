@@ -24,3 +24,5 @@ export const settingInstall = (app: App) => {
   devAccountSettingInstall(app);
   linkGoSettingInstall(app);
 };
+
+export const hasSettingAppView = ['DevAccount', 'LinkGo'];
