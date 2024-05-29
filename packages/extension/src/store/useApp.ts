@@ -4,11 +4,15 @@ import { appsRaw } from '../applications';
 import type { AppEntry } from '@/types/core-app.type';
 
 export interface AppStore {
+  version: number;
   apps: Array<AppEntry>;
   notEffects: Array<string>;
 }
 
+const currentVersion = 1;
+
 const defaultStore: AppStore = {
+  version: 1,
   apps: appsRaw,
   notEffects: [],
 };
@@ -30,12 +34,11 @@ export const useApp = () => {
     if (_store && JSON.stringify(_store) !== '{}') {
       store = _store as AppStore;
     }
-    appsRaw.forEach((a) => {
-      if (!store.apps.find((s) => s.name === a.name)) {
-        store.apps.push(a);
-      }
-    });
-    appStore.value = store;
+    if (store.version === currentVersion) {
+      appStore.value = store;
+    } else {
+      appStore.value = defaultStore;
+    }
   };
 
   const isAppActive = (name: string) => {

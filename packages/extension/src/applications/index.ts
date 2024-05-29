@@ -36,22 +36,22 @@ const settingApps: AppEntry[] = [
     isLogin: false,
     settingApp: true,
   },
-  {
-    title: '帮助与反馈',
-    name: 'AppHelp',
-    logo: getChromeUrl(set),
-    inner: true,
-    isLogin: false,
-    settingApp: true,
-  },
-  {
-    title: '关于',
-    name: 'AppAbout',
-    logo: getChromeUrl(set),
-    inner: true,
-    isLogin: false,
-    settingApp: true,
-  },
+  // {
+  //   title: '帮助与反馈',
+  //   name: 'AppHelp',
+  //   logo: getChromeUrl(set),
+  //   inner: true,
+  //   isLogin: false,
+  //   settingApp: true,
+  // },
+  // {
+  //   title: '关于',
+  //   name: 'AppAbout',
+  //   logo: getChromeUrl(set),
+  //   inner: true,
+  //   isLogin: false,
+  //   settingApp: true,
+  // },
 ];
 
 export const appsRaw: AppEntry[] = [
