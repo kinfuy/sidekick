@@ -1,43 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { ActivationVipDto, CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import { ActivationVipDto, CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as blueimpMd5 from 'blueimp-md5';
 import { SubscriptionService } from '../subscription/subscription.service';
+import { RegisterDto } from '@/auth/auto.dto';
+import { isEmpty } from 'class-validator';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectRepository(User) private userModel: Repository<User>) {}
+  constructor(@InjectRepository(User) private user: Repository<User>) {}
 
-  create(createUserDto: CreateUserDto) {
-    return this.userModel.save(createUserDto);
+  async register(params: RegisterDto) {
+    const { email, password } = params;
+    const exists  = await this.user.findOne({ where: { email: email } });
+    if (!isEmpty(exists)) return 
+
+    const user = this.user.create()
+
+    user.email = email
+    user.updateTime = new Date();
+    user.password = blueimpMd5(`${email}${password}`);
+
+    this.user.save(user);
+    return user;
   }
 
-  save(user: User) {
-    return this.userModel.save(user);
-  }
-
-  createQueryBuilder(name: string) {
-    return this.userModel.createQueryBuilder(name);
-  }
-
-  findAll() {
-    return this.userModel.find();
-  }
-
-  findByEmail(email: string) {
-    return this.userModel.findOne({ where: { email: email } });
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return this.userModel.update(id, updateUserDto);
-  }
-
-  updateByeEmail(email: string, updateUserDto: UpdateUserDto) {
-    return this.userModel.update({ email: email }, updateUserDto);
-  }
-
-  remove(id: number) {
-    return this.userModel.update(id, { isDelete: true });
+  findOne(email: string) {
+    return this.user.findOne({ where: { email: email } });
   }
 }

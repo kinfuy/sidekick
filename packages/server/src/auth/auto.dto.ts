@@ -1,12 +1,13 @@
-import { IsString } from 'class-validator';
+import { IsString } from "class-validator";
+
 export class LoginDto {
     @IsString()
     email: string;
     @IsString()
     password: string;
-}
+  }
 
-export class RegisterDto {
+  export class RegisterDto {
     @IsString()
     userName: string;
     @IsString()
@@ -14,10 +15,11 @@ export class RegisterDto {
     @IsString()
     password: string;
     @IsString()
-    verifyCode:string;
-}
+    verifyCode: string;
+  }
 
-export class VerifyCodeDto {
+  export class VerifyCodeDto {
     @IsString()
     email: string;
-}
+  }
+  

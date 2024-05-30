@@ -1,15 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { envConfig } from './config';
-import { EmailService } from './service/email.service';
-import { LoginService } from './service/login.service';
 import { SubscriptionModule } from './subscription/subscription.module';
-import { SubscriptionService } from './subscription/subscription.service';
-import { AuthService } from './service/auth.service';
-import {  JwtService } from '@nestjs/jwt';
+import { AuthModule } from './auth/auth.module';
+import { envConfig } from '@/common/configs/env';
 
 @Module({
   imports: [
@@ -27,10 +21,10 @@ import {  JwtService } from '@nestjs/jwt';
       retryAttempts: 10,
       autoLoadEntities: true, //自动查找entity实体
     }),
+    AuthModule,
     UserModule,
     SubscriptionModule,
+   
   ],
-  controllers: [AppController],
-  providers: [AppService, EmailService, LoginService, AuthService, JwtService],
 })
 export class AppModule {}

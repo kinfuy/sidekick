@@ -1,7 +1,8 @@
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 
-export const baseURL = 'https://api.kinfuy.cn';
+// export const baseURL = 'https://api.kinfuy.cn';
+export const baseURL = 'http://localhost:9000';
 
 export interface ResponseOption {
   status: number;
