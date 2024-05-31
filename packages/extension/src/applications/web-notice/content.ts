@@ -2,25 +2,35 @@ import { useWebNoticeStore } from './store';
 import Notice from './view/extra/notice.vue';
 import { createApp } from '@/components/vue-component';
 
+const APP_SELCTOR = 'web-notice';
+
+export const injectNotice = () => {
+  const isExist = document.querySelector(`#${APP_SELCTOR}`);
+  if (isExist) return true;
+  createApp({
+    app: { component: Notice },
+    config: { appSelector: 'web-notice', predStyle: 'assets/web-notice.css' },
+  });
+};
+
+export const removeNotice = () => {
+  const app = document.body.querySelector('#web-notice');
+  app && document.body.removeChild(app);
+};
+
 export const initNotice = async () => {
   const { setCurrent } = useWebNoticeStore();
-
   const current = await setCurrent(window.location.href);
   if (current && current.active) {
-    createApp({
-      app: {
-        component: Notice,
-      },
-      config: {
-        appSelector: 'web-notice',
-        predStyle: 'assets/web-notice.css',
-      },
-    });
+    const timer = setTimeout(() => {
+      const isExist = injectNotice();
+      if (isExist) clearTimeout(timer);
+    }, 100);
   } else {
-    const app = document.body.querySelector('#web-notice');
-    app && document.body.removeChild(app);
+    removeNotice();
   }
 };
-export const webNotice = () => {
+export const webNotice = (key: string) => {
+  console.log(key, 'webNotice');
   initNotice();
 };

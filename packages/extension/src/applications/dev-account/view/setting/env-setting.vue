@@ -19,7 +19,7 @@
     <div v-if="viewType" class="env-form">
       <ElDivider></ElDivider>
       <div class="env-title">{{ title }}</div>
-      <ElForm label-width="auto" :model="editForm">
+      <ElForm ref="editFormRef" label-width="auto" :model="editForm">
         <ElFormItem label="名称" required prop="name">
           <ElInput v-model="editForm.name" placeholder="请输入环境名称" />
         </ElFormItem>
@@ -93,26 +93,30 @@ const show = (row: WebInfo) => {
   webId.value = row?.id || '';
   webEnvs.value = row?.envs || [];
 };
+const editFormRef = ref<InstanceType<typeof ElForm>>();
 
 const handleSave = () => {
-  if (editForm.value.id) {
-    webEnvs.value = webEnvs.value.map((item) => {
-      if (item.id === editForm.value.id) {
-        return JSON.parse(JSON.stringify(editForm.value));
-      }
-      return item;
+  editFormRef.value?.validate().then(() => {
+    if (editForm.value.id) {
+      webEnvs.value = webEnvs.value.map((item) => {
+        if (item.id === editForm.value.id) {
+          return JSON.parse(JSON.stringify(editForm.value));
+        }
+        return item;
+      });
+    } else {
+      webEnvs.value.push({
+        ...editForm.value,
+        id: uuid(),
+      });
+    }
+    emit('save', {
+      id: webId.value,
+      envs: JSON.parse(JSON.stringify(webEnvs.value)),
     });
-  } else {
-    webEnvs.value.push({
-      ...editForm.value,
-      id: uuid(),
-    });
-  }
-  emit('save', {
-    id: webId.value,
-    envs: JSON.parse(JSON.stringify(webEnvs.value)),
+    reset();
+    editFormRef.value?.resetFields();
   });
-  reset();
 };
 
 const handleDelete = (env: WebEnv) => {

@@ -132,6 +132,7 @@ const handleSave = () => {
       users: JSON.parse(JSON.stringify(webUsers.value)),
     });
     reset();
+    editFormRef.value?.resetFields();
   });
 };
 const handleDelete = (env: WebUser) => {

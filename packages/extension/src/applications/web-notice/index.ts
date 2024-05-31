@@ -10,14 +10,7 @@ export const WebNotice: App = {
   contentApp: true,
   settingApp: true,
   hooks: {
-    onActiveChange: () => {
-      sendMessageToContentScript({
-        from: 'background',
-        code: 'baichuan-core',
-        data: { key: 'doc-reload', data: { reload: true } },
-      });
-    },
-    async onDocLoad() {
+    async onContentInit() {
       sendMessageToContentScript({
         from: 'background',
         code: 'WebNotice',
