@@ -30,7 +30,7 @@ const setEffectTime = (val: Date, type: number) => {
     return dayjs(val).add(1, 'week').toDate();
   }
   if (type === 99) {
-    return dayjs('2999-12-31').toDate();
+    return dayjs('2099-01-01').toDate();
   }
   return val;
 };
@@ -68,7 +68,6 @@ export class SubscriptionService {
       subscription.email = email;
       subscription.createTime = new Date();
       subscription.updateTime = new Date();
-      await this.subscription.save(subscription);
     }
     subscription.type = activation.type;
     subscription.endTime = setEffectTime(
@@ -83,7 +82,7 @@ export class SubscriptionService {
       startTime: subscription.startTime,
       lastTime: subscription.lastTime,
       endTime: subscription.endTime,
-      isEffective: subscription.endTime.getTime() > new Date().getTime(),
+      isEffective: subscription.type===99? true: subscription.endTime.getTime() > new Date().getTime(),
     };
   }
 

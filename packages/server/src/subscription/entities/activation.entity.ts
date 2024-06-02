@@ -21,9 +21,9 @@ export class Activation {
      @Column() // 激活码类型 1: 月卡 2：季卡 3：年卡 4：周体验卡 99：永久
      type: number;
 
-     @CreateDateColumn({ type: 'timestamp' })
+     @CreateDateColumn({ type: 'datetime' })
      createTime: Date;
    
-     @UpdateDateColumn({ type: 'timestamp' })
+     @UpdateDateColumn({ type: 'datetime' })
      updateTime: Date;
 }

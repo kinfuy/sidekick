@@ -1,7 +1,7 @@
 import { useAuth } from '@store/useAuth';
 
-// export const baseURL = 'https://api.kinfuy.cn';
-export const baseURL = 'http://localhost:9000';
+export const baseURL = 'https://api.kinfuy.cn';
+// export const baseURL = 'http://localhost:9000';
 
 const requestInterceptors = (url: string, data: any) => {
   const headers: Record<string, any> = {

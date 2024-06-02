@@ -30,10 +30,10 @@ export class User {
     @Column({ select: false, default: false }) 
     isDelete: boolean;
   
-    @CreateDateColumn({ type: 'timestamp' })
+    @CreateDateColumn({ type: 'datetime' })
     createTime: Date;
   
-    @UpdateDateColumn({ type: 'timestamp' })
+    @UpdateDateColumn({ type: 'datetime' })
     updateTime: Date;
   }
   

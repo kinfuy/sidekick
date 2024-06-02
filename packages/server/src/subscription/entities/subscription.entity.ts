@@ -21,18 +21,18 @@ export class Subscription {
      @Column() // 激活码类型 1: 月卡 2：周卡 3：年卡 99：永久
      type: number;
 
-     @CreateDateColumn({ type: 'timestamp' })
+     @CreateDateColumn({ type: 'datetime' })
      startTime: Date; // 初次续期日期
 
-     @CreateDateColumn({ type: 'timestamp' })
+     @CreateDateColumn({ type: 'datetime' })
      lastTime: Date; // 上次续期时间
 
-     @UpdateDateColumn({ type: 'timestamp' })
+     @UpdateDateColumn({ type: 'datetime' })
      endTime: Date; // 有效日期
 
-     @CreateDateColumn({ type: 'timestamp' })
+     @CreateDateColumn({ type: 'datetime' })
      createTime: Date;
    
-     @UpdateDateColumn({ type: 'timestamp' })
+     @UpdateDateColumn({ type: 'datetime' })
      updateTime: Date;
 }

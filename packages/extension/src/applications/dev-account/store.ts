@@ -150,7 +150,6 @@ export const useDevAccountStore = () => {
       store.value = config;
     }
     if (type === 'update') {
-      debugger;
       const webs = [] as WebInfo[];
       store.value.webs.forEach((w) => {
         const web = config.webs.find((x) => x.id === w.id);
