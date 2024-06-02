@@ -23,4 +23,11 @@ export class LoginDto {
     @IsString()
     email: string;
   }
+
+  export class TokenDto {
+    @IsString()
+    accessToken: string;
+    @IsString()
+    refreshToken: string;
+  }
   

@@ -204,22 +204,22 @@ const login = async () => {
       errorTips.value = err.message || '登录失败';
     },
   );
-  debugger;
   if (user) {
+    errorTips.value = '登录失败';
     if (user.confirm) {
       mode.value = 'confirm';
-    } else {
-      setUser({
-        accessToken: user.accessToken,
-        refreshToken: user.refreshToken,
-        email: model.value.email,
-        avatar: user.avatar,
-        name: user.name,
-        description: user.description,
-        subscription: user.subscription,
-      });
-      clearActiveTab();
+      return;
     }
+    setUser({
+      accessToken: user.accessToken,
+      refreshToken: user.refreshToken,
+      email: model.value.email,
+      avatar: user.avatar,
+      name: user.name,
+      description: user.description,
+      subscription: user.subscription,
+    });
+    clearActiveTab();
   }
 };
 

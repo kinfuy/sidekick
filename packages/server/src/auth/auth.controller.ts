@@ -8,7 +8,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto, RegisterDto, VerifyCodeDto } from './auto.dto';
+import { LoginDto, RegisterDto, TokenDto, VerifyCodeDto } from './auto.dto';
 import {  Public } from '@/auth/auth.guard';
 import { UserService } from '@/user/user.service';
 import { UserException } from '@/common/exceptions/custom.exception';
@@ -31,8 +31,10 @@ export class AuthController {
     await this.userService.register(dto);
   }
 
+  @Public()
   @Post('refreshToken')
-  async refreshToken(@Body() parmas: any) {
+  async refreshToken(@Body() parmas: TokenDto) {
+    return await this.authService.refreshToken(parmas.accessToken, parmas.refreshToken)
   }
 
   @Public()

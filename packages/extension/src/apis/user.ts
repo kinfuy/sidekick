@@ -1,5 +1,4 @@
-import { useAuth } from '@store/useAuth';
-import request, { baseURL } from './axios';
+import { request } from './fetch';
 export const loginApi = async <T>(data: object): Promise<T> => {
   return await request.post(`/login`, data);
 };
@@ -21,14 +20,5 @@ export const activationVipApi = async <T>(data: object): Promise<T> => {
 };
 
 export const refreshTokenApi = async <T>(data: object): Promise<T> => {
-  const { accessToken } = useAuth();
-  const rst = await fetch(`${baseURL}/refreshToken`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken.value}`,
-    },
-    body: JSON.stringify(data),
-  });
-  return await rst.json();
+  return await request.post(`/refreshToken`, data);
 };

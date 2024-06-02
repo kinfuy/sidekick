@@ -78,6 +78,7 @@ const init = () => {
   }
   active.value = settingApps.value[0].name;
   window.location.href = `${window.location.href}#${active.value}`;
+  getRefreshToken();
 };
 
 init();
@@ -90,7 +91,6 @@ const current = computed(() => {
 });
 
 const appClick = (app: AppEntry) => {
-  getRefreshToken();
   active.value = app.name;
   const idx = window.location.href.lastIndexOf('#');
   window.location.href = `${window.location.href.slice(0, idx)}#${app.name}`;
