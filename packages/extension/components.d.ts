@@ -9,7 +9,6 @@ declare module 'vue' {
   export interface GlobalComponents {
     Cover: typeof import('./src/components/common/Cover/Cover.vue')['default']
     Dialog: typeof import('./src/components/common/Dialog/Dialog.vue')['default']
-    ElSwitch: typeof import('element-plus/es')['ElSwitch']
     Fluorescence: typeof import('./src/components/common/Fluorescence/Fluorescence.vue')['default']
     ToolItem: typeof import('./src/components/common/ToolItem/ToolItem.vue')['default']
   }

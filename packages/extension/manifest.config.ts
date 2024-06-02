@@ -37,6 +37,7 @@ export default defineManifest(() => {
       'tabs',
       'alarms',
       'cookies',
+      'activeTab',
     ],
     host_permissions: ['https://*/', 'http://*/'],
     web_accessible_resources: isDev
