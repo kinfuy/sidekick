@@ -9,7 +9,7 @@ export interface AppStore {
   notEffects: Array<string>;
 }
 
-const currentVersion = 1;
+const currentVersion = 2;
 
 const defaultStore: AppStore = {
   version: 1,
@@ -79,12 +79,23 @@ export const useApp = () => {
     save();
   };
 
+  const sortApps = (list: string[]) => {
+    const apps = list.map((name) => {
+      return appStore.value.apps.find((app) => app.name === name) as AppEntry;
+    });
+    appStore.value.apps = appStore.value.apps
+      .filter((app) => !list.includes(app.name))
+      .concat(apps);
+    save();
+  };
+
   sync();
 
   return {
     sync,
     save,
     isAppActive,
+    sortApps,
     apps,
     innerApps,
     popupApps,

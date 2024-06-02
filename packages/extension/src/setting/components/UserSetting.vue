@@ -2,9 +2,9 @@
   <div class="user-setting">
     <div class="user-setting-content">
       <div class="user-info">
-        <span v-if="!isLogin" class="user-login btn-text" @click="login"
-          >未登录</span
-        >
+        <span v-if="!isLogin" class="user-login btn-text" @click="login">
+          未登录
+        </span>
         <template v-else>
           <div>
             <span>{{ user?.email }}</span>
@@ -32,7 +32,6 @@
         <div v-if="isLogin" class="btn-text" @click="logout">退出</div>
       </div>
     </div>
-
     <div
       v-if="(!subscription || !subscription.isEffective) && isLogin"
       class="user-setting-content m-t-2"
@@ -94,11 +93,13 @@ const handleActivate = async () => {
     email: user.value!.email,
     code: activateCode.value,
   }).catch((err) => {
+    activateCode.value = '';
     ElMessage.error(err.message);
   });
   if (res) {
     setSubscription(res);
     star();
+    activateCode.value = '';
     ElMessage.success('激活成功');
   }
 };

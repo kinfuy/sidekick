@@ -12,7 +12,7 @@ import {
   ref,
 } from 'vue';
 
-import './styles/sortable.less';
+import './sortable.less';
 
 export default defineComponent({
   name: 'Sortable',

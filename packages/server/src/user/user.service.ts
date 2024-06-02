@@ -1,14 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { ActivationVipDto, CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as blueimpMd5 from 'blueimp-md5';
-import { SubscriptionService } from '../subscription/subscription.service';
 import { RegisterDto } from '@/auth/auto.dto';
 import { isEmpty } from 'class-validator';
 import { UserException } from '@/common/exceptions/custom.exception';
-import { responseCode } from '@/common/configs/constants';
 
 @Injectable()
 export class UserService {

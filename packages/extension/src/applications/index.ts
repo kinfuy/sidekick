@@ -37,6 +37,14 @@ const settingApps: AppEntry[] = [
     settingApp: true,
   },
   // {
+  //   title: '应用商店',
+  //   name: 'AppStore',
+  //   logo: getChromeUrl(set),
+  //   inner: true,
+  //   isLogin: false,
+  //   settingApp: true,
+  // },
+  // {
   //   title: '帮助与反馈',
   //   name: 'AppHelp',
   //   logo: getChromeUrl(set),

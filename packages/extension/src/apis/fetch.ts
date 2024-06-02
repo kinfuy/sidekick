@@ -26,7 +26,6 @@ const responseInterceptors = async (data: Response) => {
     return rst?.data;
   }
   if (rst.code === '100001') {
-    clearAuth();
     throw new Error(rst.message);
   }
   if (rst.code === '100004') {
