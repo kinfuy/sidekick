@@ -204,12 +204,13 @@ const login = async () => {
       errorTips.value = err.message || '登录失败';
     },
   );
+  debugger;
   if (user) {
     if (user.confirm) {
       mode.value = 'confirm';
     } else {
       setUser({
-        token: user.token,
+        accessToken: user.accessToken,
         refreshToken: user.refreshToken,
         email: model.value.email,
         avatar: user.avatar,
@@ -232,7 +233,7 @@ const register = async () => {
 
   if (user) {
     setUser({
-      token: user.token,
+      accessToken: user.accessToken,
       refreshToken: user.refreshToken,
       email: model.value.email,
       avatar: user.avatar,
@@ -262,6 +263,7 @@ const sendCode = async () => {
     email: model.value.email,
   }).catch((err) => {
     clearInterval(timer);
+    count.value = 60;
     errorTips.value = err.message || '验证码发送失败';
   });
 };
@@ -276,7 +278,7 @@ const verifyEmail = async () => {
 
   if (user) {
     setUser({
-      token: user.token,
+      accessToken: user.accessToken,
       refreshToken: user.refreshToken,
       email: model.value.email,
       avatar: user.avatar,

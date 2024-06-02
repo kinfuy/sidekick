@@ -7,17 +7,21 @@ import * as blueimpMd5 from 'blueimp-md5';
 import { SubscriptionService } from '../subscription/subscription.service';
 import { RegisterDto } from '@/auth/auto.dto';
 import { isEmpty } from 'class-validator';
+import { UserException } from '@/common/exceptions/custom.exception';
+import { responseCode } from '@/common/configs/constants';
 
 @Injectable()
 export class UserService {
   constructor(@InjectRepository(User) private user: Repository<User>) {}
 
-  async register(params: RegisterDto) {
+  async register(params: RegisterDto, notFoundCreate = false) {
     const { email, password } = params;
     const exists  = await this.user.findOne({ where: { email: email } });
-    if (!isEmpty(exists)) return 
+    if (!isEmpty(exists) && !notFoundCreate) {
+      throw new UserException('该邮箱已被注册');
+    }
 
-    const user = this.user.create()
+    const user = exists ?? new User();
 
     user.email = email
     user.updateTime = new Date();
@@ -27,7 +31,14 @@ export class UserService {
     return user;
   }
 
+
   findOne(email: string) {
-    return this.user.findOne({ where: { email: email } });
+    return this.user.createQueryBuilder('user').addSelect('user.password').where('user.email = :email', { email }).getOne();
+  }
+
+  
+
+  async verifyEmail(params: RegisterDto) {
+    return this.register(params, true);
   }
 }

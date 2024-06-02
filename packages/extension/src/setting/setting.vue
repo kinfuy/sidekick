@@ -59,7 +59,7 @@ import type { AppEntry } from '@/types/core-app.type';
 import logo from '@/assets/logo.png';
 const logoIcon = chrome.runtime.getURL(logo);
 
-const { isLogin } = useAuth();
+const { isLogin, getRefreshToken } = useAuth();
 
 const { theme } = useTheme();
 
@@ -90,6 +90,7 @@ const current = computed(() => {
 });
 
 const appClick = (app: AppEntry) => {
+  getRefreshToken();
   active.value = app.name;
   const idx = window.location.href.lastIndexOf('#');
   window.location.href = `${window.location.href.slice(0, idx)}#${app.name}`;

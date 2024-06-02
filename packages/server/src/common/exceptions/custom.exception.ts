@@ -1,7 +1,8 @@
 import { HttpException } from "@nestjs/common";
+import { responseCode } from "../configs/constants";
 
 export class UserException extends HttpException {
-    constructor(errcode: string, errmsg: string) {
-      super({ errcode, errmsg }, 200);
+    constructor(errmsg: string,errcode?: string) {
+      super({ errcode: errcode || responseCode.FAIL, errmsg }, 200);
     }
   }

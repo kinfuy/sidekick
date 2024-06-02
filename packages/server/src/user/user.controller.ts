@@ -11,23 +11,9 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Post('activationVip')
   async activationVip(@Body() activationVipDto: ActivationVipDto) {
-    const res = await this.subscriptionService.createByCode({
+    return await this.subscriptionService.createByCode({
       code: activationVipDto.code,
       email: activationVipDto.email,
     });
-    if(!res.success) {
-      return {
-        data: null,
-        message: res.message,
-        code: responseCode.FAIL,
-      }
-    }
-  
-    return {
-      data: res.data,
-      message: '激活成功',
-      code: responseCode.SUCCESS,
-    }
-    
   }
 }

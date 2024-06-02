@@ -6,10 +6,14 @@ import { UserModule } from 'src/user/user.module';
 import { AuthGuard } from '@/auth/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { jwtConstants } from '@/common/configs/constants';
+import { EmailService } from '@/common/services/email.service';
+import { SubscriptionService } from '@/subscription/subscription.service';
+import { SubscriptionModule } from '@/subscription/subscription.module';
 
 @Module({
   imports: [
     UserModule,
+    SubscriptionModule,
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
@@ -18,11 +22,12 @@ import { jwtConstants } from '@/common/configs/constants';
   ],
   controllers: [AuthController],
   providers: [
-    AuthService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    AuthService,
+    EmailService
   ],
   exports: [AuthService],
 })

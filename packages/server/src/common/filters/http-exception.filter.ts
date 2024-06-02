@@ -13,18 +13,26 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp(); // 获取请求上下文
     const response = ctx.getResponse(); // 获取请求上下文中的 response对象
 
-    let resultMessage = exception.message;
-
+    let errMessage = exception.message;
+    let errCode = responseCode.FAIL;
+    
+    const rst:any = exception.getResponse()
     // 拦截class-validate错误信息
     try {
-      const exceptionResponse = exception.getResponse() as any;
+      const exceptionResponse = rst;
       if (Object.hasOwnProperty.call(exceptionResponse, 'message')) {
-        resultMessage = exceptionResponse.message;
+        errMessage = exceptionResponse.message;
       }
     } catch (e) {}
 
+    // 处理自定义错误
+    if(exception.name==='UserException'){
+      errMessage = rst.errmsg
+      errCode = rst.errcode
+    }
+
     const errorResponse = {
-      message: resultMessage,
+      message: errMessage,
       code: responseCode.FAIL,
     };
 

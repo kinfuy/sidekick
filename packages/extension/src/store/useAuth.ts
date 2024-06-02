@@ -14,7 +14,7 @@ export interface Subscription {
 }
 
 export interface UserInfo {
-  token: string;
+  accessToken: string;
   refreshToken: string;
   email: string;
   avatar: string;
@@ -91,6 +91,18 @@ export const useAuth = () => {
     return null;
   });
 
+  const accessToken = computed(() => {
+    const { user } = userStore.value;
+    if (user) return user.accessToken;
+    return null;
+  });
+
+  const refreshToken = computed(() => {
+    const { user } = userStore.value;
+    if (user) return user.refreshToken;
+    return null;
+  });
+
   const setUser = (user: UserInfo) => {
     userStore.value.user = user;
     userStore.value.isLogin = true;
@@ -114,20 +126,17 @@ export const useAuth = () => {
     }
   };
 
-  const refreshToken = async () => {
+  const getRefreshToken = async () => {
     if (isLogin.value) {
       const res = await refreshTokenApi<{
-        token: string;
         refreshToken: string;
+        accessToken: string;
       }>({
-        email: userStore.value.user!.email,
         refreshToken: userStore.value.user!.refreshToken,
-        token: userStore.value.user!.token,
-      }).catch(() => {
-        // clearAuth();
+        accessToken: userStore.value.user!.accessToken,
       });
       if (res) {
-        userStore.value.user!.token = res.token;
+        userStore.value.user!.accessToken = res.accessToken;
         userStore.value.user!.refreshToken = res.refreshToken;
         save();
       } else {
@@ -148,10 +157,12 @@ export const useAuth = () => {
     isLogin,
     user,
     subscription,
+    accessToken,
+    refreshToken,
     save,
     setUser,
     clearAuth,
     setSubscription,
-    refreshToken,
+    getRefreshToken,
   };
 };

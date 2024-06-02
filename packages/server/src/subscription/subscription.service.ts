@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import {
   CreateSubscriptionDto,
-  UpdateSubscriptionDto,
 } from './dto/subscription';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Subscription } from './entities/subscription.entity';
 import { Repository } from 'typeorm';
 import { Activation } from './entities/activation.entity';
 import * as dayjs from 'dayjs';
+import { UserException } from '@/common/exceptions/custom.exception';
+import { responseCode } from '@/common/configs/constants';
 
 /**
  * 根据激活码设置有效期
@@ -54,20 +55,13 @@ export class SubscriptionService {
   async createByCode(createSubscriptionDto: CreateSubscriptionDto) {
     const { code, email } = createSubscriptionDto;
     const activation = await this.activation.findOne({ where: { code: code } });
-    if (!activation) {
-      return {
-        success: false,
-        message: '无效激活码',
-      };
+    if (!activation || !activation.effective) {
+      throw new UserException('无效激活码');
     }
-    if (!activation.effective) {
-      return {
-        success: false,
-        message: '无效激活码',
-      };
-    }
-    let subscription = await this.subscription.findOne({where:{email:email}})
-    if(!subscription){
+    let subscription = await this.subscription.findOne({
+      where: { email: email },
+    });
+    if (!subscription) {
       subscription = new Subscription();
       subscription.form = 1;
       subscription.startTime = new Date();
@@ -77,20 +71,19 @@ export class SubscriptionService {
       await this.subscription.save(subscription);
     }
     subscription.type = activation.type;
-    subscription.endTime = setEffectTime(subscription.endTime || new Date(), activation.type);
-    await this.subscription.save(subscription); 
+    subscription.endTime = setEffectTime(
+      subscription.endTime || new Date(),
+      activation.type,
+    );
+    await this.subscription.save(subscription);
     await this.activation.update(activation.id, { effective: false });
     return {
-      success: true,
-      data: {
-        type: subscription.type,
-        form: subscription.form,
-        startTime: subscription.startTime,
-        lastTime: subscription.lastTime,
-        endTime: subscription.endTime,
-        isEffective: subscription.endTime.getTime() > new Date().getTime(),
-      },
-      message: '订阅成功',
+      type: subscription.type,
+      form: subscription.form,
+      startTime: subscription.startTime,
+      lastTime: subscription.lastTime,
+      endTime: subscription.endTime,
+      isEffective: subscription.endTime.getTime() > new Date().getTime(),
     };
   }
 
@@ -100,17 +93,11 @@ export class SubscriptionService {
       where: { email: email },
     });
     if (subscription) {
-      return {
-        success: true,
-        data: {
-          ...subscription,
-          isEffective: subscription.endTime.getTime() > new Date().getTime(),
-        },
-      };
+      return  {
+        ...subscription,
+        isEffective: subscription.endTime.getTime() > new Date().getTime(),
+      }
     }
-    return {
-      success: false,
-      data: null,
-    };
+    return null;
   }
 }

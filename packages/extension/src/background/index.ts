@@ -30,4 +30,4 @@ chrome.tabs.onUpdated.addListener((...opt) => {
 
 const { add } = useAlarmManger();
 
-add('refresh-token', { periodInMinutes: 60 });
+add('refresh-token', { periodInMinutes: 1 });

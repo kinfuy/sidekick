@@ -17,7 +17,7 @@ export class EmailService {
   private mailConfig = {
     host: envConfig.email.host,
     port: envConfig.email.port,
-    secure: false,
+    secure: true,
     auth: {
       user: envConfig.email.auth.user,
       pass: envConfig.email.auth.pass,
@@ -32,6 +32,7 @@ export class EmailService {
       from: this.mailConfig.auth.user, //发送方邮箱
       ...mailInfo,
     });
+
     return info;
   }
   
@@ -42,51 +43,89 @@ export class EmailService {
       subject: '【DevTester】注册验证码',
       html: emailTemplate(code),
     });
+    return true
   }
 }
 
 
 const emailTemplate = (code:number)=>{
-  return `	<!DOCTYPE html>  
-  <html lang="zh">  
-  <head>  
-      <meta charset="UTF-8">  
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-      <title>验证码通知</title>  
-      <style>  
-          body {  
-              font-family: Arial, sans-serif;  
-              background-color: #f0f0f0;  
-              margin: 0;  
-              padding: 0;  
-          }  
-          .container {  
-              max-width: 600px;  
-              margin: 0 auto;  
-              background-color: #fff;  
-              padding: 20px;  
-              box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
-              margin-top: 20px;  
-              margin-bottom: 20px;  
-          }  
-          h1 {  
-              text-align: center;  
-          }  
-          p {  
-              margin-top: 10px;  
-              margin-bottom: 10px;  
-          }  
-      </style>  
-  </head>  
-  <body>  
-      <div class="container">  
-          <h2>尊敬的用户：</h2>  
-          <p>感谢您选择DevTester插件。</p>
-          <p>您的验证码是：<span style="font-weight: bold;font-size: 20px; color: #3498db;">${code}</span>，请妥善保管。</p>  
-          <p>若非本人操作，请忽略此邮件。</p>
-          <p>期待您的使用与反馈，如有任何问题，请随时联系我们。</p>  
-          <p>祝您使用愉快！ DevTester插件团队</p>
-      </div>  
-  </body>  
-  </html>`
+  return `<!doctype html>
+  <html lang="zh-CN">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>DevTester 欢迎您！</title>
+      <style>
+        body {
+          font-family: sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f8f9fa;
+        }
+  
+        .container {
+          width: 600px;
+          margin: 40px auto;
+          padding: 30px;
+          background-color: #fff;
+          border-radius: 8px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+  
+        .header {
+          text-align: left;
+          font-size: 24px;
+          margin-bottom: 20px;
+          color: #333;
+        }
+  
+        .content {
+          line-height: 1.5;
+          color: #666;
+        }
+  
+        .code {
+          font-size: 20px;
+          font-weight: bold;
+          color: #4285f4; /* 蓝色验证码 */
+          display: block;
+          margin-bottom: 10px;
+        }
+  
+        .footer {
+          text-align: left; /* 左对齐 */
+          margin-top: 20px;
+          color: #999;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">DevTester 欢迎您！</div>
+  
+        <div class="content">
+          <p>感谢您选择 DevTester！</p>
+  
+          <p>为了保障您的账户安全，请使用以下验证码完成注册：</p>
+  
+          <p class="code">${code}</p>
+  
+          <p>请妥善保管您的验证码，切勿泄露给他人。</p>
+  
+          <p>如果您并未申请注册 DevTester 账户，请忽略此邮件。</p>
+  
+          <p>
+            我们期待您加入 DevTester
+            大家庭，并留下宝贵的使用反馈。如果您在使用过程中遇到任何问题，请随时联系我们的客服团队，我们将竭诚为您服务。
+          </p>
+        </div>
+  
+        <div class="footer">
+          <p>祝您使用愉快！</p>
+          <p>DevTester 团队</p>
+        </div>
+      </div>
+    </body>
+  </html>
+  `
 }

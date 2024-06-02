@@ -12,8 +12,8 @@ export const PreCoreApp = (): Application => {
     name: 'pre-core-app',
     onAlarms: (opt: chrome.alarms.Alarm) => {
       if (opt.name === 'refresh-token') {
-        const { refreshToken } = useAuth();
-        refreshToken();
+        const { getRefreshToken } = useAuth();
+        getRefreshToken();
       }
     },
   };
