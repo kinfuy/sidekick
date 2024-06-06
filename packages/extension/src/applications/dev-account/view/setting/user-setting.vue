@@ -26,6 +26,7 @@
         <ElFormItem label="密码" required prop="password">
           <ElInput
             v-model="editForm.password"
+            show-password
             type="password"
             placeholder="请输入登录密码"
           />

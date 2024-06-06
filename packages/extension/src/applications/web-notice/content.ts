@@ -30,7 +30,6 @@ export const initNotice = async () => {
     removeNotice();
   }
 };
-export const webNotice = (key: string) => {
-  console.log(key, 'webNotice');
+export const webNotice = () => {
   initNotice();
 };
