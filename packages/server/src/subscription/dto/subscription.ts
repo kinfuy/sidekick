@@ -7,3 +7,8 @@ export class CreateSubscriptionDto {
 }
 
 export class UpdateSubscriptionDto extends PartialType(CreateSubscriptionDto) {}
+
+
+export class CreateActivationDto {
+    type: number
+}

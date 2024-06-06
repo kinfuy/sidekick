@@ -43,6 +43,17 @@ export class SubscriptionService {
     @InjectRepository(Activation) private activation: Repository<Activation>,
   ) {}
 
+
+  async createActivation(type: number) {
+    const activation = new Activation();
+    activation.code = Math.random().toString().slice(2, 8);
+    activation.type = type;
+    activation.effective = false;
+    activation.createTime = new Date();
+    activation.updateTime = new Date();
+    return await this.activation.save(activation);
+  }
+
   // 检查激活码
   async checkActivation(code: string) {
     const activation = await this.activation.findOne({ where: { code: code } });
