@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { AuthModule } from './auth/auth.module';
 import { envConfig } from '@/common/configs/env';
+import { DataModule } from './data/data.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { envConfig } from '@/common/configs/env';
     AuthModule,
     UserModule,
     SubscriptionModule,
+    DataModule,
    
   ],
 })
