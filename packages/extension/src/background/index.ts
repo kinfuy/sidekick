@@ -16,11 +16,11 @@ chromeAddListenerMessage(async (message) => {
   triggerApplicationHooks(message.code, message.data, limitApp);
 });
 
-chrome.alarms.onAlarm.addListener((opt) => {
+chrome.alarms?.onAlarm.addListener((opt) => {
   triggerApplicationHooks('onAlarms', opt);
 });
 
-chrome.contextMenus.onClicked.addListener((e, tab) => {
+chrome.contextMenus?.onClicked.addListener((e, tab) => {
   triggerApplicationHooks('onContextMenusClick', { e, tab });
 });
 
