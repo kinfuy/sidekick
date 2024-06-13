@@ -39,7 +39,7 @@ export default defineManifest(() => {
       'cookies',
       'activeTab',
     ],
-    host_permissions: ['https://*/', 'http://*/'],
+    host_permissions: ['<all_urls>'],
     web_accessible_resources: isDev
       ? []
       : [
