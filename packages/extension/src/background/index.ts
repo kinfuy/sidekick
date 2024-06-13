@@ -28,6 +28,22 @@ chrome.tabs.onUpdated.addListener((...opt) => {
   triggerApplicationHooks('onTabUpdate', opt);
 });
 
+chrome.tabs.onCreated.addListener((...opt) => {
+  triggerApplicationHooks('onTabCreate', opt);
+});
+
+chrome.tabs.onRemoved.addListener((...opt) => {
+  triggerApplicationHooks('onTabRemove', opt);
+});
+
+chrome.tabs.onMoved.addListener((...opt) => {
+  triggerApplicationHooks('onTabMove', opt);
+});
+
+chrome.tabs.onReplaced.addListener((...opt) => {
+  triggerApplicationHooks('onTabReplaced', opt);
+});
+
 const { add } = useAlarmManger();
 
 add('refresh-token', { periodInMinutes: 60 * 24 });

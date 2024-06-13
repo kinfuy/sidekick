@@ -20,6 +20,11 @@ export const storage = {
   },
 };
 
+// 获取tab
+export const getTab = async (tabId: number) => {
+  return chrome.tabs.get(tabId);
+};
+
 // 获取当前选项卡ID
 export const getActiveTab = async () => {
   const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -48,7 +53,9 @@ export const createWindow = async (url: string, options: any = {}) => {
  * @param message PostMessage
  */
 export const sendMessageToExtension = async (message: PostMessage) => {
-  return chrome.runtime.sendMessage(message);
+  return chrome.runtime.sendMessage(message).catch((err) => {
+    console.error(err);
+  });
 };
 
 /**
@@ -58,7 +65,9 @@ export const sendMessageToExtension = async (message: PostMessage) => {
 export const sendMessageToContentScript = async (message: PostMessage) => {
   const activeTab = await getActiveTab();
   if (activeTab) {
-    return chrome.tabs.sendMessage(Number(activeTab.id), message);
+    return chrome.tabs
+      .sendMessage(Number(activeTab.id), message)
+      .catch(() => {});
   }
 };
 /**
@@ -118,7 +127,9 @@ export const sendMessageToContentScriptById = (
   tabId: string | number,
   message: PostMessage,
 ) => {
-  return chrome.tabs.sendMessage(Number(tabId), message);
+  return chrome.tabs.sendMessage(Number(tabId), message).catch((err) => {
+    console.error(err);
+  });
 };
 /**
  * 所有tab广播信息
@@ -169,11 +180,15 @@ export const sendMessageToContentScriptAllTabs = (message: PostMessage) => {
 export const chromeAddListenerMessage = (
   callback: (request: PostMessage) => void,
 ) => {
-  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    sendResponse();
-    callback(request);
-    return false;
-  });
+  try {
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      sendResponse();
+      callback(request);
+      return false;
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 /**

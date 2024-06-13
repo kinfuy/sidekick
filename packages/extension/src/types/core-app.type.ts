@@ -34,31 +34,39 @@ export interface Application extends Record<string, any> {
     name: string;
     active: boolean;
   }) => void; // app 状态变化
-  onContentInit?: ({ url }: { url: string }) => void;
+
   onInstalled?: () => void; // 插件安装
   onInit?: () => void; // 打开浏览器
-  onPopupOpen?: (msg: PostMessage) => void;
+  onAlarms?: (alarm: chrome.alarms.Alarm) => void;
+  onCoreStoreChange?: () => void;
+  onGetData?: (opt: { key: string; opt: any }) => void;
+  onSendData?: (opt: { key: string; opt: any }) => void;
+  onOpenChromeUrl?: (opt: { openUrl: string; extra?: any }) => void;
+  onOpenWindow?: (opt: { openUrl: string; extra?: any }) => void;
+
   onContextMenusClick?: (option: {
     e: chrome.contextMenus.OnClickData;
     tab?: chrome.tabs.Tab;
   }) => void;
+
+  onPopupOpen?: (msg: PostMessage) => void;
   onPopupClose?: () => void;
-  onNewTab?: () => void;
-  onCollectSync?: () => void;
+
+  onTabCreate?: (tab: any) => void;
+  onTabRemove?: (tab: any) => void;
+  onTabUpdate?: (tab: any) => void;
+  onTabMove?: (tab: any) => void;
+  onTabReplaced?: (tab: any) => void;
+
+  onContentInit?: ({ url }: { url: string }) => void;
   onDocDOMContentLoaded?: ({ url }: { url: string }) => void;
   onDocVisibilitychange?: (opt: { visible: boolean }) => void;
   onUrlChange?: ({ url, event }: { url: string; event: any }) => void;
   onDocLoad?: ({ url }: { url: string }) => void;
   onPageshow?: ({ url }: { url: string }) => void;
-  onAlarms?: (alarm: chrome.alarms.Alarm) => void;
-  onMagicClick?: (opt: { name: string }) => void;
-  onCoreStoreChange?: () => void;
-  onTabUpdate?: () => void;
-  onGetData?: (opt: { key: string; opt: any }) => void;
-  onSendData?: (opt: { key: string; opt: any }) => void;
+
   onError?: (opt: { key: string; message: string }) => void;
-  onOpenChromeUrl?: (opt: { openUrl: string; extra?: any }) => void;
-  onOpenWindow?: (opt: { openUrl: string; extra?: any }) => void;
+  // 应用自定义事件
   onCustomAction?: (opt: { key: string; data: any }) => void;
 }
 

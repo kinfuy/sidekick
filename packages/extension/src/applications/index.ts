@@ -5,6 +5,7 @@ import { AppLayout } from './app-layout';
 import { DevAccount } from './dev-account';
 import { LinkGo } from './link-go';
 import { StoragePortal } from './storage-portal';
+import { BrowseBehavior } from './browse-behavior';
 import type { App, AppEntry } from '@/types/core-app.type';
 
 export const apps: App[] = [
@@ -13,6 +14,7 @@ export const apps: App[] = [
   DevAccount,
   LinkGo,
   StoragePortal,
+  BrowseBehavior,
 ];
 
 const linkApp: AppEntry[] = [
