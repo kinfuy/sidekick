@@ -21,9 +21,6 @@ const store = ref<BrowseBehaviorStoreInstance>({
 
 export const useBrowseBehaviorStore = () => {
   const { get, set } = storage;
-  const save = () => {
-    set(STORE_KEY, JSON.stringify(toRaw(store.value)));
-  };
 
   const sync = async () => {
     let _store: BrowseBehaviorStoreInstance = { webStatics: [] };
@@ -32,6 +29,12 @@ export const useBrowseBehaviorStore = () => {
       _store = localStore;
     }
     store.value = _store;
+  };
+
+  const save = () => {
+    set(STORE_KEY, JSON.stringify(toRaw(store.value))).finally(() => {
+      sync();
+    });
   };
 
   const addRecord = (opt: any) => {
@@ -54,12 +57,11 @@ export const useBrowseBehaviorStore = () => {
   };
 
   const updateEndTime = (tabId: string, date: string, endTime: string) => {
-    store.value.webStatics = store.value.webStatics.map((item) => {
+    store.value.webStatics.forEach((item) => {
       if (item.tabId === tabId && item.date === date) {
         item.tabId = '';
         item.endTime = endTime;
       }
-      return item;
     });
     save();
   };

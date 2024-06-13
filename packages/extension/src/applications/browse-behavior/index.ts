@@ -15,6 +15,7 @@ export const BrowseBehavior: App = {
       const [tabId, changeinfo, tab] = tabs;
       const host = new URL(tab.url).host;
       if (tab.url.startsWith('chrome://')) return;
+      if (tab.url.startsWith('chrome-extension://')) return;
       if (['extension', 'newtab'].includes(host)) return;
       // url 改变记录
       if (changeinfo.url) {
@@ -29,6 +30,7 @@ export const BrowseBehavior: App = {
     },
     onTabRemove: async (tabs) => {
       const [tabId] = tabs;
+      console.log('tabId', tabId);
       const { updateEndTime } = useBrowseBehaviorStore();
       const endTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
       const taday = dayjs().format('YYYY-MM-DD');
