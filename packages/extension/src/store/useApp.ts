@@ -9,7 +9,7 @@ export interface AppStore {
   notEffects: Array<string>;
 }
 
-const currentVersion = 2;
+const currentVersion = 1;
 
 const defaultStore: AppStore = {
   version: 1,

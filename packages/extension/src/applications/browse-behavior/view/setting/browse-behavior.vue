@@ -1,28 +1,32 @@
 <template>
   <div class="browse-behavior">
-    <div v-for="item in data" :key="item.date" class="behavior-card">
-      <div class="behavior-title">{{ item.date }}</div>
-      <div class="behavior-content">
-        <div v-for="web in item.webs" :key="web.url" class="behavior-item">
-          <div>
-            <span class="web-count">{{ web.count }}</span>
-            <span>次</span>
-          </div>
-          <div class="web-info">
-            <div class="web-url">{{ web.url }}</div>
-            <div class="web-desc">{{ web.title }}</div>
+    <div class="flex justify-end">
+      <ElButton type="primary" plain size="small" @click="clear">清除</ElButton>
+    </div>
+    <div class="behavior-list">
+      <div v-for="item in data" :key="item.date" class="behavior-card">
+        <div class="behavior-title">{{ item.date }}</div>
+        <div class="behavior-content">
+          <div v-for="web in item.webs" :key="web.url" class="behavior-item">
+            <div>
+              <span class="web-count">{{ web.count }}</span>
+              <span>次</span>
+            </div>
+            <div class="web-info">
+              <div class="web-url">{{ web.url }}</div>
+              <div class="web-desc">{{ web.title }}</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <ElButton type="primary" link @click="clear">清除</ElButton>
 </template>
 
 <script lang="ts" setup>
 import { useBrowseBehaviorStore } from '@applications/browse-behavior/store';
 import { getDaysOpenWebs } from '@applications/browse-behavior/transform';
-import { ElButton } from 'element-plus';
+import { ElButton, dayjs } from 'element-plus';
 import { computed } from 'vue';
 
 const { webStatics, clear } = useBrowseBehaviorStore();
@@ -35,6 +39,13 @@ const data = computed(() => {
     };
   });
 });
+
+const todayStatic = computed(() => {
+  const today = data.value.find(
+    (item) => item.date === dayjs().format('YYYY-MM-DD'),
+  );
+  return today;
+});
 </script>
 
 <style lang="less" scoped>
@@ -43,6 +54,11 @@ const data = computed(() => {
   color: #333;
   font-weight: 700;
   margin-bottom: 12px;
+}
+
+.behavior-list {
+  overflow-y: auto;
+  height: calc(100vh - 200px);
 }
 
 .behavior-content {
