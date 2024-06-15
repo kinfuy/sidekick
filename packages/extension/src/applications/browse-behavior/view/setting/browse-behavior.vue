@@ -4,7 +4,14 @@
       <ElButton type="primary" plain size="small" @click="clear">清除</ElButton>
     </div>
     <div class="behavior-list">
-      <div v-for="item in data" :key="item.date" class="behavior-card">
+      <div class="behavior-card">
+        <div class="behavior-title">数据总览</div>
+      </div>
+      <div
+        v-for="item in daysWebStatics"
+        :key="item.date"
+        class="behavior-card"
+      >
         <div class="behavior-title">{{ item.date }}</div>
         <div class="behavior-content">
           <div v-for="web in item.webs" :key="web.url" class="behavior-item">
@@ -24,28 +31,24 @@
 </template>
 
 <script lang="ts" setup>
+import type { WebStatics } from '@applications/browse-behavior/store';
 import { useBrowseBehaviorStore } from '@applications/browse-behavior/store';
-import { getDaysOpenWebs } from '@applications/browse-behavior/transform';
 import { ElButton, dayjs } from 'element-plus';
-import { computed } from 'vue';
+import { ref } from 'vue';
 
-const { webStatics, clear } = useBrowseBehaviorStore();
+const { daysWebStatics, clear, queryByDate } = useBrowseBehaviorStore();
 
-const data = computed(() => {
-  return getDaysOpenWebs(webStatics.value).map((item) => {
-    return {
-      date: item.date,
-      webs: item.webs.sort((a, b) => b.count - a.count),
-    };
-  });
-});
+const recent7Days = ref<WebStatics[]>([]);
 
-const todayStatic = computed(() => {
-  const today = data.value.find(
-    (item) => item.date === dayjs().format('YYYY-MM-DD'),
-  );
-  return today;
-});
+const init = (days = 7) => {
+  recent7Days.value = [];
+  for (let i = 0; i < days; i++) {
+    const date = dayjs().subtract(i, 'day').format('YYYY-MM-DD');
+    const day = queryByDate(date);
+    if (day) recent7Days.value.push(day);
+  }
+};
+init();
 </script>
 
 <style lang="less" scoped>

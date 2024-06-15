@@ -1,6 +1,19 @@
 import { storage } from '@utils';
+import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import { computed, ref, toRaw } from 'vue';
+import { getDaysOpenWebs } from './transform';
+
+export interface DayOpenWebs {
+  date: string;
+  webs: {
+    url: string;
+    title: string;
+    count: number;
+    totalTime?: number;
+    activeTime?: number;
+  }[];
+}
 
 export interface WebStatics {
   tabId: string;
@@ -66,7 +79,21 @@ export const useBrowseBehaviorStore = () => {
     save();
   };
 
-  const webStatics = computed(() => store.value.webStatics);
+  const webStaticsMate = computed(() => store.value.webStatics);
+
+  const daysWebStatics = computed(() => {
+    return getDaysOpenWebs(webStaticsMate.value).map((item) => {
+      return {
+        date: item.date,
+        webs: item.webs.sort((a, b) => b.count - a.count),
+      };
+    });
+  });
+
+  const queryByDate = (day: Date | string | Dayjs) => {
+    const date = dayjs(day).format('YYYY-MM-DD');
+    return webStaticsMate.value.find((item) => item.date === date);
+  };
 
   const clear = () => {
     store.value.webStatics = [];
@@ -75,7 +102,8 @@ export const useBrowseBehaviorStore = () => {
 
   sync();
   return {
-    webStatics,
+    daysWebStatics,
+    queryByDate,
     save,
     addRecord,
     updateEndTime,

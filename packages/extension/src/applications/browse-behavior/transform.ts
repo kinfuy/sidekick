@@ -1,16 +1,5 @@
 import dayjs from 'dayjs';
-import type { WebStatics } from './store';
-
-export interface DayOpenWebs {
-  date: string;
-  webs: {
-    url: string;
-    title: string;
-    count: number;
-    totalTime?: number;
-    activeTime?: number;
-  }[];
-}
+import type { DayOpenWebs, WebStatics } from './store';
 
 export const getDaysOpenWebs = (data: Array<WebStatics>): DayOpenWebs[] => {
   const dates = new Set<string>();

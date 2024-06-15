@@ -159,6 +159,12 @@ export const useDevAccountStore = () => {
           webs.push(w);
         }
       });
+      config.webs.forEach((w) => {
+        const web = webs.find((x) => x.id === w.id);
+        if (!web) {
+          webs.push(w);
+        }
+      });
       store.value.version = config.version;
       store.value.webs = webs;
     }
