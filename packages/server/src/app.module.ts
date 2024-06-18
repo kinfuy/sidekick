@@ -5,9 +5,16 @@ import { SubscriptionModule } from './subscription/subscription.module';
 import { AuthModule } from './auth/auth.module';
 import { envConfig } from '@/common/configs/env';
 import { DataModule } from './data/data.module';
+import { CardModule } from './card/card.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+      serveRoot: '/assets',
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: envConfig.host,
@@ -26,6 +33,7 @@ import { DataModule } from './data/data.module';
     UserModule,
     SubscriptionModule,
     DataModule,
+    CardModule,
    
   ],
 })
