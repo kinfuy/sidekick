@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ICardTemplate, ISocialCard } from './card.interface';
+import { ICardTemplate } from './card.interface';
 
 @Injectable()
 export class CardService {
