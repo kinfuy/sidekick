@@ -1,9 +1,16 @@
 export interface IDateSet {
-    id: number
-    name: string
-    content: string
-    type: number
-    isDelete: boolean
-    createdAt: Date
-    updatedAt: Date
+  id: number;
+  name: string;
+  content: string;
+  type: number;
+  isDelete: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface SocialCardResponse {
+  followers: number;
+  username: string;
+  nickname: string;
+  avatar_url: string;
 }

@@ -2,32 +2,57 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { UserException } from '@/common/exceptions/custom.exception';
+import { SocialCardResponse } from './data.interface';
 @Injectable()
 export class DataService {
   constructor(private readonly httpService: HttpService) {}
-  async getGihubUser(name: string) {
+
+  /**
+   * 根据name 获取github 信息
+   * @param name 
+   * @returns 
+   */
+  async getGihubUser(name: string): Promise<SocialCardResponse> {
     const res = this.httpService.get(`https://api.github.com/users/${name}`);
     const data = await lastValueFrom(res);
-    return data.data;
+    const {
+      followers,
+      login: username,
+      name: nickname,
+      avatar_url,
+    } = data.data;
+    return { followers, username, nickname, avatar_url };
   }
 
-  async getJuejinUser(user_id: string) {
+  async getJuejinUser(user_id: string): Promise<SocialCardResponse> {
     const res = this.httpService.get(
       `https://api.juejin.cn/user_api/v1/user/get?user_id=${user_id}`,
     );
     const data = await lastValueFrom(res);
-    return data.data;
+    const {
+      follower_count: followers,
+      user_name: nickname,
+      avatar_large: avatar_url,
+    } = data.data.data;
+    return { followers, username: '', nickname, avatar_url };
   }
 
-  async getJuejinUser2(nickname: string) {
+  async getJuejinUser2(name: string) {
     const res = this.httpService.get(
-      `https://api.juejin.cn/search_api/v1/search?query=${nickname}&id_type=1&search_type=0&limit=10`,
+      `https://api.juejin.cn/search_api/v1/search?query=${name}&id_type=1&search_type=0&limit=10`,
     );
     const data = await lastValueFrom(res);
     try {
-      const user = data.data.data.find((item) => item.result_model.user_name === nickname);
+      const user = data.data.data.find(
+        (item) => item.result_model.user_name === name,
+      );
       if (!user) throw new UserException(`用户不存在${user}`);
-      return user.result_model;
+      const {
+        follower_count: followers,
+        user_name: nickname,
+        avatar_large: avatar_url,
+      } = user.result_model;
+      return { followers, username: '', nickname, avatar_url };
     } catch (error) {
       throw new UserException('用户不存在');
     }

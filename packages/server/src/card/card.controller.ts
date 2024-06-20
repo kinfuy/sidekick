@@ -1,6 +1,6 @@
 import { Controller, Post } from '@nestjs/common';
 import { CardService } from './card.service';
-import { Public } from '@/auth/auth.guard';
+import { App } from '@/auth/auth.guard';
 
 @Controller('card')
 export class CardController {
@@ -9,7 +9,7 @@ export class CardController {
   }
 
   @Post('getTemplateList')
-  @Public()
+  @App("ios_app")
   getCardList() {
     return this.cardService.getCardList();
   }
