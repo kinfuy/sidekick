@@ -8,7 +8,7 @@ export class CardController {
 
   }
 
-  @Post('getCardList')
+  @Post('getTemplateList')
   @Public()
   getCardList() {
     return this.cardService.getCardList();

@@ -2,7 +2,7 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateCol
 import { ICardTemplate } from "../card.interface";
 
 @Entity() 
-export class Template {
+export class CardTemplate {
      //作为主键且创建时自动生成，默认自增
      @PrimaryGeneratedColumn()
      id: number;

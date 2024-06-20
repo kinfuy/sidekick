@@ -9,6 +9,10 @@ export class CardService {
             name: '社交卡片',
             type: 1,
             content: {
+                id: 1,
+                refresh: {
+                    type: 1,
+                },
                 title: 'Github Followers',
                 unit: 'Followers',
                 logo: 'https://api.kinfuy.cn/assets/github.svg',
@@ -22,6 +26,10 @@ export class CardService {
             name: '社交卡片',
             type: 1,
             content: {
+                id: 1,
+                refresh: {
+                    type: 1,
+                },
                 title: '小红书粉丝卡',
                 unit: '粉丝',
                 logo: 'https://api.kinfuy.cn/assets/readbook.svg',
@@ -35,6 +43,10 @@ export class CardService {
             name: '社交卡片',
             type: 1,
             content: {
+                id: 1,
+                refresh: {
+                    type: 1,
+                },
                 title: '即刻关注卡',
                 unit: '关注',
                 logo: 'https://api.kinfuy.cn/assets/jike.svg',
@@ -48,6 +60,10 @@ export class CardService {
             name: '社交卡片',
             type: 1,
             content: {
+                id: 1,
+                refresh: {
+                    type: 1,
+                },
                 title: 'Bilibili 粉丝卡',
                 unit: '粉丝',
                 logo: 'https://api.kinfuy.cn/assets/bilibili.svg',
@@ -61,6 +77,10 @@ export class CardService {
             name: '社交卡片',
             type: 1,
             content: {
+                id: 1,
+                refresh: {
+                    type: 1,
+                },
                 title: '抖音粉丝卡',
                 unit: '粉丝',
                 logo: 'https://api.kinfuy.cn/assets/douyin.svg',
