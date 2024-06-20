@@ -13,7 +13,7 @@ import { jwtConstants, responseCode } from '@/common/configs/constants';
 import { UserException } from '@/common/exceptions/custom.exception';
 
 export const IS_PUBLIC_KEY = 'isPublic';
-export const APP_KEY = 'app_key';
+export const APP_KEY = 'APP_KEY';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
 export const App = (key:string) => SetMetadata(APP_KEY, key);
 
@@ -41,7 +41,7 @@ export class AuthGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
 
-    const appKey = this.exyractHeaders(request, APP_KEY);
+    const appKey = this.exyractHeaders(request, "app-key");
     if (isApp && appKey === isApp) {
       return true
     }
