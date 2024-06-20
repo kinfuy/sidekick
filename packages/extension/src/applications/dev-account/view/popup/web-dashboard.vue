@@ -83,6 +83,7 @@ const handleSetting = () => {
       font-size: 12px;
       background-color: #f3f3f3;
       cursor: pointer;
+      margin-bottom: 10px;
 
       &:hover {
         background-color: var(--primary-color-tint-60);
