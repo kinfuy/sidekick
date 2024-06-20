@@ -11,7 +11,8 @@ export class CardService {
             content: {
                 id: 1,
                 refresh: {
-                    type: 1,
+                    type: 2,
+                    api: 'https://api.github.com/users/github',
                 },
                 title: 'Github Followers',
                 unit: 'Followers',
@@ -29,6 +30,7 @@ export class CardService {
                 id: 1,
                 refresh: {
                     type: 1,
+                    
                 },
                 title: '小红书粉丝卡',
                 unit: '粉丝',
@@ -84,6 +86,24 @@ export class CardService {
                 title: '抖音粉丝卡',
                 unit: '粉丝',
                 logo: 'https://api.kinfuy.cn/assets/douyin.svg',
+                color: '#f8f9fa',
+            } ,
+            createdAt: new Date().toString(),
+            updatedAt: new Date().toString(),
+        },
+        {
+            id: 6,
+            name: '社交卡片',
+            type: 1,
+            content: {
+                id: 1,
+                refresh: {
+                    type: 2,
+                    api: 'https://api.kinfuy.cn/api/juejin',
+                },
+                title: '掘金关注卡',
+                unit: '关注',
+                logo: 'https://api.kinfuy.cn/assets/juejin.svg',
                 color: '#f8f9fa',
             } ,
             createdAt: new Date().toString(),

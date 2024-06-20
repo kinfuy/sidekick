@@ -2,7 +2,10 @@ export interface ICard {
   id: number;
   title: string;
   refresh: {
-    type: number; // 1: 接口更新  2：手动更新  3：自定义接口
+    /**
+     * 1: 接口更新  2：手动更新  3：自定义接口
+     */
+    type: number; 
     api?: string;
   };
 }

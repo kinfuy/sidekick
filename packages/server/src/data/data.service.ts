@@ -24,7 +24,7 @@ export class DataService {
     return { followers, username, nickname, avatar_url };
   }
 
-  async getJuejinUser(user_id: string): Promise<SocialCardResponse> {
+  async getJuejinUser2(user_id: string): Promise<SocialCardResponse> {
     const res = this.httpService.get(
       `https://api.juejin.cn/user_api/v1/user/get?user_id=${user_id}`,
     );
@@ -37,7 +37,7 @@ export class DataService {
     return { followers, username: '', nickname, avatar_url };
   }
 
-  async getJuejinUser2(name: string) {
+  async getJuejinUser(name: string) {
     const res = this.httpService.get(
       `https://api.juejin.cn/search_api/v1/search?query=${name}&id_type=1&search_type=0&limit=10`,
     );
