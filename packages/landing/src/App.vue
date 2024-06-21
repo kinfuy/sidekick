@@ -1,4 +1,25 @@
 <template>
+  <header class="bg-white text-zinc-900">
+    <div class="max-w-screen-xl mx-auto px-4 flex items-center h-16">
+      <div>
+        <div class="select-none flex items-center">
+          <div class="mr-2">
+            <img
+              alt="Tailsc Logo"
+              loading="lazy"
+              width="30"
+              height="30"
+              decoding="async"
+              data-nimg="1"
+              style="color: transparent"
+              src="../../public/logo.png"
+            />
+          </div>
+          <div class="text-xl __className_3ac6c1">DevTester</div>
+        </div>
+      </div>
+    </div>
+  </header>
   <section class="py-16 md:py-24 bg-white overflow-x-clip">
     <div
       class="relative max-w-screen-xl w-full mx-auto px-4 before:absolute before:w-full before:max-w-md before:h-40 before:pointer-events-none before:bg-gradient-to-br before:from-yellow-200 before:to-orange-300 before:blur-[100px] before:left-0 before:-translate-x-1/4 before:top-0 before:translate-y-1/2 after:absolute after:w-full after:max-w-md after:h-20 after:pointer-events-none after:bg-gradient-to-br after:from-amber-300 after:to-yellow-200 after:blur-[100px] after:left-0 md:after:translate-x-1/2 after:top-0 after:translate-y-1/2"
@@ -17,8 +38,9 @@
           </p>
           <div class="flex flex-col sm:flex-row gap-3 items-center">
             <a
-              href="#"
-              class="bg-blue-300 hover:bg-blue-400 text-white flex items-center justify-center gap-2 h-12 px-6 rounded cursor-pointer w-full sm:w-auto"
+              target="_blank"
+              href="https://chromewebstore.google.com/detail/devtester/lgdplgdlaacpegfninnaekfcpajmafga?hl=en&authuser=0"
+              class="bg-blue-400 hover:bg-blue-600 text-white flex items-center justify-center gap-2 h-12 px-6 rounded cursor-pointer w-full sm:w-auto"
             >
               <div class="w-6 h-6">
                 <svg
@@ -57,27 +79,34 @@
             </a>
           </div>
         </div>
+        <div class="flex-1 min-w-0 hidden md:block">
+          <img
+            alt="Astronaut in the air"
+            loading="lazy"
+            width="520"
+            height="424"
+            decoding="async"
+            data-nimg="1"
+            src="../../public/cover.svg"
+            class="object-contain mx-auto"
+            style="color: transparent"
+          />
+        </div>
       </div>
     </div>
   </section>
   <section class="py-8 sm:py-16 bg-white">
     <div class="max-w-screen-xl mx-auto px-6 lg:px-16">
       <div class="mb-14 text-center">
-        <div
-          class="py-1.5 inline-block px-6 bg-indigo-100 rounded-full text-sm font-medium text-indigo-600 text-center mb-8"
-        >
-          Features
-        </div>
         <h2
           class="text-3xl md:text-4xl text-center font-bold text-gray-900 mb-2"
         >
-          Revolutionary Features
+          工具集
         </h2>
         <p
           class="text-lg font-normal text-gray-500 max-w-md md:max-w-2xl mx-auto"
         >
-          Provides advanced features like time tracking, integrating with third
-          party apps (calendar / Google drive), creating subtasks.
+          一款为开发人员和测试人员量身打造的浏览器工具集，旨在提高开发与测试的效率，减少冗余操作和误操作的风险。通过集成一系列实用的功能，为用户提供了更加便捷、高效的工作体验。
         </p>
       </div>
       <div
@@ -107,10 +136,11 @@
             </svg>
           </div>
           <h4 class="text-lg font-medium text-gray-900 mb-3 capitalize">
-            Revolutionary Projectview
+            多平台开发账号管理工具
+            <div class="text-sm font-normal text-gray-500">DevAccount</div>
           </h4>
           <p class="text-sm font-normal text-gray-500">
-            plan and structure work how you want. Quickly organizing tasks.
+            极简多平台账号管理工具，一键切换账号，高效管理信息，快速适应生产、预发、测试、仿真环境。
           </p>
         </div>
         <div
@@ -150,11 +180,13 @@
             </svg>
           </div>
           <h4 class="text-lg font-medium text-gray-900 mb-3 capitalize">
-            App Integrations
+            生产环境提示
+            <div class="text-sm font-normal text-gray-500">
+              Prod Environment Tips
+            </div>
           </h4>
           <p class="text-sm font-normal text-gray-500">
-            Bring all your tools and data together. Also join with hundreds of
-            other apps.
+            新增生产环境提示功能，敏感操作即时提醒，避免误操作损失。
           </p>
         </div>
         <div
@@ -180,11 +212,11 @@
             </svg>
           </div>
           <h4 class="text-lg font-medium text-gray-900 mb-3 capitalize">
-            Data Reporting
+            缓存助手
+            <div class="text-sm font-normal text-gray-500">Cache Assistant</div>
           </h4>
           <p class="text-sm font-normal text-gray-500">
-            Get real time insight into progress and allows teams to track their
-            work habits
+            支持查看站点storage详情，包括localStorage、sessionStorage、cookies，并允许清除、修改，助力调试测试。
           </p>
         </div>
         <div
@@ -210,386 +242,25 @@
             </svg>
           </div>
           <h4 class="text-lg font-medium text-gray-900 mb-3 capitalize">
-            Workflow Builder
+            超链直达
+            <div class="text-sm font-normal text-gray-500">
+              HyperLink Direct Access
+            </div>
           </h4>
           <p class="text-sm font-normal text-gray-500">
-            Automated processes to coordinate your teams and increase
-            communication.
+            屏蔽了烦人的链接拦截确认，使用户能够一键直达目标页面，无需再面对繁琐的确认对话框，大大节省了用户的时间和精力。
           </p>
         </div>
       </div>
     </div>
   </section>
-  <section class="bg-white text-zinc-900 py-8 sm:py-16">
-    <div class="max-w-screen-xl mx-auto px-6 lg:px-16">
-      <div class="mb-8 md:mb-12">
-        <h2 class="max-w-screen-md text-center mx-auto text-3xl font-bold">
-          Get Started
-        </h2>
-        <p
-          class="max-w-screen-md text-center mx-auto text-base text-zinc-500 mb-8"
-        >
-          30 days money-back guarantee
-        </p>
-      </div>
-      <div
-        class="max-w-screen-lg mx-auto grid grid-cols-1 md:grid-cols-3 gap-6"
-      >
-        <div class="bg-zinc-50 rounded-lg p-4">
-          <h3 class="text-xl font-medium mb-1">Basic</h3>
-          <div class="text-zinc-500 text-sm">
-            Best option for personal use &amp; for your next project.
-          </div>
-          <div class="flex items-end mt-4 mb-6">
-            <span class="text-black text-3xl font-bold leading-none"
-              >$<!-- -->99</span
-            ><span class="text-zinc-400 text-xs ml-2 select-none leading-6"
-              >/ year</span
-            >
-          </div>
-          <div class="my-6">
-            <button
-              class="h-10 text-sm font-medium rounded text-center w-full text-white bg-zinc-700 hover:bg-zinc-800 data-[active=true]:bg-blue-500 data-[active=true]:text-white hover:data-[active=true]:bg-blue-600 active:scale-95 transition-transform"
-            >
-              Get Started
-            </button>
-          </div>
-          <ul class="flex flex-col gap-2 px-2">
-            <li class="flex items-center text-base gap-3">
-              <div class="w-4 h-4 bg-teal-500 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="#ffffff"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M5 12l5 5l10 -10"></path>
-                </svg>
-              </div>
-              <p>Individual configuration</p>
-            </li>
-            <li class="flex items-center text-base gap-3">
-              <div class="w-4 h-4 bg-teal-500 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="#ffffff"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M5 12l5 5l10 -10"></path>
-                </svg>
-              </div>
-              <p>No setup, or hidden fees</p>
-            </li>
-            <li class="flex items-center text-base gap-3">
-              <div class="w-4 h-4 bg-teal-500 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="#ffffff"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M5 12l5 5l10 -10"></path>
-                </svg>
-              </div>
-              <p>Team size: 1 developer</p>
-            </li>
-            <li class="flex items-center text-base gap-3">
-              <div class="w-4 h-4 bg-teal-500 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="#ffffff"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M5 12l5 5l10 -10"></path>
-                </svg>
-              </div>
-              <p>Premium support: 6 months</p>
-            </li>
-            <li class="flex items-center text-base gap-3">
-              <div class="w-4 h-4 bg-teal-500 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="#ffffff"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M5 12l5 5l10 -10"></path>
-                </svg>
-              </div>
-              <p>Free updates: 6 months</p>
-            </li>
-          </ul>
-        </div>
-        <div class="bg-zinc-50 rounded-lg p-4">
-          <h3 class="text-xl font-medium mb-1">Premium</h3>
-          <div class="text-zinc-500 text-sm">
-            Best option for personal use &amp; for your next project.
-          </div>
-          <div class="flex items-end mt-4 mb-6">
-            <span class="text-black text-3xl font-bold leading-none"
-              >$<!-- -->149</span
-            ><span class="text-zinc-400 text-xs ml-2 select-none leading-6"
-              >/ year</span
-            >
-          </div>
-          <div class="my-6">
-            <button
-              class="h-10 text-sm font-medium rounded text-center w-full text-white bg-zinc-700 hover:bg-zinc-800 data-[active=true]:bg-blue-500 data-[active=true]:text-white hover:data-[active=true]:bg-blue-600 active:scale-95 transition-transform"
-              data-active="true"
-            >
-              Get Started
-            </button>
-          </div>
-          <ul class="flex flex-col gap-2 px-2">
-            <li class="flex items-center text-base gap-3">
-              <div class="w-4 h-4 bg-teal-500 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="#ffffff"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M5 12l5 5l10 -10"></path>
-                </svg>
-              </div>
-              <p>Individual configuration</p>
-            </li>
-            <li class="flex items-center text-base gap-3">
-              <div class="w-4 h-4 bg-teal-500 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="#ffffff"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M5 12l5 5l10 -10"></path>
-                </svg>
-              </div>
-              <p>No setup, or hidden fees</p>
-            </li>
-            <li class="flex items-center text-base gap-3">
-              <div class="w-4 h-4 bg-teal-500 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="#ffffff"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M5 12l5 5l10 -10"></path>
-                </svg>
-              </div>
-              <p>Team size: 10 developer</p>
-            </li>
-            <li class="flex items-center text-base gap-3">
-              <div class="w-4 h-4 bg-teal-500 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="#ffffff"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M5 12l5 5l10 -10"></path>
-                </svg>
-              </div>
-              <p>Premium support: 24 months</p>
-            </li>
-            <li class="flex items-center text-base gap-3">
-              <div class="w-4 h-4 bg-teal-500 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="#ffffff"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M5 12l5 5l10 -10"></path>
-                </svg>
-              </div>
-              <p>Free updates: 24 months</p>
-            </li>
-          </ul>
-        </div>
-        <div class="bg-zinc-50 rounded-lg p-4">
-          <h3 class="text-xl font-medium mb-1">Growth</h3>
-          <div class="text-zinc-500 text-sm">
-            Best option for personal use &amp; for your next project.
-          </div>
-          <div class="flex items-end mt-4 mb-6">
-            <span class="text-black text-3xl font-bold leading-none"
-              >$<!-- -->249</span
-            ><span class="text-zinc-400 text-xs ml-2 select-none leading-6"
-              >/ year</span
-            >
-          </div>
-          <div class="my-6">
-            <button
-              class="h-10 text-sm font-medium rounded text-center w-full text-white bg-zinc-700 hover:bg-zinc-800 data-[active=true]:bg-blue-500 data-[active=true]:text-white hover:data-[active=true]:bg-blue-600 active:scale-95 transition-transform"
-            >
-              Get Started
-            </button>
-          </div>
-          <ul class="flex flex-col gap-2 px-2">
-            <li class="flex items-center text-base gap-3">
-              <div class="w-4 h-4 bg-teal-500 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="#ffffff"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M5 12l5 5l10 -10"></path>
-                </svg>
-              </div>
-              <p>Individual configuration</p>
-            </li>
-            <li class="flex items-center text-base gap-3">
-              <div class="w-4 h-4 bg-teal-500 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="#ffffff"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M5 12l5 5l10 -10"></path>
-                </svg>
-              </div>
-              <p>No setup, or hidden fees</p>
-            </li>
-            <li class="flex items-center text-base gap-3">
-              <div class="w-4 h-4 bg-teal-500 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="#ffffff"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M5 12l5 5l10 -10"></path>
-                </svg>
-              </div>
-              <p>Team size: 100+ developer</p>
-            </li>
-            <li class="flex items-center text-base gap-3">
-              <div class="w-4 h-4 bg-teal-500 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="#ffffff"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M5 12l5 5l10 -10"></path>
-                </svg>
-              </div>
-              <p>Premium support: 36 months</p>
-            </li>
-            <li class="flex items-center text-base gap-3">
-              <div class="w-4 h-4 bg-teal-500 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="#ffffff"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M5 12l5 5l10 -10"></path>
-                </svg>
-              </div>
-              <p>Free updates: 36 months</p>
-            </li>
-          </ul>
-        </div>
+  <footer class="bg-white text-zinc-900 py-8">
+    <div class="max-w-screen-xl mx-auto px-4 flex flex-col items-center gap-4">
+      <div class="text-sm text-zinc-500 text-center">
+        © 2024 kinfuy. All Rights Reserved.
       </div>
     </div>
-  </section>
+  </footer>
 </template>
 
 <script lang="ts" setup></script>
