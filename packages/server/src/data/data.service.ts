@@ -15,19 +15,25 @@ export class DataService {
   async getGihubUser(name: string): Promise<SocialCardResponse> {
     const res = this.httpService.get(`https://api.github.com/users/${name}`);
     const data = await lastValueFrom(res);
-    const {
-      followers,
-      login: username,
-      name: nickname,
-      avatar_url,
-    } = data.data;
-    return { followers, username, nickname, avatar_url };
+    try {
+      const {
+        followers,
+        login: username,
+        name: nickname,
+        avatar_url,
+      } = data.data;
+      return { followers, username, nickname, avatar_url };
+    } catch (error) {
+      throw new UserException('用户不存在');
+    }
+   
   }
 
   async getJuejinUser2(user_id: string): Promise<SocialCardResponse> {
     const res = this.httpService.get(
       `https://api.juejin.cn/user_api/v1/user/get?user_id=${user_id}`,
     );
+  try {
     const data = await lastValueFrom(res);
     const {
       follower_count: followers,
@@ -35,6 +41,9 @@ export class DataService {
       avatar_large: avatar_url,
     } = data.data.data;
     return { followers, username: '', nickname, avatar_url };
+  } catch (error) {
+    throw new UserException('用户不存在'); 
+  }
   }
 
   async getJuejinUser(name: string) {
