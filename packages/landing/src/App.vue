@@ -12,7 +12,7 @@
               decoding="async"
               data-nimg="1"
               style="color: transparent"
-              src="../../public/logo.png"
+              src="/logo.png"
             />
           </div>
           <div class="text-xl __className_3ac6c1">DevTester</div>
@@ -87,7 +87,7 @@
             height="424"
             decoding="async"
             data-nimg="1"
-            src="../../public/cover.svg"
+            src="/cover.svg"
             class="object-contain mx-auto"
             style="color: transparent"
           />
