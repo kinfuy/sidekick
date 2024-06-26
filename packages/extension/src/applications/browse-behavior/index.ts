@@ -9,6 +9,7 @@ export const BrowseBehavior: App = {
   logo: chrome.runtime.getURL(count),
   inner: false,
   settingApp: true,
+  popupApp: true,
   hooks: {
     onTabUpdate: async (tabs) => {
       const { addRecord } = useBrowseBehaviorStore();

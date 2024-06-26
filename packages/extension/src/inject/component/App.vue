@@ -31,7 +31,7 @@
       >
         <div class="dev-tester-content">
           <ToolItem
-            v-for="app in apps"
+            v-for="app in contentApps"
             :key="app.name"
             :title="app.title"
             :logo="app.logo"
@@ -43,7 +43,7 @@
         <div class="dev-tester-footer">
           <span class="line" />
           <div
-            v-for="innerApp in innerApps"
+            v-for="innerApp in contentInnerApps"
             :key="innerApp.name"
             class="footer-operate btn m-t-1"
             @click="appClick(innerApp)"
@@ -90,7 +90,7 @@ watch(
   },
 );
 
-const { apps, innerApps } = useApp();
+const { contentApps, contentInnerApps } = useApp();
 
 const logoUrl = chrome.runtime.getURL(logo);
 

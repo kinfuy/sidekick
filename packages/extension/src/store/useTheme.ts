@@ -1,5 +1,6 @@
 import { computed, onMounted, onUnmounted, ref, toRaw } from 'vue';
 import { storage } from '@utils/chrome';
+import { useApp } from './useApp';
 
 export interface ThemeStore {
   mode: 'light' | 'dark';
@@ -81,7 +82,10 @@ export const useTheme = () => {
     save();
   };
 
+  const { contentApps } = useApp();
+
   const bubble = computed(() => {
+    if (contentApps.value.length === 0) return false;
     return themeStore.value.bubble;
   });
 

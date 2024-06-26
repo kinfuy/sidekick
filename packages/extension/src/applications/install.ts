@@ -8,7 +8,10 @@ import { WebNoticeContentInstall } from './web-notice/install';
 import { appLayoutContentInstall } from './app-layout/install';
 import { linkGoSettingInstall } from './link-go/install';
 import { storagePortalContentInstall } from './storage-portal/install';
-import { browseBehaviorSettingInstall } from './browse-behavior/install';
+import {
+  browseBehaviorPopupInstall,
+  browseBehaviorSettingInstall,
+} from './browse-behavior/install';
 
 export const contentInstall = (app: App) => {
   appLayoutContentInstall(app);
@@ -19,6 +22,7 @@ export const contentInstall = (app: App) => {
 
 export const popupInstall = (app: App) => {
   devAccountPopupInstall(app);
+  browseBehaviorPopupInstall(app);
 };
 
 export const settingInstall = (app: App) => {
@@ -26,5 +30,3 @@ export const settingInstall = (app: App) => {
   linkGoSettingInstall(app);
   browseBehaviorSettingInstall(app);
 };
-
-export const hasSettingAppView = ['DevAccount', 'LinkGo', 'BrowseBehavior'];
