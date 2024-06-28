@@ -8,10 +8,12 @@
           <span class="logo-title">DevTester</span>
         </div>
         <div class="silder-list">
-          <div class="silder-title">我的应用</div>
+          <div v-if="installWithSettingApps.length" class="silder-title">
+            我的应用
+          </div>
           <Sortable @sort="appSort">
             <div
-              v-for="setting in installApps"
+              v-for="setting in installWithSettingApps"
               :key="setting.name"
               class="silder-item"
               :class="{ 'item-active': active === setting.name }"
@@ -21,8 +23,8 @@
               <img class="drag-icon" :src="dragIcon" alt="logo" />
             </div>
           </Sortable>
-          <ElDivider />
-          <div class="silder-title">其他</div>
+          <ElDivider v-if="installWithSettingApps.length" />
+          <div class="silder-title">基础</div>
           <div
             v-for="setting in settingInnerApps"
             :key="setting.name"
@@ -56,7 +58,7 @@
 
 <script lang="ts" setup>
 import { useTheme } from '@store/useTheme';
-import { computed, ref } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { useAuth } from '@store/useAuth';
 import Cover from '@components/common/Cover/Cover.vue';
 import { useApp } from '@store/useApp';
@@ -76,39 +78,59 @@ const { theme } = useTheme();
 
 const active = ref();
 
-const { installApps, settingInnerApps, sortApps, isAppActive, updateAppState } =
-  useApp();
+const {
+  installWithSettingApps,
+  settingInnerApps,
+  sortApps,
+  isAppActive,
+  updateAppState,
+} = useApp();
 
 const appSort = (apps: string[]) => {
   sortApps(apps);
 };
 
 const init = () => {
-  const idx = window.location.href.lastIndexOf('#') > 0;
-  if (idx) {
-    const menu = window.location.href.split('#')[1];
-    if (installApps.value.find((item) => item.name === menu)) {
-      active.value = menu;
-      return;
-    }
-  }
-  active.value = installApps.value[0]?.name || settingInnerApps.value[0]?.name;
-  window.location.href = `${window.location.href}#${active.value}`;
   getRefreshToken();
+  console.log(window.location.href);
+  const idx = window.location.href.indexOf('#');
+  if (idx > 0) {
+    const menu = window.location.href.split('#')[1];
+    if (installWithSettingApps.value.find((item) => item.name === menu)) {
+      active.value = menu;
+    } else {
+      active.value =
+        installWithSettingApps.value[0]?.name ||
+        settingInnerApps.value[0]?.name;
+      window.location.href = `${window.location.href.slice(0, idx)}#${
+        active.value
+      }`;
+    }
+    return;
+  }
+  active.value =
+    installWithSettingApps.value[0]?.name || settingInnerApps.value[0]?.name;
+  console.log(
+    active.value,
+    installWithSettingApps.value[0],
+    settingInnerApps.value[0],
+  );
+  window.location.href = `${window.location.href}#${active.value}`;
+  console.log(installWithSettingApps.value, settingInnerApps.value);
 };
 
 init();
 
 const current = computed(() => {
   return (
-    installApps.value.find((item) => item.name === active.value) ||
-    installApps.value[0]
+    settingInnerApps.value.find((item) => item.name === active.value) ||
+    settingInnerApps.value[0]
   );
 });
 
 const appClick = (app: AppEntry) => {
   active.value = app.name;
-  const idx = window.location.href.lastIndexOf('#');
+  const idx = window.location.href.indexOf('#');
   window.location.href = `${window.location.href.slice(0, idx)}#${app.name}`;
 };
 </script>

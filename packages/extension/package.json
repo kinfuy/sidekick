@@ -1,10 +1,10 @@
 {
   "name": "dev-tester",
+  "type": "module",
   "version": "1.0.0",
   "author": "kinfuy",
   "license": "MIT",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build"

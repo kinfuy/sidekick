@@ -31,21 +31,21 @@ const linkApp: AppEntry[] = [
 
 const settingApps: AppEntry[] = [
   {
-    title: '基础信息',
+    title: '应用商店',
+    name: 'AppStore',
+    logo: getChromeUrl(set),
+    inner: true,
+    isLogin: false,
+    settingApp: true,
+  },
+  {
+    title: '用户信息',
     name: 'AppUser',
     logo: getChromeUrl(set),
     inner: true,
     isLogin: false,
     settingApp: true,
   },
-  // {
-  //   title: '应用商店',
-  //   name: 'AppStore',
-  //   logo: getChromeUrl(set),
-  //   inner: true,
-  //   isLogin: false,
-  //   settingApp: true,
-  // },
   // {
   //   title: '帮助与反馈',
   //   name: 'AppHelp',

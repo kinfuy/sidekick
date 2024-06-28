@@ -11,13 +11,13 @@ export interface AppStore {
   installed?: Array<string>;
 }
 
-const currentVersion = 1;
+const currentVersion = 2;
 
 const defaultStore: AppStore = {
   version: 1,
   apps: appsRaw,
   actives: defaultActive,
-  installed: ['DevAccount', 'WebNotice'],
+  installed: [],
 };
 
 const appStore = ref<AppStore>(defaultStore);
@@ -76,23 +76,39 @@ export const useApp = () => {
   // content app
   const contentApps = computed<AppEntry[]>(() => {
     return appStore.value.apps.filter(
-      (a) => !a.inner && a.contentApp && isAppActive(a.name),
+      (a) => (!a.inner && a.contentApp && isAppActive(a.name)) || [],
     );
   });
 
   // popup app
   const popupApps = computed<AppEntry[]>(() => {
-    return appStore.value.apps.filter((a) => a.popupApp && isAppActive(a.name));
+    return (
+      appStore.value.apps.filter((a) => a.popupApp && isAppActive(a.name)) || []
+    );
   });
 
   // setting app
   const settingApps = computed(() => {
-    return appStore.value.apps.filter((a) => a.settingApp);
+    return appStore.value.apps.filter((a) => a.settingApp) || [];
   });
 
   // 安装的app
   const installApps = computed(() => {
-    return settingApps.value.filter((a) => isAppInstall(a.name) && !a.inner);
+    return (
+      appStore.value.apps.filter((a) => isAppInstall(a.name) || a.inner) || []
+    );
+  });
+
+  // 安装的需要设置的app
+  const installWithSettingApps = computed(() => {
+    return (
+      settingApps.value.filter((a) => isAppInstall(a.name) && !a.inner) || []
+    );
+  });
+
+  // 所有可超安装的app
+  const allCustomApps = computed(() => {
+    return appStore.value.apps.filter((a) => !a.inner) || [];
   });
 
   const settingInnerApps = computed(() => {
@@ -131,6 +147,7 @@ export const useApp = () => {
     isAppActive,
     isAppInstall,
     installApps,
+    installWithSettingApps,
     sortApps,
     settingInnerApps,
     contentApps,
@@ -138,5 +155,6 @@ export const useApp = () => {
     popupApps,
     settingApps,
     updateAppState,
+    allCustomApps,
   };
 };
