@@ -122,7 +122,11 @@ export const useAuth = () => {
 
   const syncStore = async (changes: any) => {
     if (changes[STORE_KEY]) {
-      sync();
+      if (changes[STORE_KEY].newValue !== changes[STORE_KEY].oldValue) {
+        setTimeout(() => {
+          sync();
+        }, 0);
+      }
     }
   };
 

@@ -1,6 +1,5 @@
-import { computed } from 'vue';
-// import { storage } from '@utils/chrome';
-import { StorageKit } from '@core/store';
+import { computed, ref, toRaw } from 'vue';
+import { storage } from '@utils/chrome';
 import { appsRaw } from '../applications';
 import type { AppEntry } from '@/types/core-app.type';
 
@@ -12,7 +11,7 @@ export interface AppStore {
   installed?: Array<string>;
 }
 
-// const currentVersion = 2;
+const currentVersion = 2;
 
 const defaultStore: AppStore = {
   version: 1,
@@ -21,32 +20,52 @@ const defaultStore: AppStore = {
   installed: [],
 };
 
-// const appStore = ref<AppStore>(defaultStore);
+const appStore = ref<AppStore>(defaultStore);
 
 const STORE_KEY = 'appStore';
+
 export const useApp = () => {
-  const storageKit = new StorageKit<AppStore>(STORE_KEY, defaultStore);
+  const { get, set } = storage;
+
+  const sync = async () => {
+    let store: AppStore = defaultStore;
+    const _store = await get<AppStore>(STORE_KEY);
+    if (_store && JSON.stringify(_store) !== '{}') {
+      store = _store as AppStore;
+    }
+    if (store.version === currentVersion) {
+      appStore.value = store;
+    } else {
+      appStore.value = defaultStore;
+    }
+  };
+
+  const save = () => {
+    set(STORE_KEY, JSON.stringify(toRaw(appStore.value))).finally(() => {
+      sync();
+    });
+  };
 
   // app 是否安装
   const isAppInstall = (name: string) => {
-    const app = storageKit.store.apps.find((a) => a.name === name);
+    const app = appStore.value.apps.find((a) => a.name === name);
     if (!app) return false;
     if (app.inner) return true;
-    return storageKit.store.installed?.includes(name);
+    return appStore.value.installed?.includes(name);
   };
 
   // app 是否激活
   const isAppActive = (name: string) => {
-    const app = storageKit.store.apps.find((a) => a.name === name);
+    const app = appStore.value.apps.find((a) => a.name === name);
     if (!app) return false;
     if (app.inner) return true;
     if (!isAppInstall(name)) return false;
-    return storageKit.store.actives?.includes(name);
+    return appStore.value.actives?.includes(name);
   };
 
   // 内置app 不可删除
   const innerApps = computed<AppEntry[]>(() => {
-    return storageKit.store.apps.filter((a) => a.inner);
+    return appStore.value.apps.filter((a) => a.inner);
   });
 
   // inject 侧边内置app
@@ -56,7 +75,7 @@ export const useApp = () => {
 
   // content app
   const contentApps = computed<AppEntry[]>(() => {
-    return storageKit.store.apps.filter(
+    return appStore.value.apps.filter(
       (a) => (!a.inner && a.contentApp && isAppActive(a.name)) || [],
     );
   });
@@ -64,20 +83,19 @@ export const useApp = () => {
   // popup app
   const popupApps = computed<AppEntry[]>(() => {
     return (
-      storageKit.store.apps.filter((a) => a.popupApp && isAppActive(a.name)) ||
-      []
+      appStore.value.apps.filter((a) => a.popupApp && isAppActive(a.name)) || []
     );
   });
 
   // setting app
   const settingApps = computed(() => {
-    return storageKit?.store?.apps.filter((a) => a.settingApp) || [];
+    return appStore.value.apps.filter((a) => a.settingApp) || [];
   });
 
   // 安装的app
   const installApps = computed(() => {
     return (
-      storageKit.store.apps.filter((a) => isAppInstall(a.name) || a.inner) || []
+      appStore.value.apps.filter((a) => isAppInstall(a.name) || a.inner) || []
     );
   });
 
@@ -90,7 +108,7 @@ export const useApp = () => {
 
   // 所有可超安装的app
   const allCustomApps = computed(() => {
-    return storageKit.store.apps.filter((a) => !a.inner) || [];
+    return appStore.value.apps.filter((a) => !a.inner) || [];
   });
 
   const settingInnerApps = computed(() => {
@@ -98,51 +116,53 @@ export const useApp = () => {
   });
 
   const apps = computed(() => {
-    return storageKit?.store?.apps || [];
+    return appStore.value.apps;
   });
 
   // 更新应用激活
   const updateAppState = (name: string, isActive: boolean) => {
     if (!isAppInstall(name)) return false;
-    if (!storageKit.store.actives) storageKit.store.actives = []; // 老数据兼容
+    if (!appStore.value.actives) appStore.value.actives = []; // 老数据兼容
     if (isActive) {
-      if (!storageKit.store.actives.includes(name)) {
-        storageKit.store?.actives.push(name);
+      if (!appStore.value.actives.includes(name)) {
+        appStore.value?.actives.push(name);
       }
     } else {
-      storageKit.store.actives = storageKit.store.actives.filter(
-        (n) => n !== name,
-      );
+      appStore.value.actives = appStore.value.actives.filter((n) => n !== name);
     }
-    storageKit.save();
+    save();
   };
 
   const sortApps = (list: string[]) => {
     const apps = list.map((name) => {
-      return storageKit.store.apps.find((app) => app.name === name) as AppEntry;
+      return appStore.value.apps.find((app) => app.name === name) as AppEntry;
     });
-    storageKit.store.apps = storageKit.store.apps
+    appStore.value.apps = appStore.value.apps
       .filter((app) => !list.includes(app.name))
       .concat(apps);
-    storageKit.save();
+    save();
   };
 
   const installApp = (name: string, switchStatus?: boolean) => {
     if (!isAppInstall(name)) {
-      storageKit.store.installed?.push(name);
-      storageKit.store.actives?.push(name);
+      appStore.value.installed?.push(name);
+      appStore.value.actives?.push(name);
     } else if (switchStatus) {
-      storageKit.store.installed = storageKit.store.installed?.filter(
+      appStore.value.installed = appStore.value.installed?.filter(
         (n) => n !== name,
       );
-      storageKit.store.actives = storageKit.store.actives?.filter(
+      appStore.value.actives = appStore.value.actives?.filter(
         (n) => n !== name,
       );
     }
-    storageKit.save();
+    save();
   };
 
+  sync();
+
   return {
+    sync,
+    save,
     isAppActive,
     isAppInstall,
     installApp,

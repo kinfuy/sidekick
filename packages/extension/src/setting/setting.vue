@@ -81,6 +81,7 @@ const active = ref();
 const {
   installWithSettingApps,
   settingInnerApps,
+  apps,
   sortApps,
   isAppActive,
   updateAppState,
@@ -110,22 +111,13 @@ const init = () => {
   }
   active.value =
     installWithSettingApps.value[0]?.name || settingInnerApps.value[0]?.name;
-  console.log(
-    active.value,
-    installWithSettingApps.value[0],
-    settingInnerApps.value[0],
-  );
   window.location.href = `${window.location.href}#${active.value}`;
-  console.log(installWithSettingApps.value, settingInnerApps.value);
 };
 
 init();
 
 const current = computed(() => {
-  return (
-    settingInnerApps.value.find((item) => item.name === active.value) ||
-    settingInnerApps.value[0]
-  );
+  return apps.value.find((item) => item.name === active.value) || apps.value[0];
 });
 
 const appClick = (app: AppEntry) => {
