@@ -27,7 +27,10 @@ const STORE_KEY = 'appStore';
 export const useApp = () => {
   const { get, set } = storage;
 
+  const inited = ref(false);
+
   const sync = async () => {
+    inited.value = false;
     let store: AppStore = defaultStore;
     const _store = await get<AppStore>(STORE_KEY);
     if (_store && JSON.stringify(_store) !== '{}') {
@@ -44,6 +47,7 @@ export const useApp = () => {
     if (!appStore.value.installed?.length) {
       appStore.value.installed = appsRaw.map((a) => a.name);
     }
+    inited.value = true;
   };
 
   const save = () => {
@@ -149,6 +153,21 @@ export const useApp = () => {
     save();
   };
 
+  const installApp = (name: string, switchStatus?: boolean) => {
+    if (!isAppInstall(name)) {
+      appStore.value.installed?.push(name);
+      appStore.value.actives?.push(name);
+    } else if (switchStatus) {
+      appStore.value.installed = appStore.value.installed?.filter(
+        (n) => n !== name,
+      );
+      appStore.value.actives = appStore.value.actives?.filter(
+        (n) => n !== name,
+      );
+    }
+    save();
+  };
+
   sync();
 
   return {
@@ -158,6 +177,7 @@ export const useApp = () => {
     isAppInstall,
     apps,
     installApps,
+    installApp,
     installWithSettingApps,
     sortApps,
     settingInnerApps,
@@ -167,5 +187,6 @@ export const useApp = () => {
     settingApps,
     updateAppState,
     allCustomApps,
+    inited,
   };
 };
