@@ -38,6 +38,12 @@ export const useApp = () => {
     } else {
       appStore.value = defaultStore;
     }
+    if (!appStore.value.actives?.length) {
+      appStore.value.actives = appsRaw.map((a) => a.name);
+    }
+    if (!appStore.value.installed?.length) {
+      appStore.value.installed = appsRaw.map((a) => a.name);
+    }
   };
 
   const save = () => {
@@ -62,6 +68,10 @@ export const useApp = () => {
     if (!isAppInstall(name)) return false;
     return appStore.value.actives?.includes(name);
   };
+
+  const apps = computed(() => {
+    return appStore.value.apps;
+  });
 
   // 内置app 不可删除
   const innerApps = computed<AppEntry[]>(() => {
@@ -146,6 +156,7 @@ export const useApp = () => {
     save,
     isAppActive,
     isAppInstall,
+    apps,
     installApps,
     installWithSettingApps,
     sortApps,

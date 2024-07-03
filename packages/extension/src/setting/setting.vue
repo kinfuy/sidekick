@@ -79,6 +79,7 @@ const { theme } = useTheme();
 const active = ref();
 
 const {
+  apps,
   installWithSettingApps,
   settingInnerApps,
   sortApps,
@@ -92,40 +93,27 @@ const appSort = (apps: string[]) => {
 
 const init = () => {
   getRefreshToken();
-  console.log(window.location.href);
   const idx = window.location.href.indexOf('#');
   if (idx > 0) {
     const menu = window.location.href.split('#')[1];
-    if (installWithSettingApps.value.find((item) => item.name === menu)) {
+    if (apps.value.find((item) => item.name === menu)) {
       active.value = menu;
     } else {
-      active.value =
-        installWithSettingApps.value[0]?.name ||
-        settingInnerApps.value[0]?.name;
+      active.value = apps.value[0]?.name || settingInnerApps.value[0]?.name;
       window.location.href = `${window.location.href.slice(0, idx)}#${
         active.value
       }`;
     }
     return;
   }
-  active.value =
-    installWithSettingApps.value[0]?.name || settingInnerApps.value[0]?.name;
-  console.log(
-    active.value,
-    installWithSettingApps.value[0],
-    settingInnerApps.value[0],
-  );
+  active.value = apps.value[0]?.name || settingInnerApps.value[0]?.name;
   window.location.href = `${window.location.href}#${active.value}`;
-  console.log(installWithSettingApps.value, settingInnerApps.value);
 };
 
 init();
 
 const current = computed(() => {
-  return (
-    settingInnerApps.value.find((item) => item.name === active.value) ||
-    settingInnerApps.value[0]
-  );
+  return apps.value.find((item) => item.name === active.value) || apps.value[0];
 });
 
 const appClick = (app: AppEntry) => {
