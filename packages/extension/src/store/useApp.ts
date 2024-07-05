@@ -103,24 +103,26 @@ export const useApp = () => {
   // 更新应用激活
   const updateAppState = (name: string, isActive: boolean) => {
     if (!isAppInstall(name)) return false;
-    if (!storageKit.store.actives) storageKit.store.actives = []; // 老数据兼容
+    if (!storageKit.storeRaw.value.actives)
+      storageKit.storeRaw.value.actives = []; // 老数据兼容
     if (isActive) {
-      if (!storageKit.store.actives.includes(name)) {
-        storageKit.store?.actives.push(name);
+      if (!storageKit.storeRaw.value.actives.includes(name)) {
+        storageKit.storeRaw.value?.actives.push(name);
       }
     } else {
-      storageKit.store.actives = storageKit.store.actives.filter(
-        (n) => n !== name,
-      );
+      storageKit.storeRaw.value.actives =
+        storageKit.storeRaw.value.actives.filter((n) => n !== name);
     }
     storageKit.save();
   };
 
   const sortApps = (list: string[]) => {
     const apps = list.map((name) => {
-      return storageKit.store.apps.find((app) => app.name === name) as AppEntry;
+      return storageKit.storeRaw.value.apps.find(
+        (app) => app.name === name,
+      ) as AppEntry;
     });
-    storageKit.store.apps = storageKit.store.apps
+    storageKit.storeRaw.value.apps = storageKit.storeRaw.value.apps
       .filter((app) => !list.includes(app.name))
       .concat(apps);
     storageKit.save();
@@ -128,17 +130,19 @@ export const useApp = () => {
 
   const installApp = (name: string, switchStatus?: boolean) => {
     if (!isAppInstall(name)) {
-      storageKit.store.installed?.push(name);
-      storageKit.store.actives?.push(name);
+      storageKit.storeRaw.value.installed?.push(name);
+      storageKit.storeRaw.value.actives?.push(name);
     } else if (switchStatus) {
-      storageKit.store.installed = storageKit.store.installed?.filter(
-        (n) => n !== name,
-      );
-      storageKit.store.actives = storageKit.store.actives?.filter(
-        (n) => n !== name,
-      );
+      storageKit.storeRaw.value.installed =
+        storageKit.storeRaw.value.installed?.filter((n) => n !== name);
+      storageKit.storeRaw.value.actives =
+        storageKit.storeRaw.value.actives?.filter((n) => n !== name);
     }
     storageKit.save();
+  };
+
+  const syncStore = async () => {
+    await storageKit.sync();
   };
 
   return {
@@ -157,5 +161,6 @@ export const useApp = () => {
     updateAppState,
     allCustomApps,
     inited,
+    syncStore,
   };
 };

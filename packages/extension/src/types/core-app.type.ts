@@ -6,7 +6,7 @@ export interface AppEntry {
   logo: string;
   inner: boolean; // 是否是内部应用
   linkUrl?: string;
-  isLogin?: boolean;
+  isLogin?: boolean; // 是否需要登录
   description?: string;
   width?: string;
   popupApp?: boolean;

@@ -12,7 +12,7 @@ export const StoragePortal: App = {
   isLogin: false,
   logo: getChromeUrl(cookie),
   contentApp: true,
-  settingApp: true,
+  settingApp: false,
   width: '600px',
   hooks: {
     onGetData: async (data) => {

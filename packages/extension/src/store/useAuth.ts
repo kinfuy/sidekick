@@ -1,5 +1,5 @@
-import { computed, onUnmounted, ref, toRaw } from 'vue';
-import { storage } from '@utils/chrome';
+import { computed, onUnmounted } from 'vue';
+import { StorageKit } from '@core/store';
 import { refreshTokenApi } from '@/apis/user';
 
 const STORE_KEY = 'userStore';
@@ -35,30 +35,18 @@ const defaultStore = (): UserStore => {
   };
 };
 
-const userStore = ref<UserStore>(defaultStore());
-
 export const useAuth = () => {
-  const { get, set } = storage;
+  const storageKit = StorageKit.getInstance<UserStore>(
+    STORE_KEY,
+    defaultStore(),
+  );
 
-  const save = () => {
-    set(STORE_KEY, JSON.stringify(toRaw(userStore.value)));
-  };
+  const isLogin = computed(() => storageKit.store.isLogin);
 
-  const isLogin = computed(() => userStore.value.isLogin);
-
-  const sync = async () => {
-    let store: UserStore = defaultStore();
-    const _store = await get<UserStore>(STORE_KEY);
-    if (_store && JSON.stringify(_store) !== '{}') {
-      store = _store as UserStore;
-    }
-    userStore.value = store;
-  };
-
-  const user = computed(() => userStore.value.user);
+  const user = computed(() => storageKit.store.user);
 
   const subscription = computed(() => {
-    const { user } = userStore.value;
+    const { user } = storageKit.store;
     if (user?.subscription) {
       switch (user.subscription.type) {
         case 1:
@@ -92,39 +80,38 @@ export const useAuth = () => {
   });
 
   const accessToken = computed(() => {
-    const { user } = userStore.value;
+    const { user } = storageKit.store;
     if (user) return user.accessToken;
     return null;
   });
 
   const refreshToken = computed(() => {
-    const { user } = userStore.value;
+    const { user } = storageKit.store;
     if (user) return user.refreshToken;
     return null;
   });
 
   const setUser = (user: UserInfo) => {
-    userStore.value.user = user;
-    userStore.value.isLogin = true;
-    userStore.value.lastLoginTime = new Date();
-    save();
+    storageKit.store.user = user;
+    storageKit.store.isLogin = true;
+    storageKit.store.lastLoginTime = new Date();
+    storageKit.save();
   };
 
   const setSubscription = (subscription: Subscription) => {
-    userStore.value.user!.subscription = subscription;
-    save();
+    storageKit.store.user!.subscription = subscription;
+    storageKit.save();
   };
 
   const clearAuth = () => {
-    userStore.value = JSON.parse(JSON.stringify(defaultStore()));
-    save();
+    storageKit.clear();
   };
 
   const syncStore = async (changes: any) => {
     if (changes[STORE_KEY]) {
       if (changes[STORE_KEY].newValue !== changes[STORE_KEY].oldValue) {
         setTimeout(() => {
-          sync();
+          storageKit.sync();
         }, 0);
       }
     }
@@ -136,13 +123,13 @@ export const useAuth = () => {
         refreshToken: string;
         accessToken: string;
       }>({
-        refreshToken: userStore.value.user!.refreshToken,
-        accessToken: userStore.value.user!.accessToken,
+        refreshToken: storageKit.store.user!.refreshToken,
+        accessToken: storageKit.store.user!.accessToken,
       });
       if (res) {
-        userStore.value.user!.accessToken = res.accessToken;
-        userStore.value.user!.refreshToken = res.refreshToken;
-        save();
+        storageKit.store.user!.accessToken = res.accessToken;
+        storageKit.store.user!.refreshToken = res.refreshToken;
+        storageKit.save();
       } else {
         clearAuth();
       }
@@ -151,7 +138,7 @@ export const useAuth = () => {
 
   chrome.storage.onChanged.addListener(syncStore);
 
-  sync();
+  storageKit.sync();
 
   onUnmounted(() => {
     chrome.storage.onChanged.removeListener(syncStore);
@@ -163,7 +150,6 @@ export const useAuth = () => {
     subscription,
     accessToken,
     refreshToken,
-    save,
     setUser,
     clearAuth,
     setSubscription,

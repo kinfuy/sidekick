@@ -1,7 +1,7 @@
-import { storage } from '@utils';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
-import { computed, ref, toRaw } from 'vue';
+import { computed } from 'vue';
+import { StorageKit } from '@core/store';
 import { getDaysOpenWebs } from './transform';
 
 export interface DayOpenWebs {
@@ -23,42 +23,29 @@ export interface WebStatics {
   startTime: string;
   endTime: string;
 }
-export interface BrowseBehaviorStoreInstance {
+export interface BrowseBehaviorStore {
   webStatics: Array<WebStatics>;
 }
 
 const STORE_KEY = 'browseBehaviorStore';
-const store = ref<BrowseBehaviorStoreInstance>({
-  webStatics: [],
-});
 
 export const useBrowseBehaviorStore = () => {
-  const { get, set } = storage;
-
-  const sync = async () => {
-    let _store: BrowseBehaviorStoreInstance = { webStatics: [] };
-    const localStore = await get<BrowseBehaviorStoreInstance>(STORE_KEY);
-    if (localStore && JSON.stringify(localStore) !== '{}') {
-      _store = localStore;
-    }
-    store.value = _store;
-  };
-
-  const save = () => {
-    set(STORE_KEY, JSON.stringify(toRaw(store.value))).finally(() => {
-      sync();
-    });
-  };
+  const storageKit = StorageKit.getInstance<BrowseBehaviorStore>(STORE_KEY, {
+    webStatics: [],
+  });
 
   const addRecord = (opt: any) => {
     const { tabId, url, title, date, startTime } = opt;
-    const tab = store.value.webStatics.find((item) => item.tabId === tabId);
+    const tab = storageKit.store.webStatics?.find(
+      (item) => item.tabId === tabId,
+    );
     if (tab) {
       if (tab.url === url) return;
       tab.tabId = '';
       tab.endTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
     }
-    store.value.webStatics.push({
+
+    storageKit.storeRaw.value.webStatics?.push({
       tabId,
       url,
       title,
@@ -66,20 +53,20 @@ export const useBrowseBehaviorStore = () => {
       startTime,
       endTime: '',
     });
-    save();
+    storageKit.save();
   };
 
   const updateEndTime = (tabId: string, date: string, endTime: string) => {
-    store.value.webStatics.forEach((item) => {
+    storageKit.storeRaw.value.webStatics?.forEach((item) => {
       if (item.tabId === tabId && item.date === date) {
         item.tabId = '';
         item.endTime = endTime;
       }
     });
-    save();
+    storageKit.save();
   };
 
-  const webStaticsMate = computed(() => store.value.webStatics);
+  const webStaticsMate = computed(() => storageKit.store.webStatics);
 
   const daysWebStatics = computed(() => {
     return getDaysOpenWebs(webStaticsMate.value).map((item) => {
@@ -92,19 +79,16 @@ export const useBrowseBehaviorStore = () => {
 
   const queryByDate = (day: Date | string | Dayjs) => {
     const date = dayjs(day).format('YYYY-MM-DD');
-    return webStaticsMate.value.find((item) => item.date === date);
+    return webStaticsMate.value?.find((item) => item.date === date);
   };
 
   const clear = () => {
-    store.value.webStatics = [];
-    save();
+    storageKit.clear();
   };
 
-  sync();
   return {
     daysWebStatics,
     queryByDate,
-    save,
     addRecord,
     updateEndTime,
     clear,

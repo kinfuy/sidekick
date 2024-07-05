@@ -10,11 +10,11 @@ interface StoreInstance<T> {
 const { get, set } = storage;
 
 export class StorageKit<K> {
-  private static instance: any;
+  private static instances = new Map<string, any>();
 
   private version = ref(0);
   private update_key = ref('NOT_INIT');
-  private storeRaw = ref({} as K);
+  public storeRaw = ref({} as K);
 
   private _key: string;
 
@@ -31,14 +31,10 @@ export class StorageKit<K> {
   }
 
   public static getInstance<K>(key: string, defaultValue: K) {
-    if (!StorageKit.instance) {
-      StorageKit.instance = new StorageKit(key, defaultValue);
+    if (!this.instances.has(key)) {
+      this.instances.set(key, new StorageKit(key, defaultValue));
     }
-    if (StorageKit.instance._key !== `STORAGE_KIT_${key}`) {
-      StorageKit.instance = new StorageKit(key, defaultValue);
-    }
-
-    return StorageKit.instance as StorageKit<K>;
+    return this.instances.get(key) as StorageKit<K>;
   }
 
   syncStore(changes: any, namespace: string) {
@@ -47,20 +43,19 @@ export class StorageKit<K> {
     }
   }
 
-  save() {
+  save(value?: K) {
     this.update_key.value = this._key + Date.now().toString();
     const raw = {
-      store: toRaw(this.storeRaw.value),
+      store: value ?? toRaw(this.storeRaw.value),
       version: toRaw(this.version.value),
       update_key: toRaw(this.update_key.value),
     };
-    console.log('save', this.update_key.value, raw);
     set(this._key, JSON.stringify(raw)).finally(() => {
       this.sync();
     });
   }
 
-  sync() {
+  async sync() {
     get<StoreInstance<K>>(this._key).then((res) => {
       if (res && JSON.stringify(res) !== '{}') {
         if (res.update_key !== this.update_key.value) {
@@ -89,9 +84,19 @@ export class StorageKit<K> {
   }
 
   get store() {
-    if (this.update_key.value !== 'NOT_INIT') {
-      return this.storeRaw.value || this.defaultValue;
+    if (this.inited) {
+      return this.storeRaw.value ?? this.defaultValue;
     }
     return this.defaultValue;
+  }
+
+  setStore(data: K) {
+    this.storeRaw.value =  data as any;
+    this.save();
+  }
+
+  clear() {
+    this.storeRaw.value = this.defaultValue as any;
+    this.save();
   }
 }

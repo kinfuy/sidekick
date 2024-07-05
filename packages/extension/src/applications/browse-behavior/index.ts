@@ -31,10 +31,10 @@ export const BrowseBehavior: App = {
     },
     onTabRemove: async (tabs) => {
       const [tabId] = tabs;
-      console.log('tabId', tabId);
       const { updateEndTime } = useBrowseBehaviorStore();
       const endTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
       const taday = dayjs().format('YYYY-MM-DD');
+
       updateEndTime(tabId, taday, endTime);
     },
   },

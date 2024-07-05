@@ -3,7 +3,7 @@ import type { DayOpenWebs, WebStatics } from './store';
 
 export const getDaysOpenWebs = (data: Array<WebStatics>): DayOpenWebs[] => {
   const dates = new Set<string>();
-  data.forEach((item) => {
+  data?.forEach((item) => {
     if (item.date) dates.add(item.date);
   });
 
