@@ -45,25 +45,26 @@ export class StorageKit<K> {
 
   save() {
     this.update_key.value = this._key + Date.now().toString();
-    set(
-      this._key,
-      JSON.stringify(
-        toRaw({
-          store: this.storeRaw.value,
-          version: this.version.value,
-          update_key: this.update_key.value,
-        }),
-      ),
-    );
+    const raw = {
+      store: toRaw(this.storeRaw.value),
+      version: toRaw(this.version.value),
+      update_key: toRaw(this.update_key.value),
+    };
+    console.log('save', this.update_key.value, raw);
+    set(this._key, JSON.stringify(raw)).finally(() => {
+      this.sync();
+    });
   }
 
   sync() {
     get<StoreInstance<K>>(this._key).then((res) => {
       if (res && JSON.stringify(res) !== '{}') {
         if (res.update_key !== this.update_key.value) {
-          this.storeRaw.value = res.store as any;
-          this.version.value = res.version;
-          this.update_key.value = res.update_key;
+          if (this.update_key.value === res.update_key) return;
+          this.storeRaw.value = (res.store as any) || this.defaultValue;
+          this.version.value = res.version || 1;
+          this.update_key.value =
+            res.update_key || this._key + Date.now().toString();
         }
       } else {
         this.storeRaw.value = this.defaultValue as any;
