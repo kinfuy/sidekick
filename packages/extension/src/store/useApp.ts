@@ -55,9 +55,10 @@ export const useApp = () => {
 
   // content app
   const contentApps = computed<AppEntry[]>(() => {
-    return storageKit.store.apps.filter(
-      (a) => (!a.inner && a.contentApp && isAppActive(a.name)) || [],
+    const apps = storageKit.store.apps.filter(
+      (a) => !a.inner && a.contentApp && isAppActive(a.name),
     );
+    return apps || [];
   });
 
   // popup app

@@ -69,7 +69,7 @@ import { useApp } from '@store/useApp';
 import { injectPostMessage } from '@utils';
 import type { AppEntry } from '@/types/core-app.type';
 
-const { sync } = useApp();
+const { syncStore } = useApp();
 const { theme, direction, posY, setTheme, setPosY } = useTheme();
 
 const kitRef = ref();
@@ -91,6 +91,8 @@ watch(
 );
 
 const { contentApps, contentInnerApps } = useApp();
+
+console.log(contentApps.value, contentInnerApps.value);
 
 const logoUrl = chrome.runtime.getURL(logo);
 
@@ -125,7 +127,7 @@ const hoverToolBar = () => {
 
 watchEffect(() => {
   if (isActive.value) {
-    sync();
+    syncStore();
   }
 });
 
