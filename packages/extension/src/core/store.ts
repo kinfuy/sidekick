@@ -26,6 +26,10 @@ export class StorageKit<K> {
     this.init();
   }
 
+  get inited() {
+    return this.update_key.value !== 'NOT_INIT';
+  }
+
   public static getInstance<K>(key: string, defaultValue: K) {
     if (!StorageKit.instance) {
       StorageKit.instance = new StorageKit(key, defaultValue);

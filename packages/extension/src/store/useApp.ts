@@ -1,5 +1,4 @@
 import { computed } from 'vue';
-// import { storage } from '@utils/chrome';
 import { StorageKit } from '@core/store';
 import { appsRaw } from '../applications';
 import type { AppEntry } from '@/types/core-app.type';
@@ -12,8 +11,6 @@ export interface AppStore {
   installed?: Array<string>;
 }
 
-// const currentVersion = 2;
-
 const defaultStore: AppStore = {
   version: 1,
   apps: appsRaw,
@@ -21,11 +18,13 @@ const defaultStore: AppStore = {
   installed: [],
 };
 
-// const appStore = ref<AppStore>(defaultStore);
-
 const STORE_KEY = 'appStore';
 export const useApp = () => {
   const storageKit = StorageKit.getInstance<AppStore>(STORE_KEY, defaultStore);
+
+  const inited = computed(() => {
+    return storageKit.inited;
+  });
 
   // app 是否安装
   const isAppInstall = (name: string) => {
@@ -157,5 +156,6 @@ export const useApp = () => {
     settingApps,
     updateAppState,
     allCustomApps,
+    inited,
   };
 };

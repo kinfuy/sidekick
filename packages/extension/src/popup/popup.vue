@@ -38,7 +38,7 @@ sendMessageToExtension({
 
 const { theme } = useTheme();
 
-const { popupApps } = useApp();
+const { popupApps, inited } = useApp();
 
 const current = ref<AppEntry>();
 
@@ -55,17 +55,18 @@ onBeforeUnmount(() => {
   current.value = undefined;
 });
 
-current.value = popupApps.value[0];
-
 const handleSet = () => {
   const query = current.value ? `#${current.value?.name}` : '';
   window.open(getChromeUrl(`setting.html${query}`), '_blank');
 };
 
 watchEffect(() => {
-  if (popupApps.value.length === 0) {
+  if (popupApps.value.length === 0 && inited.value) {
     handleSet();
     window.close();
+  }
+  if (popupApps.value.length > 0) {
+    current.value = popupApps.value[0];
   }
 });
 

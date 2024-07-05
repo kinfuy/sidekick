@@ -79,9 +79,9 @@ const { theme } = useTheme();
 const active = ref();
 
 const {
+  apps,
   installWithSettingApps,
   settingInnerApps,
-  apps,
   sortApps,
   isAppActive,
   updateAppState,
@@ -93,24 +93,20 @@ const appSort = (apps: string[]) => {
 
 const init = () => {
   getRefreshToken();
-  console.log(window.location.href);
   const idx = window.location.href.indexOf('#');
   if (idx > 0) {
     const menu = window.location.href.split('#')[1];
-    if (installWithSettingApps.value.find((item) => item.name === menu)) {
+    if (apps.value.find((item) => item.name === menu)) {
       active.value = menu;
     } else {
-      active.value =
-        installWithSettingApps.value[0]?.name ||
-        settingInnerApps.value[0]?.name;
+      active.value = apps.value[0]?.name || settingInnerApps.value[0]?.name;
       window.location.href = `${window.location.href.slice(0, idx)}#${
         active.value
       }`;
     }
     return;
   }
-  active.value =
-    installWithSettingApps.value[0]?.name || settingInnerApps.value[0]?.name;
+  active.value = apps.value[0]?.name || settingInnerApps.value[0]?.name;
   window.location.href = `${window.location.href}#${active.value}`;
 };
 
