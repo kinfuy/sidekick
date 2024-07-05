@@ -25,7 +25,7 @@ const defaultStore: AppStore = {
 
 const STORE_KEY = 'appStore';
 export const useApp = () => {
-  const storageKit = new StorageKit<AppStore>(STORE_KEY, defaultStore);
+  const storageKit = StorageKit.getInstance<AppStore>(STORE_KEY, defaultStore);
 
   // app 是否安装
   const isAppInstall = (name: string) => {

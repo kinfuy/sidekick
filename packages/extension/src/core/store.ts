@@ -1,5 +1,5 @@
 import { storage } from '@utils';
-import {  ref, toRaw } from 'vue';
+import { ref, toRaw } from 'vue';
 
 interface StoreInstance<T> {
   store: T;
@@ -10,48 +10,68 @@ interface StoreInstance<T> {
 const { get, set } = storage;
 
 export class StorageKit<K> {
-  private _store = ref({
-    store: {} as K,
-    version: 0,
-    update_key: 'NOT_INIT',
-  });
+  private static instance: any;
 
-  private store_key: string;
+  private version = ref(0);
+  private update_key = ref('NOT_INIT');
+  private storeRaw = ref({} as K);
+
+  private _key: string;
 
   private defaultValue: K;
 
-  constructor(key: string, defaultValue: K) {
+  private constructor(key: string, defaultValue: K) {
     this.defaultValue = defaultValue;
-    this.store_key = 'STORAGE_KIT_' + key;
+    this._key = `STORAGE_KIT_${key}`;
     this.init();
   }
 
+  public static getInstance<K>(key: string, defaultValue: K) {
+    if (!StorageKit.instance) {
+      StorageKit.instance = new StorageKit(key, defaultValue);
+    }
+    if (StorageKit.instance._key !== `STORAGE_KIT_${key}`) {
+      StorageKit.instance = new StorageKit(key, defaultValue);
+    }
+
+    return StorageKit.instance as StorageKit<K>;
+  }
+
   syncStore(changes: any, namespace: string) {
-    if (namespace === 'local' && changes[this.store_key]) {
+    if (namespace === 'local' && changes[this._key]) {
       this.sync();
     }
   }
 
-  sync() {
-    get<StoreInstance<K>>(this.store_key).then((res) => {
-      if (res && JSON.stringify(res) !== '{}') {
-        if (res.update_key !== this._store.value.update_key) {
-          this._store.value.store = res.store as any;
-          this._store.value.version = res.version;
-          this._store.value.update_key = res.update_key;
-        }
-      } else {
-        this._store.value.store = this.defaultValue as any;
-        this._store.value.version = 1;
-        this._store.value.update_key = this.store_key + Date.now().toString();
-        set(this.store_key, JSON.stringify(this._store.value));
-      }
-    });
+  save() {
+    this.update_key.value = this._key + Date.now().toString();
+    set(
+      this._key,
+      JSON.stringify(
+        toRaw({
+          store: this.storeRaw.value,
+          version: this.version.value,
+          update_key: this.update_key.value,
+        }),
+      ),
+    );
   }
 
-  save() {
-    this._store.value.update_key = this.store_key + Date.now().toString();
-    set(this.store_key, JSON.stringify(toRaw(this._store)));
+  sync() {
+    get<StoreInstance<K>>(this._key).then((res) => {
+      if (res && JSON.stringify(res) !== '{}') {
+        if (res.update_key !== this.update_key.value) {
+          this.storeRaw.value = res.store as any;
+          this.version.value = res.version;
+          this.update_key.value = res.update_key;
+        }
+      } else {
+        this.storeRaw.value = this.defaultValue as any;
+        this.version.value = 1;
+        this.update_key.value = this._key + Date.now().toString();
+        this.save();
+      }
+    });
   }
 
   private init() {
@@ -64,9 +84,9 @@ export class StorageKit<K> {
   }
 
   get store() {
-    if(this._store.value?.update_key!=='NOT_INIT'){
-      return this._store.value.store
+    if (this.update_key.value !== 'NOT_INIT') {
+      return this.storeRaw.value || this.defaultValue;
     }
-    return this.defaultValue
+    return this.defaultValue;
   }
 }
