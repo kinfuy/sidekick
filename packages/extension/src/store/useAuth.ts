@@ -1,4 +1,4 @@
-import { computed, onUnmounted } from 'vue';
+import { computed } from 'vue';
 import { StorageKit } from '@core/store';
 import { refreshTokenApi } from '@/apis/user';
 
@@ -30,9 +30,7 @@ export interface UserStore {
 }
 
 const defaultStore = (): UserStore => {
-  return {
-    isLogin: false,
-  };
+  return { isLogin: false };
 };
 
 export const useAuth = () => {
@@ -43,7 +41,9 @@ export const useAuth = () => {
 
   const isLogin = computed(() => storageKit.store.isLogin);
 
-  const user = computed(() => storageKit.store.user);
+  const user = computed(() => {
+    return storageKit.store.user;
+  });
 
   const subscription = computed(() => {
     const { user } = storageKit.store;
@@ -92,29 +92,21 @@ export const useAuth = () => {
   });
 
   const setUser = (user: UserInfo) => {
-    storageKit.store.user = user;
-    storageKit.store.isLogin = true;
-    storageKit.store.lastLoginTime = new Date();
+    storageKit.storeRaw.value = {
+      user,
+      isLogin: true,
+      lastLoginTime: new Date(),
+    };
     storageKit.save();
   };
 
   const setSubscription = (subscription: Subscription) => {
-    storageKit.store.user!.subscription = subscription;
+    storageKit.storeRaw.value.user!.subscription = subscription;
     storageKit.save();
   };
 
   const clearAuth = () => {
     storageKit.clear();
-  };
-
-  const syncStore = async (changes: any) => {
-    if (changes[STORE_KEY]) {
-      if (changes[STORE_KEY].newValue !== changes[STORE_KEY].oldValue) {
-        setTimeout(() => {
-          storageKit.sync();
-        }, 0);
-      }
-    }
   };
 
   const getRefreshToken = async () => {
@@ -127,22 +119,14 @@ export const useAuth = () => {
         accessToken: storageKit.store.user!.accessToken,
       });
       if (res) {
-        storageKit.store.user!.accessToken = res.accessToken;
-        storageKit.store.user!.refreshToken = res.refreshToken;
+        storageKit.storeRaw.value.user!.accessToken = res.accessToken;
+        storageKit.storeRaw.value.user!.refreshToken = res.refreshToken;
         storageKit.save();
       } else {
         clearAuth();
       }
     }
   };
-
-  chrome.storage.onChanged.addListener(syncStore);
-
-  storageKit.sync();
-
-  onUnmounted(() => {
-    chrome.storage.onChanged.removeListener(syncStore);
-  });
 
   return {
     isLogin,

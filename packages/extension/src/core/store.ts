@@ -31,7 +31,7 @@ export class StorageKit<K> {
   }
 
   public static getInstance<K>(key: string, defaultValue: K) {
-    if (!this.instances.has(key)) {
+    if (!this.instances || !this.instances.has(key)) {
       this.instances.set(key, new StorageKit(key, defaultValue));
     }
     return this.instances.get(key) as StorageKit<K>;
@@ -75,12 +75,12 @@ export class StorageKit<K> {
   }
 
   private init() {
-    chrome.storage.onChanged.addListener(this.syncStore);
+    chrome.storage.onChanged.addListener(this.syncStore.bind(this));
     this.sync();
   }
 
   purge() {
-    chrome.storage.onChanged.removeListener(this.syncStore);
+    chrome.storage.onChanged.removeListener(this.syncStore.bind(this));
   }
 
   get store() {
@@ -91,7 +91,7 @@ export class StorageKit<K> {
   }
 
   setStore(data: K) {
-    this.storeRaw.value =  data as any;
+    this.storeRaw.value = data as any;
     this.save();
   }
 

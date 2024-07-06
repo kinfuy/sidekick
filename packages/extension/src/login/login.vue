@@ -205,7 +205,7 @@ const login = async () => {
     },
   );
   if (user) {
-    errorTips.value = '登录失败';
+    errorTips.value = '';
     if (user.confirm) {
       mode.value = 'confirm';
       return;

@@ -106,7 +106,8 @@ const init = () => {
     }
     return;
   }
-  active.value = apps.value[0]?.name || settingInnerApps.value[0]?.name;
+  active.value =
+    installWithSettingApps.value[0]?.name || settingInnerApps.value[0]?.name;
   window.location.href = `${window.location.href}#${active.value}`;
 };
 

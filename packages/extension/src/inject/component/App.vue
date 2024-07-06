@@ -92,8 +92,6 @@ watch(
 
 const { contentApps, contentInnerApps } = useApp();
 
-console.log(contentApps.value, contentInnerApps.value);
-
 const logoUrl = chrome.runtime.getURL(logo);
 
 const lastPosY = ref();
