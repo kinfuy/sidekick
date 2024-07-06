@@ -25,7 +25,7 @@ export interface WebNoticeStoreInstance {
 }
 
 const store = ref<WebNoticeStoreInstance>(defaultStore);
-const STORE_KEY = 'webNoticeStore';
+const STORE_KEY = 'WebNotice';
 
 export const useWebNoticeStore = () => {
   const { get, set } = storage;

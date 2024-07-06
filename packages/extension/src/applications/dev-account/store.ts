@@ -45,7 +45,7 @@ export interface DevAccountStoreInstance {
   version: string;
 }
 
-const STORE_KEY = 'devAccountStore';
+const STORE_KEY = 'DevAccount';
 const store = ref<DevAccountStoreInstance>({
   webs: [],
   version: '1.0.0',

@@ -12,13 +12,15 @@ export interface AppStore {
 }
 
 const defaultStore: AppStore = {
-  version: 1,
+  version: 2,
   apps: appsRaw,
   actives: defaultActive,
   installed: [],
 };
 
-const STORE_KEY = 'appStore';
+const innerStoreKeys = ['AppStore', 'AppAuth', 'AppTheme', 'AppNotice'];
+
+const STORE_KEY = 'AppStore';
 export const useApp = () => {
   const storageKit = StorageKit.getInstance<AppStore>(STORE_KEY, defaultStore);
 
@@ -146,6 +148,21 @@ export const useApp = () => {
     await storageKit.sync();
   };
 
+  const storeKeys = computed(() => {
+    return [
+      {
+        name: '核心',
+        value: innerStoreKeys,
+      },
+      ...allCustomApps.value.map((a) => {
+        return {
+          name: a.title,
+          value: a.name,
+        };
+      }),
+    ];
+  });
+
   return {
     isAppActive,
     isAppInstall,
@@ -163,5 +180,6 @@ export const useApp = () => {
     allCustomApps,
     inited,
     syncStore,
+    storeKeys,
   };
 };

@@ -9,7 +9,7 @@ export interface ThemeStore {
   bubble: boolean;
 }
 
-const STORE_KEY = 'themeStore';
+const STORE_KEY = 'AppTheme';
 
 const defaultStore: ThemeStore = {
   mode: 'light',

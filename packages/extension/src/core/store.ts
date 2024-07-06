@@ -22,7 +22,7 @@ export class StorageKit<K> {
 
   private constructor(key: string, defaultValue: K) {
     this.defaultValue = defaultValue;
-    this._key = `STORAGE_KIT_${key}`;
+    this._key = `StorageKit_${key}`;
     this.init();
   }
 
@@ -98,5 +98,15 @@ export class StorageKit<K> {
   clear() {
     this.storeRaw.value = this.defaultValue as any;
     this.save();
+  }
+
+  /**
+   * 获取内存使用
+   * @param key 
+   * @returns 
+   */
+ static getStorageSize(key: string) {
+  console.log('key', key);
+    return chrome.storage.local.getBytesInUse(key);
   }
 }

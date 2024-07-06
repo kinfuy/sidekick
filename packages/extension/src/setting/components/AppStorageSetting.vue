@@ -1,0 +1,116 @@
+<template>
+  <div class="app-storage">
+    <div class="app-storage-chart">
+      <VChart class="chart" :option="option" autoresize />
+    </div>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { useApp } from '@store/useApp';
+
+import { use } from 'echarts/core';
+import { CanvasRenderer } from 'echarts/renderers';
+import { PieChart } from 'echarts/charts';
+import {
+  LegendComponent,
+  TitleComponent,
+  TooltipComponent,
+} from 'echarts/components';
+import VChart from 'vue-echarts';
+import { computed, onMounted, ref } from 'vue';
+import { StorageKit } from '@core/store';
+
+const { storeKeys } = useApp();
+
+use([
+  CanvasRenderer,
+  PieChart,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+]);
+
+const storeSize = ref<{ name: string; value: number }[]>([]);
+
+const getStorageSize = () => {
+  storeSize.value = [];
+  storeKeys.value.forEach((item) => {
+    if (Array.isArray(item.value)) {
+      let count = 0;
+      item.value.forEach((item) => {
+        StorageKit.getStorageSize(item).then((res) => {
+          count += res;
+        });
+      });
+      storeSize.value.push({
+        name: item.name,
+        value: count,
+      });
+    } else {
+      StorageKit.getStorageSize(item.value).then((res) => {
+        storeSize.value.push({
+          name: item.name,
+          value: res,
+        });
+      });
+    }
+  });
+};
+
+const legends = computed(() => {
+  return storeKeys.value.map((item) => {
+    return item.name;
+  });
+});
+
+onMounted(() => {
+  getStorageSize();
+});
+
+const option = computed(() => {
+  return {
+    title: {
+      text: '内存占用情况',
+      left: 'right',
+    },
+    tooltip: {
+      trigger: 'item',
+      formatter: '{a} <br/>{b} : {c}byte ({d}%)',
+    },
+    legend: {
+      orient: 'horizontal',
+      left: 'left',
+      data: legends.value,
+    },
+    series: [
+      {
+        name: '内存',
+        type: 'pie',
+        radius: '55%',
+        center: ['50%', '60%'],
+        data: storeSize.value,
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)',
+          },
+        },
+      },
+    ],
+  };
+});
+</script>
+
+<style lang="less" scoped>
+.app-storage {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  .app-storage-chart {
+    width: 100%;
+    height: 80%;
+  }
+}
+</style>

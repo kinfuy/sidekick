@@ -39,6 +39,14 @@ const settingApps: AppEntry[] = [
     settingApp: true,
   },
   {
+    title: '插件缓存',
+    name: 'AppStorage',
+    logo: getChromeUrl(set),
+    inner: true,
+    isLogin: false,
+    settingApp: true,
+  },
+  {
     title: '用户信息',
     name: 'AppUser',
     logo: getChromeUrl(set),

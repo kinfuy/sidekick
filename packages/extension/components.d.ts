@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Charts: typeof import('./src/components/Charts/Charts.vue')['default']
     Cover: typeof import('./src/components/common/Cover/Cover.vue')['default']
     Dialog: typeof import('./src/components/common/Dialog/Dialog.vue')['default']
     Fluorescence: typeof import('./src/components/common/Fluorescence/Fluorescence.vue')['default']

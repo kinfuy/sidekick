@@ -18,7 +18,7 @@ export interface NoticeStore {
   current?: Web;
 }
 
-const STORE_KEY = 'noticeStore';
+const STORE_KEY = 'AppNotice';
 
 const noticeStore = ref<NoticeStore>(defaultStore);
 

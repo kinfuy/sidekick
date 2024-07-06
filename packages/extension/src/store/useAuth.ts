@@ -2,7 +2,7 @@ import { computed } from 'vue';
 import { StorageKit } from '@core/store';
 import { refreshTokenApi } from '@/apis/user';
 
-const STORE_KEY = 'userStore';
+const STORE_KEY = 'AppAuth';
 
 export interface Subscription {
   type: number;

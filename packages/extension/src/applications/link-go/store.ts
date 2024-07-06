@@ -1,7 +1,7 @@
 import { storage } from '@utils';
 import { computed, ref, toRaw } from 'vue';
 
-const STORE_KEY = 'linkGoStore';
+const STORE_KEY = 'LinkGo';
 
 interface LinkRule {
   type: 'string' | 'regex';
