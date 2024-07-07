@@ -60,10 +60,10 @@ export class StorageKit<K> {
       if (res && JSON.stringify(res) !== '{}') {
         if (res.update_key !== this.update_key.value) {
           if (this.update_key.value === res.update_key) return;
-          this.storeRaw.value = (res.store as any) || this.defaultValue;
-          this.version.value = res.version || 1;
+          this.storeRaw.value = (res.store as any) ?? this.defaultValue;
+          this.version.value = res.version ?? 1;
           this.update_key.value =
-            res.update_key || this._key + Date.now().toString();
+            res.update_key ?? this._key + Date.now().toString();
         }
       } else {
         this.storeRaw.value = this.defaultValue as any;
@@ -106,7 +106,6 @@ export class StorageKit<K> {
    * @returns 
    */
  static getStorageSize(key: string) {
-  console.log('key', key);
     return chrome.storage.local.getBytesInUse(key);
   }
 }

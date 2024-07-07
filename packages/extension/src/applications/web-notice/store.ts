@@ -1,10 +1,10 @@
-import { storage } from '@utils';
-import { computed, ref, toRaw } from 'vue';
-const defaultStore: WebNoticeStoreInstance = {
+import { StorageKit } from '@core/store';
+import { computed } from 'vue';
+const defaultStore = (): WebNoticeStoreInstance => ({
   whiteList: [],
   current: undefined,
   viewType: 'border',
-};
+});
 
 interface Web {
   url: string;
@@ -24,59 +24,45 @@ export interface WebNoticeStoreInstance {
   viewType: 'border' | 'waterMask';
 }
 
-const store = ref<WebNoticeStoreInstance>(defaultStore);
 const STORE_KEY = 'WebNotice';
 
 export const useWebNoticeStore = () => {
-  const { get, set } = storage;
+  const storageKit = StorageKit.getInstance<WebNoticeStoreInstance>(
+    STORE_KEY,
+    defaultStore(),
+  );
+
   const whiteList = computed(() => {
-    return store.value.whiteList;
+    return storageKit.store.whiteList;
   });
 
   const viewType = computed(() => {
-    return store.value.viewType;
+    return storageKit.store.viewType;
   });
 
   const current = computed(() => {
-    return store.value.current;
+    return storageKit.store.current;
   });
 
-  const save = () => {
-    set(STORE_KEY, JSON.stringify(toRaw(store.value)));
-  };
-
-  const sync = async () => {
-    let _store: WebNoticeStoreInstance = defaultStore;
-    const webNotice = await get<WebNoticeStoreInstance>(STORE_KEY);
-    if (webNotice && JSON.stringify(webNotice) !== '{}') {
-      _store = webNotice;
-    }
-    if (!_store?.whiteList) {
-      _store = defaultStore;
-    }
-
-    store.value = _store;
-  };
-
-  sync();
-
   const setCurrent = async (url: string) => {
-    await sync();
-    store.value.current = store.value.whiteList.find((web) => {
-      if (url.includes(web.url)) return true;
-      return false;
-    });
-    save();
-    return store.value.current;
+    await storageKit.sync();
+    storageKit.storeRaw.value.current = storageKit.store.whiteList?.find(
+      (web) => {
+        if (url.includes(web.url)) return true;
+        return false;
+      },
+    );
+    storageKit.save();
+    return storageKit.store.current;
   };
 
   const serViewType = (val: 'border' | 'waterMask') => {
-    store.value.viewType = val;
+    storageKit.store.viewType = val;
   };
 
   const updateWeb = (web: Web) => {
-    if (store.value.whiteList.some((x) => x.url === web.url)) {
-      store.value.whiteList.forEach((w) => {
+    if (storageKit.storeRaw.value?.whiteList?.some((x) => x.url === web.url)) {
+      storageKit.storeRaw.value.whiteList.forEach((w) => {
         if (w.url === web.url) {
           w.active = web.active;
           w.tips = web.tips;
@@ -84,19 +70,25 @@ export const useWebNoticeStore = () => {
         }
       });
     } else {
-      store.value.whiteList.push({ ...web });
+      if (!storageKit.storeRaw.value?.whiteList)
+        storageKit.storeRaw.value.whiteList = [];
+      storageKit.storeRaw.value.whiteList.push({ ...web });
     }
 
-    store.value.current = { ...web };
-    save();
+    storageKit.storeRaw.value.current = { ...web };
+    storageKit.save();
+  };
+
+  const clear = () => {
+    storageKit.clear();
   };
 
   return {
     whiteList,
     current,
-    save,
     setCurrent,
     viewType,
+    clear,
     serViewType,
     updateWeb,
   };

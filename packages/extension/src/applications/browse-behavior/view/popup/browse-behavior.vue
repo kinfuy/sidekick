@@ -8,4 +8,18 @@
 
 <script lang="ts" setup></script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.browse-behavior {
+  padding: 10px;
+}
+
+.browse-behavior-header {
+  height: 28px;
+
+  .browse-behavior-title {
+    font-size: 16px;
+    line-height: 28px;
+    text-align: center;
+  }
+}
+</style>

@@ -1,5 +1,5 @@
-import { computed, onMounted, onUnmounted, ref, toRaw } from 'vue';
-import { storage } from '@utils/chrome';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { StorageKit } from '@core/store';
 import { useApp } from './useApp';
 
 export interface ThemeStore {
@@ -11,32 +11,24 @@ export interface ThemeStore {
 
 const STORE_KEY = 'AppTheme';
 
-const defaultStore: ThemeStore = {
+const defaultStore = (): ThemeStore => ({
   mode: 'light',
   direction: 'right',
   pos: { y: 100 },
   bubble: true,
-};
-
-const themeStore = ref<ThemeStore>(JSON.parse(JSON.stringify(defaultStore)));
+});
 
 export const useTheme = () => {
-  const { get, set } = storage;
+  const storageKit = StorageKit.getInstance<ThemeStore>(
+    STORE_KEY,
+    defaultStore(),
+  );
 
-  const sync = async () => {
-    let store: ThemeStore = JSON.parse(JSON.stringify(defaultStore));
-    const _store = await get<ThemeStore>(STORE_KEY);
-    if (_store && JSON.stringify(_store) !== '{}') {
-      store = _store as ThemeStore;
-    }
-    themeStore.value.direction = store.direction || 'left';
-    themeStore.value.mode = store.mode || 'light';
-    themeStore.value.pos = store.pos || { y: 0 };
-  };
+  const { contentApps } = useApp();
 
-  const theme = computed(() => themeStore.value.mode);
+  const theme = computed(() => storageKit.store.mode);
 
-  const direction = computed(() => themeStore.value.direction);
+  const direction = computed(() => storageKit.store.direction);
 
   const windowHeight = ref(document.documentElement.clientHeight);
 
@@ -53,50 +45,42 @@ export const useTheme = () => {
   });
 
   const posY = computed(() => {
-    return windowHeight.value < themeStore.value.pos.y
+    return windowHeight.value < storageKit.store.pos.y
       ? windowHeight.value - 180
-      : themeStore.value.pos.y;
+      : storageKit.store.pos.y;
   });
 
-  const save = () => {
-    set(STORE_KEY, JSON.stringify(toRaw(themeStore.value)));
-  };
-
   const setDirection = (val: 'left' | 'right') => {
-    themeStore.value.direction = val;
-    save();
+    storageKit.storeRaw.value.direction = val;
+    storageKit.save();
   };
 
   const setTheme = (val: 'light' | 'dark') => {
-    themeStore.value.mode = val;
-    save();
+    storageKit.storeRaw.value.mode = val;
+    storageKit.save();
   };
 
   const setPosY = (val: number) => {
-    themeStore.value.pos.y = val;
-    save();
+    storageKit.storeRaw.value.pos.y = val;
+    storageKit.save();
   };
 
   const clearTheme = () => {
-    themeStore.value = JSON.parse(JSON.stringify(defaultStore));
-    save();
+    storageKit.storeRaw.value = JSON.parse(JSON.stringify(defaultStore));
+    storageKit.save();
   };
-
-  const { contentApps } = useApp();
 
   const bubble = computed(() => {
     if (contentApps.value.length === 0) return false;
-    return themeStore.value.bubble;
+    return storageKit.store.bubble;
   });
 
   const setBubble = (val: boolean) => {
-    themeStore.value.bubble = val;
-    save();
+    storageKit.storeRaw.value.bubble = val;
+    storageKit.save();
   };
 
-  sync();
   return {
-    sync,
     posY,
     theme,
     direction,

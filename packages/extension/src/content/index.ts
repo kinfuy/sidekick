@@ -2,6 +2,7 @@ import type { PostMessage } from '@utils';
 import { injectCustomScript, sendMessageToExtension } from '@utils';
 import { contentFunc } from '@applications/content';
 import { useTheme } from '@store/useTheme';
+import { watch } from 'vue';
 import injectScript from '@/inject/index.ts?script&module';
 import { initInject, removeInject } from '@/inject/component';
 
@@ -14,12 +15,22 @@ const initContent = () => {
     if (isExist) clearTimeout(timer);
   }, 100);
 };
-
 if (bubble.value) {
   initContent();
 } else {
   removeInject();
 }
+
+watch(
+  () => bubble.value,
+  (value) => {
+    if (value) {
+      initContent();
+    } else {
+      removeInject();
+    }
+  },
+);
 
 injectCustomScript(injectScript);
 

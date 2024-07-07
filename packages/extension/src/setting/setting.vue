@@ -24,7 +24,12 @@
             </div>
           </Sortable>
           <ElDivider v-if="installWithSettingApps.length" />
-          <div class="silder-title">基础</div>
+          <div class="silder-title">
+            基础
+            <ElButton type="primary" link size="small" @click="reset"
+              >重置</ElButton
+            >
+          </div>
           <div
             v-for="setting in settingInnerApps"
             :key="setting.name"
@@ -58,11 +63,11 @@
 
 <script lang="ts" setup>
 import { useTheme } from '@store/useTheme';
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref } from 'vue';
 import { useAuth } from '@store/useAuth';
 import Cover from '@components/common/Cover/Cover.vue';
 import { useApp } from '@store/useApp';
-import { ElDivider, ElSwitch } from 'element-plus';
+import { ElButton, ElDivider, ElSwitch } from 'element-plus';
 
 import Empty from '@components/common/Empty/Empty';
 import Sortable from '@components/Sortable/sort-able';
@@ -82,6 +87,7 @@ const {
   apps,
   installWithSettingApps,
   settingInnerApps,
+  reset,
   sortApps,
   isAppActive,
   updateAppState,

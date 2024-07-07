@@ -163,6 +163,10 @@ export const useApp = () => {
     ];
   });
 
+  const reset = () => {
+    storageKit.clear();
+  };
+
   return {
     isAppActive,
     isAppInstall,
@@ -181,5 +185,6 @@ export const useApp = () => {
     inited,
     syncStore,
     storeKeys,
+    reset,
   };
 };
