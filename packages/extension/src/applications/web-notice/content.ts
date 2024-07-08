@@ -14,7 +14,7 @@ export const injectNotice = () => {
 };
 
 export const removeNotice = () => {
-  const app = document.body.querySelector('#web-notice');
+  const app = document.body?.querySelector('#web-notice');
   app && document.body.removeChild(app);
 };
 

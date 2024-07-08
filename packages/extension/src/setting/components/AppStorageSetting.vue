@@ -92,7 +92,7 @@ const option = computed(() => {
     },
     series: [
       {
-        name: '内存',
+        name: 'Storage',
         type: 'pie',
         radius: '55%',
         center: ['50%', '60%'],
