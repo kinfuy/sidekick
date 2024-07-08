@@ -35,6 +35,6 @@ export const initInject = () => {
 };
 
 export const removeInject = () => {
-  const app = document.body.querySelector(`#${APP_SELCTOR}`);
+  const app = document.body?.querySelector(`#${APP_SELCTOR}`);
   app && app.parentNode?.removeChild(app);
 };

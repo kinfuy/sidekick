@@ -15,7 +15,6 @@ import {
   browseBehaviorPopupInstall,
   browseBehaviorSettingInstall,
 } from './browse-behavior/install';
-import { vueDevtoolPopupInstall } from './vue-devtool/install';
 
 export const contentInstall = (app: App) => {
   appLayoutContentInstall(app);
@@ -27,7 +26,6 @@ export const contentInstall = (app: App) => {
 export const popupInstall = (app: App) => {
   devAccountPopupInstall(app);
   browseBehaviorPopupInstall(app);
-  vueDevtoolPopupInstall(app);
 };
 
 export const settingInstall = (app: App) => {

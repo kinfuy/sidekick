@@ -83,7 +83,6 @@ export const useWebNoticeStore = () => {
   };
 
   const clear = () => {
-    debugger;
     storageKit.clear();
   };
 
