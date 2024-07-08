@@ -82,6 +82,13 @@ export const useWebNoticeStore = () => {
     storageKit.save();
   };
 
+  const removeWeb = (url: string) => {
+    storageKit.storeRaw.value.whiteList = storageKit.store.whiteList.filter(
+      (w) => w.url !== url,
+    );
+    storageKit.save();
+  };
+
   const clear = () => {
     storageKit.clear();
   };
@@ -94,5 +101,6 @@ export const useWebNoticeStore = () => {
     clear,
     serViewType,
     updateWeb,
+    removeWeb,
   };
 };
