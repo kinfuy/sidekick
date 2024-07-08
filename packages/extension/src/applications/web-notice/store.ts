@@ -46,6 +46,9 @@ export const useWebNoticeStore = () => {
 
   const setCurrent = async (url: string) => {
     await storageKit.sync();
+    while (!storageKit.inited) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
     storageKit.storeRaw.value.current = storageKit.store.whiteList?.find(
       (web) => {
         if (url.includes(web.url)) return true;
@@ -80,6 +83,7 @@ export const useWebNoticeStore = () => {
   };
 
   const clear = () => {
+    debugger;
     storageKit.clear();
   };
 
