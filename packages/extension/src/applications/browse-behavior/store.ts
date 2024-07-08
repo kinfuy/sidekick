@@ -27,14 +27,17 @@ export interface BrowseBehaviorStore {
   webStatics: Array<WebStatics>;
 }
 
-const STORE_KEY = 'browseBehaviorStore';
+const STORE_KEY = 'BrowseBehavior';
 
 export const useBrowseBehaviorStore = () => {
   const storageKit = StorageKit.getInstance<BrowseBehaviorStore>(STORE_KEY, {
     webStatics: [],
   });
 
-  const addRecord = (opt: any) => {
+  const addRecord = async (opt: any) => {
+    while (!storageKit.inited) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
     const { tabId, url, title, date, startTime } = opt;
     const tab = storageKit.store.webStatics?.find(
       (item) => item.tabId === tabId,
@@ -43,6 +46,9 @@ export const useBrowseBehaviorStore = () => {
       if (tab.url === url) return;
       tab.tabId = '';
       tab.endTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
+    }
+    if (!storageKit.storeRaw.value.webStatics) {
+      storageKit.storeRaw.value.webStatics = [];
     }
 
     storageKit.storeRaw.value.webStatics?.push({

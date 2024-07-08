@@ -5,7 +5,7 @@ import type { App } from '@/types/core-app.type';
 
 export const BrowseBehavior: App = {
   name: 'BrowseBehavior',
-  title: '浏览数据报告',
+  title: '浏览数据',
   logo: chrome.runtime.getURL(count),
   inner: false,
   settingApp: true,
@@ -20,7 +20,7 @@ export const BrowseBehavior: App = {
       if (['extension', 'newtab'].includes(host)) return;
       // url 改变记录
       if (changeinfo.url) {
-        addRecord({
+        await addRecord({
           tabId,
           url: new URL(tab.url).host,
           title: tab.title,

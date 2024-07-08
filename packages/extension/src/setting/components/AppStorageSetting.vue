@@ -35,14 +35,13 @@ const storeSize = ref<{ name: string; value: number }[]>([]);
 
 const getStorageSize = () => {
   storeSize.value = [];
-  storeKeys.value.forEach((item) => {
+  storeKeys.value.forEach(async (item) => {
     if (Array.isArray(item.value)) {
       let count = 0;
-      item.value.forEach((item) => {
-        StorageKit.getStorageSize(item).then((res) => {
-          count += res;
-        });
-      });
+      for (let i = 0; i < item.value.length; i++) {
+        const res = await StorageKit.getStorageSize(item.value[i]);
+        count += res;
+      }
       storeSize.value.push({
         name: item.name,
         value: count,
