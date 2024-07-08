@@ -38,7 +38,7 @@ export interface Application extends Record<string, any> {
   onInstalled?: () => void; // 插件安装
   onInit?: () => void; // 打开浏览器
   onAlarms?: (alarm: chrome.alarms.Alarm) => void;
-  onCoreStoreChange?: () => void;
+
   onGetData?: (opt: { key: string; opt: any }) => void;
   onSendData?: (opt: { key: string; opt: any }) => void;
   onOpenChromeUrl?: (opt: { openUrl: string; extra?: any }) => void;

@@ -3,6 +3,7 @@ import { injectCustomScript, sendMessageToExtension } from '@utils';
 import { contentFunc } from '@applications/content';
 import { useTheme } from '@store/useTheme';
 import { watch } from 'vue';
+import { contentCore } from './core';
 import injectScript from '@/inject/index.ts?script&module';
 import { initInject, removeInject } from '@/inject/component';
 
@@ -104,9 +105,13 @@ window.addEventListener('message', async (info: { data: PostMessage }) => {
 
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   const { code, data } = request;
-  const funcCall = contentFunc[code];
-  if (funcCall) {
-    funcCall(data);
+  if (code === 'CoreApp') {
+    contentCore(data);
+  } else {
+    const funcCall = contentFunc[code];
+    if (funcCall) {
+      funcCall(data);
+    }
   }
 
   sendResponse();

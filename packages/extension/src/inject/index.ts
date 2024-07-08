@@ -1,11 +1,13 @@
+import { vueDevtool } from '@applications/vue-devtool/inject';
 import type { PostMessage } from '@utils';
 import { injectPostMessage } from '@utils';
 
-window.addEventListener('message', (info: any) => {
+window.addEventListener('message', (info: { data: PostMessage }) => {
   const response = info.data as PostMessage;
-  if (!response?.data || response.data?.key !== 'app_inject') return;
-  const { code, data } = info.data;
-  console.log('app_inject', info, code, data);
+  if (response?.from !== 'content_inject') return;
+  if (response.code === 'VueDevtool') {
+    vueDevtool();
+  }
 });
 
 document.addEventListener('visibilitychange', () => {
@@ -19,5 +21,4 @@ document.addEventListener('visibilitychange', () => {
     data: { visible },
   });
 });
-
 export {};

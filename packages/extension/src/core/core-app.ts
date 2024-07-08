@@ -1,11 +1,6 @@
 import { useAuth } from '@store/useAuth';
 import type { Application } from '@/types/core-app.type';
-import {
-  createWindow,
-  createtab,
-  getChromeUrl,
-  sendMessageToContentScript,
-} from '@/utils/chrome';
+import { createWindow, createtab, getChromeUrl } from '@/utils/chrome';
 
 export const PreCoreApp = (): Application => {
   return {
@@ -22,15 +17,6 @@ export const PreCoreApp = (): Application => {
 export const SuffixCoreApp = (): Application => {
   return {
     name: 'suffix-core-app',
-    onCoreStoreChange: () => {
-      sendMessageToContentScript({
-        from: 'background',
-        code: 'baichuan-core',
-        data: {
-          key: 'store-change',
-        },
-      });
-    },
     onOpenChromeUrl: ({ openUrl, extra }) => {
       createtab(getChromeUrl(openUrl), extra);
     },

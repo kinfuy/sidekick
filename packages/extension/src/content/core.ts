@@ -14,7 +14,7 @@ const coreRelaod = (option: ContentOptions) => {
     window.location.reload();
   }
 };
-export const baichuan = (options?: ContentCore) => {
+export const contentCore = (options?: ContentCore) => {
   if (!options) return;
   const { key, data } = options;
   if (key === 'doc-reload') coreRelaod(data);
