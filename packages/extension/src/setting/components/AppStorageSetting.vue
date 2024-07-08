@@ -58,6 +58,14 @@ const getStorageSize = () => {
   });
 };
 
+const usedSize = computed(() => {
+  let count = 0;
+  storeSize.value.forEach((item) => {
+    count += item.value;
+  });
+  return count;
+});
+
 const legends = computed(() => {
   return storeKeys.value.map((item) => {
     return item.name;
@@ -71,7 +79,7 @@ onMounted(() => {
 const option = computed(() => {
   return {
     title: {
-      text: '内存占用情况',
+      text: `内存占用情况: ${Math.floor(usedSize.value / 1024)}KB`,
       left: 'right',
     },
     tooltip: {
@@ -108,6 +116,7 @@ const option = computed(() => {
   width: 100%;
   height: 100%;
   overflow: hidden;
+
   .app-storage-chart {
     width: 100%;
     height: 80%;

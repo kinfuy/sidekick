@@ -102,10 +102,10 @@ export class StorageKit<K> {
 
   /**
    * 获取内存使用
-   * @param key 
-   * @returns 
+   * @param key
+   * @returns
    */
- static getStorageSize(key: string) {
-    return chrome.storage.local.getBytesInUse(key);
+  static getStorageSize(key: string) {
+    return chrome.storage.local.getBytesInUse(`StorageKit_${key}`);
   }
 }
