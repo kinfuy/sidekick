@@ -122,7 +122,10 @@ export const useDevAccountStore = () => {
     matchWeb.value = storageKit.store.webs.find((w) => w.name === web);
   };
 
-  const getMatch = (url: string) => {
+  const getMatch = async (url: string) => {
+    while (!storageKit.inited) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
     return storageKit.store.webs.find((web) => {
       if (web.envs?.some((u) => url.includes(u.url))) return true;
       return false;

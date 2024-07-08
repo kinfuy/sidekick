@@ -37,7 +37,7 @@ const init = async () => {
   const tiemr = setInterval(async () => {
     const { url } = await getActiveTab();
     if (!url) return;
-    const web = getMatch(url);
+    const web = await getMatch(url);
     setMatch(web?.name);
     clearInterval(tiemr);
   }, 10);
