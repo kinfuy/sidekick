@@ -167,6 +167,14 @@ export const useApp = () => {
     storageKit.clear();
   };
 
+  const clearStorage = (name: string) => {
+    StorageKit.clearStorage(name);
+  };
+
+  const getStorageSize = (key: string) => {
+    return StorageKit.getStorageSize(key);
+  };
+
   return {
     isAppActive,
     isAppInstall,
@@ -186,5 +194,7 @@ export const useApp = () => {
     syncStore,
     storeKeys,
     reset,
+    clearStorage,
+    getStorageSize,
   };
 };

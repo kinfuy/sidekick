@@ -37,6 +37,10 @@ export class StorageKit<K> {
     return this.instances.get(key) as StorageKit<K>;
   }
 
+  public static clearStorage(key: string) {
+    storage.remove(`StorageKit_${key}`);
+  }
+
   syncStore(changes: any, namespace: string) {
     if (namespace === 'local' && changes[this._key]) {
       this.sync();

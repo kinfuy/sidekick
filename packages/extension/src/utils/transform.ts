@@ -52,7 +52,7 @@ export const transformBookMarks = (
 export const transformBytes = (bytes: number) => {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
   if (bytes === 0) {
-    return 'n/a';
+    return '0B';
   }
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
   return `${parseFloat((bytes / 1024 ** i).toFixed(2))} ${sizes[i]}`;
@@ -65,7 +65,7 @@ export const transformBytes = (bytes: number) => {
  */
 export const recoverBytes = (str: string): number => {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  if (str === 'n/a') {
+  if (str === '0B') {
     return 0;
   }
   const i = sizes.indexOf(str.slice(-2));

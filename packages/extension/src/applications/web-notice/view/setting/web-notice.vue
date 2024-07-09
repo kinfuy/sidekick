@@ -1,10 +1,5 @@
 <template>
   <div class="web-notice">
-    <div class="flex justify-end">
-      <ElButton size="small" type="primary" link @click="clear">
-        清空缓存
-      </ElButton>
-    </div>
     <ElTag
       v-for="item in whiteList"
       :key="item.url"
@@ -18,10 +13,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ElButton, ElTag } from 'element-plus';
+import { ElTag } from 'element-plus';
 import { useWebNoticeStore } from '../../store';
 
-const { whiteList, clear, removeWeb } = useWebNoticeStore();
+const { whiteList, removeWeb } = useWebNoticeStore();
 </script>
 
 <style lang="less" scoped>

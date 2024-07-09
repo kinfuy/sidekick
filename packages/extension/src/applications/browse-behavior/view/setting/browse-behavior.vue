@@ -1,8 +1,5 @@
 <template>
   <div class="browse-behavior">
-    <div class="flex justify-end">
-      <ElButton type="primary" plain size="small" @click="clear">清除</ElButton>
-    </div>
     <div class="behavior-list">
       <div class="behavior-card">
         <div class="behavior-title">数据总览</div>
@@ -33,10 +30,10 @@
 <script lang="ts" setup>
 import type { WebStatics } from '@applications/browse-behavior/store';
 import { useBrowseBehaviorStore } from '@applications/browse-behavior/store';
-import { ElButton, dayjs } from 'element-plus';
+import { dayjs } from 'element-plus';
 import { ref } from 'vue';
 
-const { daysWebStatics, clear, queryByDate } = useBrowseBehaviorStore();
+const { daysWebStatics, queryByDate } = useBrowseBehaviorStore();
 
 const recent7Days = ref<WebStatics[]>([]);
 
