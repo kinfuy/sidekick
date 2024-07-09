@@ -20,6 +20,7 @@ import {
 import VChart from 'vue-echarts';
 import { computed, onMounted, ref } from 'vue';
 import { StorageKit } from '@core/store';
+import { transformBytes } from '@utils/transform';
 
 const { storeKeys } = useApp();
 
@@ -78,12 +79,16 @@ onMounted(() => {
 const option = computed(() => {
   return {
     title: {
-      text: `内存占用情况: ${Math.floor(usedSize.value / 1024)}KB`,
+      text: `内存占用情况: ${transformBytes(usedSize.value)}`,
       left: 'right',
     },
     tooltip: {
       trigger: 'item',
-      formatter: '{a} <br/>{b} : {c}byte ({d}%)',
+      formatter: (params: any) => {
+        return `${params.name}: ${transformBytes(params.value)} (${
+          params.percent
+        }%)`;
+      },
     },
     legend: {
       orient: 'horizontal',

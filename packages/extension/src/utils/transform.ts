@@ -35,10 +35,39 @@ const pure = (bookmarks: chrome.bookmarks.BookmarkTreeNode[]) => {
   });
   return rst;
 };
+
 export const transformBookMarks = (
   bookmarks: chrome.bookmarks.BookmarkTreeNode[],
 ) => {
   const websites = [] as chrome.bookmarks.BookmarkTreeNode[];
   websites.push(...transfornNode(pure(bookmarks), websites));
   return websites;
+};
+
+/**
+ * 转换bytes
+ * @param bytes
+ * @returns
+ */
+export const transformBytes = (bytes: number) => {
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  if (bytes === 0) {
+    return 'n/a';
+  }
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  return `${parseFloat((bytes / 1024 ** i).toFixed(2))} ${sizes[i]}`;
+};
+
+/**
+ * 恢复bytes
+ * @param str
+ * @returns
+ */
+export const recoverBytes = (str: string): number => {
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  if (str === 'n/a') {
+    return 0;
+  }
+  const i = sizes.indexOf(str.slice(-2));
+  return parseFloat(str.slice(0, -2)) * 1024 ** i;
 };
