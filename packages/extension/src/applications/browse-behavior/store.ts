@@ -85,12 +85,16 @@ export const useBrowseBehaviorStore = () => {
 
   const queryByDate = (day: Date | string | Dayjs) => {
     const date = dayjs(day).format('YYYY-MM-DD');
-    return webStaticsMate.value?.find((item) => item.date === date);
+    return daysWebStatics.value?.find((item) => item.date === date);
   };
 
   const clear = () => {
     storageKit.clear();
   };
+
+  const inited = computed(() => {
+    return storageKit.inited;
+  });
 
   return {
     daysWebStatics,
@@ -98,5 +102,6 @@ export const useBrowseBehaviorStore = () => {
     addRecord,
     updateEndTime,
     clear,
+    inited,
   };
 };

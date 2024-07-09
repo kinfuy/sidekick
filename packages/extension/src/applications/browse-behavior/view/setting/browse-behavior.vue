@@ -28,24 +28,9 @@
 </template>
 
 <script lang="ts" setup>
-import type { WebStatics } from '@applications/browse-behavior/store';
 import { useBrowseBehaviorStore } from '@applications/browse-behavior/store';
-import { dayjs } from 'element-plus';
-import { ref } from 'vue';
 
-const { daysWebStatics, queryByDate } = useBrowseBehaviorStore();
-
-const recent7Days = ref<WebStatics[]>([]);
-
-const init = (days = 7) => {
-  recent7Days.value = [];
-  for (let i = 0; i < days; i++) {
-    const date = dayjs().subtract(i, 'day').format('YYYY-MM-DD');
-    const day = queryByDate(date);
-    if (day) recent7Days.value.push(day);
-  }
-};
-init();
+const { daysWebStatics } = useBrowseBehaviorStore();
 </script>
 
 <style lang="less" scoped>

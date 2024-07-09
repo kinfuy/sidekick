@@ -13,7 +13,11 @@
       </div>
       <div v-if="popupApps.length" class="popup-content">
         <img class="popup-set" :src="setIcon" @click="handleSet" />
-        <component :is="`Popup${current.name}`" v-if="current"></component>
+        <component
+          :is="`Popup${current.name}`"
+          v-if="current"
+          :key="current.name"
+        ></component>
       </div>
     </div>
   </ElConfigProvider>
