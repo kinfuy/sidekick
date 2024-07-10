@@ -291,3 +291,10 @@ export const getCurrentTab = () => {
     }
   });
 };
+
+/**
+ * 语言标识
+ */
+export const t = (key: string) => {
+  return chrome.i18n.getMessage(key);
+};
