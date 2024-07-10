@@ -1,5 +1,10 @@
 <template>
   <div class="app-store-setting">
+    <div class="store-header flex justify-end">
+      <ElButton type="primary" link size="small" @click="reset">
+        重置
+      </ElButton>
+    </div>
     <div class="store-list-content">
       <div v-for="app in allCustomApps" :key="app.name" class="store-list">
         <div class="list-left">
@@ -28,10 +33,11 @@
 import { useApp } from '@store/useApp';
 import { ElButton } from 'element-plus';
 import { transformBytes } from '@utils/transform';
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 
 const {
   allCustomApps,
+  reset,
   isAppInstall,
   installApp,
   clearStorage,
@@ -52,6 +58,10 @@ allCustomApps.value.forEach(async (item) => {
 </script>
 
 <style lang="less" scoped>
+.store-header {
+  padding: 10px 20px;
+  border-bottom: 1px solid #f4f4f4;
+}
 .store-list {
   display: flex;
   justify-content: space-between;

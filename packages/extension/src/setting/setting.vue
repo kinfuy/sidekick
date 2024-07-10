@@ -9,7 +9,7 @@
         </div>
         <div class="silder-list">
           <div v-if="installWithSettingApps.length" class="silder-title">
-            我的应用
+            {{ t('view_setting_menu_my_application') }}
           </div>
           <Sortable @sort="appSort">
             <div
@@ -25,10 +25,7 @@
           </Sortable>
           <ElDivider v-if="installWithSettingApps.length" />
           <div class="silder-title">
-            基础
-            <ElButton type="primary" link size="small" @click="reset"
-              >重置</ElButton
-            >
+            {{ t('view_setting_menu_base') }}
           </div>
           <div
             v-for="setting in settingInnerApps"
@@ -54,8 +51,10 @@
             @change="(value) => updateAppState(current.name, value as boolean)"
           />
         </div>
-        <component :is="`Setting${current?.name}`" v-if="current?.name" />
-        <Empty v-else text="暂无配置项" />
+        <div class="setting-content">
+          <component :is="`Setting${current?.name}`" v-if="current?.name" />
+          <Empty v-else text="暂无配置项" />
+        </div>
       </div>
     </template>
   </div>
@@ -67,13 +66,15 @@ import { computed, ref } from 'vue';
 import { useAuth } from '@store/useAuth';
 import Cover from '@components/common/Cover/Cover.vue';
 import { useApp } from '@store/useApp';
-import { ElButton, ElDivider, ElSwitch } from 'element-plus';
+import { ElDivider, ElSwitch } from 'element-plus';
 
 import Empty from '@components/common/Empty/Empty';
 import Sortable from '@components/Sortable/sort-able';
 import drag from '@/assets/image/drag.svg';
 import type { AppEntry } from '@/types/core-app.type';
 import logo from '@/assets/logo.png';
+
+import { t } from '@/utils';
 const logoIcon = chrome.runtime.getURL(logo);
 const dragIcon = chrome.runtime.getURL(drag);
 

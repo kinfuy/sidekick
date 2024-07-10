@@ -42,19 +42,22 @@
     .setting-right {
         flex-grow: 0;
         width: calc(100vw - 256px);
-        padding: 0 22px;
-        padding-top: 24px;
+        padding: 22px;
         min-width: 400px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
 
         .setting-title {
             display: block;
             font-size: 22px;
             margin: 12px 0;
             color: var(--text-color-primary);
+            flex-shrink: 1;
         }
 
         .setting-content {
-            width: 100%;
+            flex-grow: 1;
         }
     }
 }

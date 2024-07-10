@@ -4,5 +4,11 @@
     },
     "chrome_extension_description": {
         "message": "A comprehensive set of browser tools dedicated to development and testing"
+    },
+    "view_setting_menu_my_application": {
+        "message": "My Applications"
+    },
+    "view_setting_menu_base": {
+        "message": "Base"
     }
 }
