@@ -1,0 +1,8 @@
+{
+    "chrome_extension_name": {
+        "message": "DevTester"
+    },
+    "chrome_extension_description": {
+        "message": "专注于开发与测试的浏览器工具集"
+    }
+}

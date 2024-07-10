@@ -1,0 +1,8 @@
+{
+    "chrome_extension_name": {
+        "message": "DevTester"
+    },
+    "chrome_extension_description": {
+        "message": "A comprehensive set of browser tools dedicated to development and testing"
+    }
+}

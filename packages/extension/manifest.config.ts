@@ -4,9 +4,9 @@ export const isDev = process.env.NODE_ENV !== 'production';
 export default defineManifest(() => {
   return {
     manifest_version: 3,
-    name: 'DevTester',
+    name: '__MSG_chrome_extension_name__',
     version: '0.0.1',
-    description: '专注于开发与测试的浏览器工具集',
+    description: '__MSG_chrome_extension_description__',
     icons: {
       '16': 'src/assets/logo.png',
       '48': 'src/assets/logo.png',
@@ -39,6 +39,7 @@ export default defineManifest(() => {
       'cookies',
       'activeTab',
     ],
+    default_locale: 'en',
     host_permissions: ['<all_urls>'],
     web_accessible_resources: isDev
       ? []
