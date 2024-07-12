@@ -7,8 +7,8 @@ const defaultActive = [] as string[];
 export interface AppStore {
   version: number;
   apps: Array<AppEntry>;
-  actives?: Array<string>;
-  installed?: Array<string>;
+  actives: Array<string>; // 激活的应用
+  installed: Array<string>; // 安装的应用
 }
 
 const defaultStore: AppStore = {
@@ -18,6 +18,7 @@ const defaultStore: AppStore = {
   installed: [],
 };
 
+// 内置应用 store key
 const innerStoreKeys = ['AppStore', 'AppAuth', 'AppTheme', 'AppNotice'];
 
 const STORE_KEY = 'AppStore';
