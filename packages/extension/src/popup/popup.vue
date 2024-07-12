@@ -14,16 +14,18 @@
       <div v-if="popupApps.length" class="popup-content">
         <img class="popup-set" :src="setIcon" @click="handleSet" />
         <component
-          :is="`Popup${current.name}`"
-          v-if="current"
-          :key="current.name"
+          :is="`Popup${current?.name}`"
+          v-if="isRegister(`Popup${current?.name}`)"
+          :key="current?.name"
         ></component>
+        <Empty v-else text="暂无配置项" />
       </div>
     </div>
   </ElConfigProvider>
 </template>
 
 <script lang="ts" setup>
+import Empty from '@components/common/Empty/Empty';
 import ToolItem from '@components/common/ToolItem/ToolItem.vue';
 import { useApp } from '@store/useApp';
 import { useTheme } from '@store/useTheme';
@@ -31,6 +33,7 @@ import { onBeforeUnmount, provide, ref, watchEffect } from 'vue';
 import { getChromeUrl, sendMessageToExtension } from '@utils';
 import set from '@assets/image/set.svg';
 import { ElConfigProvider } from 'element-plus';
+import { isRegister } from '.';
 import type { AppEntry } from '@/types/core-app.type';
 const setIcon = getChromeUrl(set);
 

@@ -38,6 +38,7 @@ export default defineManifest(() => {
       'alarms',
       'cookies',
       'activeTab',
+      'sidePanel',
     ],
     default_locale: 'en',
     host_permissions: ['<all_urls>'],

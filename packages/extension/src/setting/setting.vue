@@ -52,7 +52,10 @@
           />
         </div>
         <div class="setting-content">
-          <component :is="`Setting${current?.name}`" v-if="current?.name" />
+          <component
+            :is="`Setting${current?.name}`"
+            v-if="isRegister(`Setting${current?.name}`)"
+          />
           <Empty v-else text="暂无配置项" />
         </div>
       </div>
@@ -70,6 +73,7 @@ import { ElDivider, ElSwitch } from 'element-plus';
 
 import Empty from '@components/common/Empty/Empty';
 import Sortable from '@components/Sortable/sort-able';
+import { isRegister } from '.';
 import drag from '@/assets/image/drag.svg';
 import type { AppEntry } from '@/types/core-app.type';
 import logo from '@/assets/logo.png';

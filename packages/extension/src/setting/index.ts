@@ -12,6 +12,11 @@ import AppStorageSetting from './components/AppStorageSetting.vue';
 
 const app = createApp(setting);
 
+export const isRegister = (name: string) => {
+  console.log(name);
+  return app.component(name);
+};
+
 settingInstall(app);
 
 app.component('SettingAppUser', UserSetting);
