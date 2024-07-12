@@ -7,7 +7,7 @@
           <span
             class="operation-text m-r-1"
             @click="() => handleHide(item.key)"
-            >{{ hideValue.includes(item?.key) ? '显示' : '隐藏' }}</span
+            >{{ hideValue.includes(item?.key) ? '展开' : '收起' }}</span
           >
           <span class="operation-text" @click="handleDelete(item?.key)"
             >删除</span

@@ -1,8 +1,9 @@
 import { useAlarmManger } from '@core/alarm-manage';
 import { triggerApplicationHooks } from '../core/application';
-import { chromeAddListenerMessage } from '../utils';
+import { chromeAddListenerMessage, createtab, getChromeUrl } from '../utils';
 
 chrome.runtime.onInstalled.addListener(() => {
+  createtab(getChromeUrl('setting.html'));
   triggerApplicationHooks('onInstalled');
 });
 

@@ -8,16 +8,16 @@ export default defineManifest(() => {
     version: '0.0.1',
     description: '__MSG_chrome_extension_description__',
     icons: {
-      '16': 'src/assets/logo.png',
-      '48': 'src/assets/logo.png',
-      '128': 'src/assets/logo.png',
+      '16': 'public/logo.png',
+      '48': 'public/logo.png',
+      '128': 'public/logo.png',
     },
     background: {
       service_worker: 'src/background/index.ts',
       type: 'module',
     },
     action: {
-      default_icon: 'src/assets/logo.png',
+      default_icon: 'public/logo.png',
       default_title: 'DevTester',
       default_popup: 'popup.html',
     },
