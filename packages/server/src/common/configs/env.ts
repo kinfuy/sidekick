@@ -21,6 +21,12 @@ class ConfigEnv {
   password: string;
   database: string;
 
+  // afdian
+  afdian: {
+    token: string;
+    userId: string;
+  }
+
   constructor(envConfig: any) {
     this.secret = envConfig.APP_SECRET;
     this.host = envConfig.DB_HOST;
@@ -40,6 +46,11 @@ class ConfigEnv {
     this.username = envConfig.DB_USER;
     this.password = envConfig.DB_PASSWORD;
     this.database = envConfig.DB_DATABASE;
+
+    this.afdian = {
+      token: envConfig.AFDIAN_TOKEN,
+      userId: envConfig.AFDIAN_USERID,
+    };
   }
 }
 

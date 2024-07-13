@@ -21,6 +21,9 @@ export class TransformInterceptor implements NestInterceptor {
             code: responseCode.SUCCESS,
           }
         }
+        if(response.__noTransform__){
+          return response
+        }
         const { message, data } = response;
         if (message) {
           msg = message;
