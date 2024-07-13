@@ -23,6 +23,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/serve-static": "^4.0.2",
+    "@nestjs/throttler": "^5",
     "axios": "^1.6.8",
     "blueimp-md5": "^2.19.0",
     "class-transformer": "^0.5.1",

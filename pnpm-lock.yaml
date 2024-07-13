@@ -186,6 +186,9 @@ importers:
       vue:
         specifier: ^3.4.21
         version: 3.4.29(typescript@5.4.3)
+      vue-router:
+        specifier: ^4.2.2
+        version: 4.4.0(vue@3.4.29)
     devDependencies:
       '@vitejs/plugin-vue':
         specifier: ^5.0.4
@@ -223,6 +226,9 @@ importers:
       '@nestjs/serve-static':
         specifier: ^4.0.2
         version: 4.0.2(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)
+      '@nestjs/throttler':
+        specifier: ^5
+        version: 5.2.0(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)(reflect-metadata@0.1.14)
       axios:
         specifier: ^1.6.8
         version: 1.6.8
@@ -2173,6 +2179,18 @@ packages:
       tslib: 2.6.2
     dev: true
 
+  /@nestjs/throttler@5.2.0(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)(reflect-metadata@0.1.14):
+    resolution: {integrity: sha512-G/G/MV3xf6sy1DwmnJsgeL+d2tQ/xGRNa9ZhZjm9Kyxp+3+ylGzwJtcnhWlN82PMEp3TiDQpTt+9waOIg/bpPg==}
+    peerDependencies:
+      '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
+      '@nestjs/core': ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
+      reflect-metadata: ^0.1.13 || ^0.2.0
+    dependencies:
+      '@nestjs/common': 10.3.7(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+      '@nestjs/core': 10.3.7(@nestjs/common@10.3.7)(@nestjs/platform-express@10.3.7)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+      reflect-metadata: 0.1.14
+    dev: false
+
   /@nestjs/typeorm@10.0.2(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)(reflect-metadata@0.1.14)(rxjs@7.8.1)(typeorm@0.3.20):
     resolution: {integrity: sha512-H738bJyydK4SQkRCTeh1aFBxoO1E9xdL/HaLGThwrqN95os5mEyAtK7BLADOS+vldP4jDZ2VQPLj4epWwRqCeQ==}
     peerDependencies:
@@ -3248,6 +3266,10 @@ packages:
     dependencies:
       '@vue/compiler-dom': 3.4.29
       '@vue/shared': 3.4.29
+
+  /@vue/devtools-api@6.6.3:
+    resolution: {integrity: sha512-0MiMsFma/HqA6g3KLKn+AGpL1kgKhFWszC9U29NfpWK5LE7bjeXxySWJrOJ77hBz+TBrBQ7o4QJqbPbqbs8rJw==}
+    dev: false
 
   /@vue/language-core@2.0.21(typescript@5.4.3):
     resolution: {integrity: sha512-vjs6KwnCK++kIXT+eI63BGpJHfHNVJcUCr3RnvJsccT3vbJnZV5IhHR2puEkoOkIbDdp0Gqi1wEnv3hEd3WsxQ==}
@@ -9505,6 +9527,15 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /vue-router@4.4.0(vue@3.4.29):
+    resolution: {integrity: sha512-HB+t2p611aIZraV2aPSRNXf0Z/oLZFrlygJm+sZbdJaW6lcFqEDQwnzUBXn+DApw+/QzDU/I9TeWx9izEjTmsA==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      '@vue/devtools-api': 6.6.3
+      vue: 3.4.29(typescript@5.4.3)
+    dev: false
 
   /vue-template-compiler@2.7.16:
     resolution: {integrity: sha512-AYbUWAJHLGGQM7+cNTELw+KsOG9nl2CnSv467WobS5Cv9uk3wFcnr1Etsz2sEIHEZvw1U+o9mRlEO6QbZvUPGQ==}

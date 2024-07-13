@@ -13,32 +13,24 @@ export class TransformInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((response) => {
-        let msg = '成功';
-        let rst = null;
-        if(!response) {
-          return {
-            message: '成功',
-            code: responseCode.SUCCESS,
-          }
-        }
-        if(response.__noTransform__){
-          return response
-        }
-        const { message, data } = response;
+        if (!response) return { message: '成功', code: responseCode.SUCCESS };
+        const { message, data, __noTransform__ } = response;
+
+        // 如果是__noTransform__ 则不进行转换
+        if (__noTransform__) {
+          delete response.__noTransform__;
+          return response;
+        };
+
         if (message) {
-          msg = message;
-          rst = data || {};
-        } else {
-          rst = response;
+          return { message, data: data || {}, code: responseCode.SUCCESS };
         }
-        const successResponse: any = {
-          message: msg,
+
+        return {
+          message: '成功',
+          data: response,
           code: responseCode.SUCCESS,
         };
-        if (rst) {
-          successResponse.data = rst;
-        }
-        return successResponse;
       }),
     );
   }

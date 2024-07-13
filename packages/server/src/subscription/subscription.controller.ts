@@ -1,21 +1,18 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
+  UseInterceptors,
+  Get,
 } from '@nestjs/common';
 import { SubscriptionService } from './subscription.service';
 import {
   CreateActivationDto,
-  CreateSubscriptionDto,
-  UpdateSubscriptionDto,
 } from './dto/subscription';
 import { AFDianService } from '@/common/services/afdian.service';
-import { Public } from '@/auth/auth.guard';
-
+import {  Public, Roles } from '@/auth/auth.guard';
+import { NoTransformInterceptor } from '@/common/interceptors/noTransform.interceptor';
+import { Throttle } from '@nestjs/throttler';
 @Controller('subscription')
 export class SubscriptionController {
   constructor(private readonly subscriptionService: SubscriptionService,private readonly afdianService: AFDianService) {}
@@ -28,17 +25,10 @@ export class SubscriptionController {
   }
 
   @Post('afdian')
+  @Public()
+  @UseInterceptors(NoTransformInterceptor)
   async afdianWebhook(@Body() body) {
-    console.log(body);
-    return {
-      __noTransform__: true,
-      data: { ec: 200 },
-    };
+    return await this.afdianService.webhook();
   }
 
-  @Get('token')
-  @Public()
-  async token() {
-    return await this.afdianService.query();
-  }
 }
