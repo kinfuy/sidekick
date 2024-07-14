@@ -20,11 +20,19 @@
           <div class="text-xl __className_3ac6c1">DevTester</div>
         </div>
       </div>
-      <div
-        class="bg-zinc-900 text-white px-3 py-1 rounded cursor-pointer"
-        @click="handleLogin"
-      >
-        登录
+      <div class="flex items-center gap-3">
+        <div
+          class="bg-blue-500 text-white hover:bg-blue-600 text-sm accent-blue px-3 py-1 rounded cursor-pointer"
+          @click="handleSubscribe"
+        >
+          订阅会员
+        </div>
+        <div
+          class="text-sm px-3 py-1 rounded cursor-pointer"
+          @click="handlePersonal"
+        >
+          个人中心
+        </div>
       </div>
     </div>
   </header>
@@ -37,7 +45,7 @@
       >
         <div class="flex-1 min-w-0">
           <h1 class="text-5xl md:text-6xl font-bold mb-4">
-            专注于开发与测试的浏览器工具集
+            专注于开发测试的浏览器工具集
           </h1>
           <p
             class="text-lg md:text-xl text-zinc-700 w-full md:w-5/6 leading-8 mb-8"
@@ -83,7 +91,7 @@
                   ></path>
                 </svg>
               </div>
-              <div>Download for Chrome</div>
+              <div>Download</div>
             </a>
           </div>
         </div>
@@ -262,11 +270,38 @@
       </div>
     </div>
   </section>
+  <section class="bg-white text-zinc-900 py-8 sm:py-16">
+    <div class="max-w-screen-xl mx-auto px-6 lg:px-16">
+      <div class="mb-8">
+        <h2
+          class="max-w-screen-md mx-auto text-center text-2xl md:text-3xl mb-2 font-bold"
+        >
+          更多精彩功能，敬请期待
+        </h2>
+        <p
+          class="max-w-screen-md mx-auto text-center text-base sm:text-lg text-zinc-400"
+        >
+          专注于开发与测试，但我们的视野远不止于此
+        </p>
+      </div>
+    </div>
+  </section>
   <footer class="bg-white text-zinc-900 py-8">
     <div class="max-w-screen-xl mx-auto px-4 flex flex-col items-center gap-4">
       <div class="text-sm text-zinc-500 text-center">
         © 2024 kinfuy. All Rights Reserved.
       </div>
+    </div>
+    <div
+      class="max-w-screen-xl mx-auto px-4 flex flex-col items-center gap-4 text-sm text-zinc-500 text-center"
+    >
+      <a
+        target="_blank"
+        rel="noopener external nofollow noreferrer"
+        href="https://beian.miit.gov.cn"
+      >
+        黔 ICP 备 2023015336 号 - 1
+      </a>
     </div>
   </footer>
 </template>
@@ -276,9 +311,15 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-const handleLogin = () => {
+const handlePersonal = () => {
   router.push({
-    name: 'login',
+    name: 'personal',
+  });
+};
+
+const handleSubscribe = () => {
+  router.push({
+    name: 'subscribe',
   });
 };
 </script>
