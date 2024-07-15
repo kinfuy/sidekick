@@ -59,7 +59,7 @@ export default defineComponent({
     const Theme = () => {
       return (
         <>
-          <div class="setting-theme">
+          {/* <div class="setting-theme">
             <span class="theme-text">主题</span>
             <img
               class="setting-icon"
@@ -67,7 +67,7 @@ export default defineComponent({
               onClick={() => this.handleSwitch()}
             />
           </div>
-          <span class="line" />
+          <span class="line" /> */}
           <div class="setting-theme">
             <span class="theme-text">布局</span>
             <span

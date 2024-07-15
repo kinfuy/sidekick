@@ -15,24 +15,17 @@ import {
   browseBehaviorPopupInstall,
   browseBehaviorSettingInstall,
 } from './browse-behavior/install';
-import {
-  uiFlowContentInstall,
-  uiFlowPopupInstall,
-  uiFlowSettingInstall,
-} from './ui-flow/install';
 
 export const contentInstall = (app: App) => {
   appLayoutContentInstall(app);
   devAccountContentInstall(app);
   webNoticeContentInstall(app);
   storagePortalContentInstall(app);
-  uiFlowContentInstall(app);
 };
 
 export const popupInstall = (app: App) => {
   devAccountPopupInstall(app);
   browseBehaviorPopupInstall(app);
-  uiFlowPopupInstall(app);
 };
 
 export const settingInstall = (app: App) => {
@@ -40,5 +33,4 @@ export const settingInstall = (app: App) => {
   linkGoSettingInstall(app);
   browseBehaviorSettingInstall(app);
   webNoticeContentSettingInstall(app);
-  uiFlowSettingInstall(app);
 };

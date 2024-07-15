@@ -6,7 +6,6 @@ import { DevAccount } from './dev-account';
 import { LinkGo } from './link-go';
 import { StoragePortal } from './storage-portal';
 import { BrowseBehavior } from './browse-behavior';
-import { UiFlow } from './ui-flow';
 import type { App, AppEntry } from '@/types/core-app.type';
 
 export const apps: App[] = [
@@ -16,7 +15,6 @@ export const apps: App[] = [
   LinkGo,
   StoragePortal,
   BrowseBehavior,
-  UiFlow,
 ];
 
 const linkApp: AppEntry[] = [
@@ -56,22 +54,6 @@ const settingApps: AppEntry[] = [
     isLogin: false,
     settingApp: true,
   },
-  // {
-  //   title: '帮助与反馈',
-  //   name: 'AppHelp',
-  //   logo: getChromeUrl(set),
-  //   inner: true,
-  //   isLogin: false,
-  //   settingApp: true,
-  // },
-  // {
-  //   title: '关于',
-  //   name: 'AppAbout',
-  //   logo: getChromeUrl(set),
-  //   inner: true,
-  //   isLogin: false,
-  //   settingApp: true,
-  // },
 ];
 
 export const appsRaw: AppEntry[] = [
