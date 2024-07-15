@@ -66,11 +66,13 @@ const editForm = ref({
   name: '',
   url: '',
 });
+const editFormRef = ref<InstanceType<typeof ElForm>>();
 
 const reset = () => {
   editForm.value.name = '';
   editForm.value.url = '';
   editForm.value.id = '';
+  editFormRef.value?.resetFields();
 };
 
 const addEnv = () => {
@@ -80,6 +82,7 @@ const addEnv = () => {
 
 const editEnv = (env: WebEnv) => {
   reset();
+
   viewType.value = 'edit';
   editForm.value.id = env.id;
   editForm.value.name = env.name;
@@ -93,7 +96,6 @@ const show = (row: WebInfo) => {
   webId.value = row?.id || '';
   webEnvs.value = row?.envs || [];
 };
-const editFormRef = ref<InstanceType<typeof ElForm>>();
 
 const handleSave = () => {
   editFormRef.value?.validate().then(() => {
