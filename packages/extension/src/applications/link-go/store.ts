@@ -1,67 +1,65 @@
-import { storage } from '@utils';
-import { computed, ref, toRaw } from 'vue';
+import { StorageKit } from '@core/store';
+import { computed } from 'vue';
 
 const STORE_KEY = 'LinkGo';
 
 interface LinkRule {
   type: 'string' | 'regex';
   value: string;
+  description?: string;
 }
 export interface LinkGoStoreInstance {
   linkRules: LinkRule[];
 }
 
-const defaultStore: LinkGoStoreInstance = {
-  linkRules: [
-    {
-      type: 'string',
-      value: 'target',
-    },
-    {
-      type: 'string',
-      value: 'url',
-    },
-    {
-      type: 'regex',
-      value: '/transfer?(?<target>.+)/', // https://blog.51cto.com/
-    },
-  ],
+const defaultStore = (): LinkGoStoreInstance => {
+  return {
+    linkRules: [
+      {
+        type: 'string',
+        value: 'target',
+        description:
+          'http://xxx.cn?target=https://devtester.kinfuy.cn => https://devtester.kinfuy.cn',
+      },
+      {
+        type: 'string',
+        value: 'url',
+        description:
+          'https://xxx.cn?url=https://devtester.kinfuy.cn => https://devtester.kinfuy.cn',
+      },
+      {
+        type: 'regex',
+        value: '/transfer?(?<target>.+)/', // https://blog.51cto.com/
+        description:
+          'https://xxx.cn/transfer?target=https://devtester.kinfuy.cn => https://devtester.kinfuy.cn',
+      },
+    ],
+  };
 };
 
-const store = ref<LinkGoStoreInstance>(defaultStore);
-
 export const useLinkGoStore = () => {
-  const { get, set } = storage;
-  const save = () => {
-    set(STORE_KEY, JSON.stringify(toRaw(store.value)));
-  };
-  const sync = async () => {
-    let _store: LinkGoStoreInstance = defaultStore;
-    const linkGo = await get<LinkGoStoreInstance>(STORE_KEY);
-    if (linkGo && JSON.stringify(linkGo) !== '{}') {
-      _store = linkGo;
-    }
-    store.value = _store;
-  };
-
-  sync();
+  const storageKit = StorageKit.getInstance<LinkGoStoreInstance>(
+    STORE_KEY,
+    defaultStore(),
+  );
+  storageKit.clear();
 
   const addRule = async (rule: LinkRule) => {
-    const isexist = store.value.linkRules.find(
+    const isexist = storageKit.store.linkRules.find(
       (r) => r.type === rule.type && r.value === rule.value,
     );
     if (isexist) return;
-    store.value.linkRules.push(rule);
-    save();
+    storageKit.store.linkRules.push(rule);
+    storageKit.save();
   };
 
   const setRules = async (rules: LinkRule[]) => {
-    store.value.linkRules = rules;
-    save();
+    storageKit.store.linkRules = rules;
+    storageKit.save();
   };
 
   const rules = computed(() => {
-    return store.value.linkRules;
+    return storageKit.store.linkRules;
   });
 
   const parseUrl = (url: string, filed: LinkRule) => {
@@ -77,10 +75,15 @@ export const useLinkGoStore = () => {
     return undefined;
   };
 
+  const inited = computed(() => {
+    return storageKit.inited;
+  });
+
   return {
     addRule,
     setRules,
     rules,
     parseUrl,
+    inited,
   };
 };
