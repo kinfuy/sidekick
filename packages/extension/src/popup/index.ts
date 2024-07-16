@@ -8,7 +8,7 @@ const app = createApp(popup);
 popupInstall(app);
 
 export const isRegister = (name: string) => {
-  console.log(name);
+  if (!app) return false;
   return app.component(name);
 };
 
