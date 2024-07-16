@@ -52,7 +52,7 @@ import {
   ElRadioButton,
   ElRadioGroup,
 } from 'element-plus';
-import { computed, ref } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 
 const emit = defineEmits(['save']);
 
@@ -76,16 +76,20 @@ const transFormResult = computed(() => {
   return parseUrl(testUrl.value, editForm.value);
 });
 
+watchEffect(() => {
+  if (transFormResult.value) {
+    editForm.value.description = `${testUrl.value} -> ${transFormResult.value}`;
+  } else {
+    editForm.value.description = '';
+  }
+});
+
 const editFormRef = ref<InstanceType<typeof ElForm>>();
 const handleSave = () => {
   editFormRef.value?.validate().then(() => {
     if (editForm.value.type === 'regex') {
       editForm.value.value = `/${editForm.value.value}/`;
     }
-    if (testUrl.value && transFormResult.value) {
-      editForm.value.description = `${testUrl.value} -> ${transFormResult.value}`;
-    }
-
     const successFunc = () => {
       addRule(editForm.value).then((success) => {
         if (!success) {

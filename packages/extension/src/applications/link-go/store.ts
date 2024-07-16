@@ -42,14 +42,13 @@ export const useLinkGoStore = () => {
     STORE_KEY,
     defaultStore(),
   );
-  storageKit.clear();
 
   const addRule = async (rule: LinkRule) => {
     const isexist = storageKit.store.linkRules.find(
       (r) => r.type === rule.type && r.value === rule.value,
     );
     if (isexist) return false;
-    storageKit.storeRaw.value.linkRules.push(rule);
+    storageKit.storeRaw.value.linkRules.push(JSON.parse(JSON.stringify(rule)));
     storageKit.save();
     return true;
   };

@@ -11,9 +11,9 @@
         v-for="rule in rules"
         :key="rule.value"
         closable
-        @="() => handleRemove(rule)"
         class="m-r-1"
         type="info"
+        @close="() => handleRemove(rule)"
         >{{ `${rule.value}` }}
       </ElTag>
       <div class="link-example">
