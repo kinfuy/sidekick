@@ -87,9 +87,6 @@ watchEffect(() => {
 const editFormRef = ref<InstanceType<typeof ElForm>>();
 const handleSave = () => {
   editFormRef.value?.validate().then(() => {
-    if (editForm.value.type === 'regex') {
-      editForm.value.value = `/${editForm.value.value}/`;
-    }
     const successFunc = () => {
       addRule(editForm.value).then((success) => {
         if (!success) {

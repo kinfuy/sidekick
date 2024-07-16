@@ -29,9 +29,9 @@ const defaultStore = (): LinkGoStoreInstance => {
       },
       {
         type: 'regex',
-        value: '/transfer?(?<target>.+)/', // https://blog.51cto.com/
+        value: 'transfer?(?<target>.+)', // https://blog.51cto.com/
         description:
-          'https://xxx.cn/transfer?target=https://devtester.kinfuy.cn => https://devtester.kinfuy.cn',
+          'https://www.xxx.com/transfer?https://devtester.kinfuy.cn => https://devtester.kinfuy.cn',
       },
     ],
   };
@@ -42,6 +42,7 @@ export const useLinkGoStore = () => {
     STORE_KEY,
     defaultStore(),
   );
+  storageKit.clear();
 
   const addRule = async (rule: LinkRule) => {
     const isexist = storageKit.store.linkRules.find(
@@ -79,7 +80,9 @@ export const useLinkGoStore = () => {
       try {
         const reg = new RegExp(filed.value);
         const match = url.match(reg);
-        if (match?.groups && match.groups.target) return match?.groups.target;
+        if (match?.groups && match.groups.target) {
+          return match?.groups.target.replace(/^\?/, '');
+        }
       } catch (error) {
         return undefined;
       }

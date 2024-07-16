@@ -14,7 +14,7 @@
         class="m-r-1"
         type="info"
         @close="() => handleRemove(rule)"
-        >{{ `${rule.value}` }}
+        >{{ rule.type === 'regex' ? `/${rule.value}/` : `${rule.value}` }}
       </ElTag>
       <div class="link-example">
         <div class="link-example-title">示例:</div>
