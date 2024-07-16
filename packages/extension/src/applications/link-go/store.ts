@@ -48,9 +48,10 @@ export const useLinkGoStore = () => {
     const isexist = storageKit.store.linkRules.find(
       (r) => r.type === rule.type && r.value === rule.value,
     );
-    if (isexist) return;
+    if (isexist) return false;
     storageKit.storeRaw.value.linkRules.push(rule);
     storageKit.save();
+    return true;
   };
 
   const setRules = async (rules: LinkRule[]) => {

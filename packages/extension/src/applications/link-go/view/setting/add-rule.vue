@@ -30,7 +30,7 @@
         <div class="test-content">
           <span class="test-label">转换结果: </span>
           <span :class="transFormResult ? 'test-success' : 'test-fail'">{{
-            transFormResult || '无结果'
+            transFormResult || '--'
           }}</span>
         </div>
       </ElFormItem>
@@ -47,6 +47,8 @@ import {
   ElForm,
   ElFormItem,
   ElInput,
+  ElMessage,
+  ElMessageBox,
   ElRadioButton,
   ElRadioGroup,
 } from 'element-plus';
@@ -58,7 +60,7 @@ const { addRule, parseUrl } = useLinkGoStore();
 
 const drawer = ref(false);
 
-const testUrl = ref('www://www.baidu.com?url=xxx.cn');
+const testUrl = ref('www://www.xxx.cn?url=devtester.kinfuy.cn');
 
 const editForm = ref<LinkRule>({
   type: 'string',
@@ -83,10 +85,29 @@ const handleSave = () => {
     if (testUrl.value && transFormResult.value) {
       editForm.value.description = `${testUrl.value} -> ${transFormResult.value}`;
     }
-    addRule(editForm.value).then(() => {
-      emit('save');
-      drawer.value = false;
-    });
+
+    const successFunc = () => {
+      addRule(editForm.value).then((success) => {
+        if (!success) {
+          ElMessage.error('该规则已存在');
+          return;
+        }
+        emit('save');
+        drawer.value = false;
+      });
+    };
+
+    if (!editForm.value.description) {
+      ElMessageBox.confirm('该规则还没有测试通过是否保存', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        successFunc();
+      });
+    } else {
+      successFunc();
+    }
   });
 };
 
