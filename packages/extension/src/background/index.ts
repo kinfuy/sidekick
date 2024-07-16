@@ -52,7 +52,6 @@ add('refresh-token', { periodInMinutes: 60 * 24 });
 const GOOGLE_ORIGIN = 'https://www.google.com';
 
 chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
-  debugger;
   if (!tab.url) return;
   const url = new URL(tab.url);
   // Enables the side panel on google.com

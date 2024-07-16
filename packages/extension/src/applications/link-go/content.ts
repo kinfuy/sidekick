@@ -3,7 +3,6 @@ import { useLinkGoStore } from './store';
 const { rules, parseUrl, inited } = useLinkGoStore();
 
 export const linkGo = async () => {
-  debugger;
   while (!inited.value) {
     await new Promise((resolve) => setTimeout(resolve, 100));
   }

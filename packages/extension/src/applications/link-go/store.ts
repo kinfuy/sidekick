@@ -3,7 +3,7 @@ import { computed } from 'vue';
 
 const STORE_KEY = 'LinkGo';
 
-interface LinkRule {
+export interface LinkRule {
   type: 'string' | 'regex';
   value: string;
   description?: string;
@@ -49,12 +49,19 @@ export const useLinkGoStore = () => {
       (r) => r.type === rule.type && r.value === rule.value,
     );
     if (isexist) return;
-    storageKit.store.linkRules.push(rule);
+    storageKit.storeRaw.value.linkRules.push(rule);
     storageKit.save();
   };
 
   const setRules = async (rules: LinkRule[]) => {
-    storageKit.store.linkRules = rules;
+    storageKit.storeRaw.value.linkRules = rules;
+    storageKit.save();
+  };
+
+  const removeRule = async (rule: LinkRule) => {
+    storageKit.storeRaw.value.linkRules = storageKit.store.linkRules.filter(
+      (r) => !(r.type === rule.type && r.value === rule.value),
+    );
     storageKit.save();
   };
 
@@ -69,8 +76,13 @@ export const useLinkGoStore = () => {
       return urlParamRes;
     }
     if (filed.type) {
-      const match = url.match(filed.type);
-      if (match?.groups && match.groups.target) return match?.groups.target;
+      try {
+        const reg = new RegExp(filed.value);
+        const match = url.match(reg);
+        if (match?.groups && match.groups.target) return match?.groups.target;
+      } catch (error) {
+        return undefined;
+      }
     }
     return undefined;
   };
@@ -85,5 +97,6 @@ export const useLinkGoStore = () => {
     rules,
     parseUrl,
     inited,
+    removeRule,
   };
 };
