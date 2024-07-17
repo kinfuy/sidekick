@@ -55,6 +55,11 @@ export default defineManifest(() => {
             resources: ['assets/web-notice.css'],
             use_dynamic_url: true,
           },
+          {
+            matches: ['<all_urls>'],
+            resources: ['assets/click-count.css'],
+            use_dynamic_url: true,
+          },
         ],
   };
 });

@@ -9,6 +9,7 @@ export interface AppStore {
   apps: Array<AppEntry>;
   actives: Array<string>; // 激活的应用
   installed: Array<string>; // 安装的应用
+  popupActive?: string; // popup app 激活的app 优先展示
 }
 
 const defaultStore: AppStore = {
@@ -66,10 +67,16 @@ export const useApp = () => {
 
   // popup app
   const popupApps = computed<AppEntry[]>(() => {
-    return (
+    const apps =
       storageKit.store.apps.filter((a) => a.popupApp && isAppActive(a.name)) ||
-      []
+      [];
+    if (!storageKit.store.popupActive) return apps;
+    const avtiveApp = apps.find((a) => a.name === storageKit.store.popupActive);
+    const notActiveApp = apps.filter(
+      (a) => a.name !== storageKit.store.popupActive,
     );
+    if (avtiveApp) return [avtiveApp, ...notActiveApp];
+    return apps;
   });
 
   // setting app
@@ -176,6 +183,11 @@ export const useApp = () => {
     return StorageKit.getStorageSize(key);
   };
 
+  const setPopupActive = (name?: string) => {
+    storageKit.storeRaw.value.popupActive = name;
+    storageKit.save();
+  };
+
   return {
     isAppActive,
     isAppInstall,
@@ -197,5 +209,6 @@ export const useApp = () => {
     reset,
     clearStorage,
     getStorageSize,
+    setPopupActive,
   };
 };

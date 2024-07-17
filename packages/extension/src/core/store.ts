@@ -47,16 +47,15 @@ export class StorageKit<K> {
     }
   }
 
-  save(value?: K) {
+  async save(value?: K) {
     this.update_key.value = this._key + Date.now().toString();
     const raw = {
       store: value ?? toRaw(this.storeRaw.value),
       version: toRaw(this.version.value),
       update_key: toRaw(this.update_key.value),
     };
-    set(this._key, JSON.stringify(raw)).finally(() => {
-      this.sync();
-    });
+    await set(this._key, JSON.stringify(raw));
+    await this.sync();
   }
 
   async sync() {

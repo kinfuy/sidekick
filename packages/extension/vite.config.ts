@@ -50,6 +50,12 @@ export default defineConfig({
           output: 'assets/web-notice.css',
           retry: 10,
         },
+        {
+          key: 'clickCount',
+          container: '#click-count',
+          output: 'assets/click-count.css',
+          retry: 10,
+        },
       ],
     }),
     viteStaticCopy({

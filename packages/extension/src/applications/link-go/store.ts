@@ -42,7 +42,6 @@ export const useLinkGoStore = () => {
     STORE_KEY,
     defaultStore(),
   );
-  storageKit.clear();
 
   const addRule = async (rule: LinkRule) => {
     const isexist = storageKit.store.linkRules.find(
