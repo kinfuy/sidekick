@@ -6,8 +6,7 @@
         <span>次</span>
       </div>
       <div class="btn-group">
-        <div class="btn">暂停</div>
-        <div class="btn">结束</div>
+        <div class="btn" @click="() => handleStop()">结束</div>
       </div>
     </div>
     <div
@@ -26,6 +25,7 @@
 </template>
 
 <script lang="ts" setup>
+import { removeView } from '@applications/click-count/content';
 import { useClickCountStore } from '@applications/click-count/store';
 import { onBeforeUnmount, onMounted, ref, watchEffect } from 'vue';
 
@@ -38,7 +38,7 @@ interface ClickItem {
   val: number;
 }
 
-const { count, add, status } = useClickCountStore();
+const { count, add, status, set } = useClickCountStore();
 
 const data = ref<ClickItem[]>([]);
 
@@ -49,6 +49,8 @@ watchEffect(() => {
 });
 
 const handleClick = async (e: MouseEvent) => {
+  const parent = document.getElementById('click-count');
+  if (parent?.contains(e.target as Node)) return;
   if (status.value !== 1) return;
   await add(1);
   const x = e.clientX;
@@ -60,13 +62,16 @@ const handleClick = async (e: MouseEvent) => {
   data.value.push({ x, y, id, time, color, val });
 };
 
+const handleStop = () => {
+  removeView();
+  set(3);
+};
+
 onMounted(() => {
-  console.log('onMounted');
   document.addEventListener('click', handleClick, { capture: true });
 });
 
 onBeforeUnmount(() => {
-  console.log('onBeforeUnmount');
   document.removeEventListener('click', handleClick, { capture: true });
 });
 </script>
@@ -96,6 +101,7 @@ onBeforeUnmount(() => {
 
     .count-value {
       font-size: 16px;
+      line-height: 36px;
     }
 
     .btn-group {
@@ -104,10 +110,11 @@ onBeforeUnmount(() => {
       pointer-events: all;
 
       .btn {
-        padding: 4px 8px;
+        padding: 2px 6px;
         border-radius: 4px;
         margin-left: 8px;
         cursor: pointer;
+        line-height: 36px;
 
         &:hover {
           color: #11ec4c;

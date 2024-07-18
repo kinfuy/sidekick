@@ -40,7 +40,6 @@ const init = () => {
   const day = queryByDate(date);
   if (day) todayWebStatics.value = day;
   isReady.value = true;
-  console.log(day);
 };
 
 watch(

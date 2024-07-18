@@ -4,16 +4,15 @@
       <div class="popup-header-title">点击计数器</div>
     </div>
     <div class="click-count-content">
-      <div class="count-value">
-        <span>Count:</span>
-        <span class="click-value">{{ count }}</span>
-      </div>
-      <div>
+      <div class="btn-group">
         <ElButton v-if="status === 0" size="small" @click="() => handleStart()">
           开始
         </ElButton>
         <ElButton v-if="status === 1" size="small" @click="() => set(2)">
           暂停
+        </ElButton>
+        <ElButton v-if="status === 2" size="small" @click="() => set(1)">
+          继续
         </ElButton>
         <ElButton
           v-if="status === 1 || status === 2"
@@ -25,6 +24,9 @@
         <ElButton v-if="status === 3" size="small" @click="() => set(0)">
           重置
         </ElButton>
+      </div>
+      <div class="count-value">
+        {{ count }}
       </div>
     </div>
   </div>
@@ -63,14 +65,17 @@ const handleStop = () => {
 }
 
 .click-count-content {
-  .click-value {
+  .count-value {
     text-align: center;
     width: 100%;
+    color: var(--primary-color);
+    font-size: 62px;
+  }
 
-    .click-value {
-      color: #409eff;
-      font-size: 20px;
-    }
+  .btn-group {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 10px;
   }
 }
 </style>

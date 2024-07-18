@@ -32,7 +32,6 @@ export const initClickCount = async () => {
 };
 
 export const clickCount = ({ key }: { key: string }) => {
-  console.log('clickCount', key);
   if (key === 'init-click') initClickCount();
   if (key === 'stop-click') removeView();
 };
