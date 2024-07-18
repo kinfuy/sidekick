@@ -21,9 +21,6 @@
         >
           结束
         </ElButton>
-        <ElButton v-if="status === 3" size="small" @click="() => set(0)">
-          重置
-        </ElButton>
       </div>
       <div class="count-value">
         {{ count }}
@@ -34,23 +31,27 @@
 
 <script lang="ts" setup>
 import { useClickCountStore } from '@applications/click-count/store';
-import { computed } from 'vue';
 import { ElButton } from 'element-plus';
 import { sendMessageToContentScript } from '@utils';
+import { useApp } from '@store/useApp';
 
 const { status, count, set } = useClickCountStore();
+const { setPopupActive } = useApp();
 
 const handleStart = () => {
   set(1);
+  setPopupActive('ClickCount');
   sendMessageToContentScript({
     from: 'popup',
     code: 'ClickCount',
     data: { key: 'init-click' },
   });
+  window.close();
 };
 
 const handleStop = () => {
-  set(3);
+  set(0);
+  setPopupActive('');
   sendMessageToContentScript({
     from: 'popup',
     code: 'ClickCount',

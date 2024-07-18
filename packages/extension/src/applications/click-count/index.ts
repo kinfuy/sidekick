@@ -1,6 +1,5 @@
 import click from '@assets/app/click.svg';
 import { getChromeUrl, sendMessageToContentScript } from '../../utils';
-import { useClickCountStore } from './store';
 import type { App } from '@/types/core-app.type';
 
 export const ClickCount: App = {
@@ -37,13 +36,6 @@ export const ClickCount: App = {
           key: 'init-click',
         },
       });
-    },
-    onCustomAction: async ({ key }) => {
-      const { set } = useClickCountStore();
-      if (key === 'reset-click') set(0); // 初始化
-      if (key === 'start-click') set(1); // 开始统计
-      if (key === 'stop-click') set(2); // 暂停统计
-      if (key === 'end-click') set(3); // 结束统计
     },
   },
 };

@@ -66,12 +66,6 @@ const usedSize = computed(() => {
   return count;
 });
 
-const legends = computed(() => {
-  return storeKeys.value.map((item) => {
-    return item.name;
-  });
-});
-
 onMounted(() => {
   getStorageSize();
 });
@@ -93,7 +87,6 @@ const option = computed(() => {
     legend: {
       orient: 'horizontal',
       left: 'left',
-      data: legends.value,
     },
     series: [
       {

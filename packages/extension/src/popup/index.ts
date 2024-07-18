@@ -5,7 +5,7 @@ import './styles/index.less';
 import 'element-plus/dist/index.css';
 const app = createApp(popup);
 
-popupInstall(app);
+if (app) popupInstall(app);
 
 export const isRegister = (name: string) => {
   if (!app) return false;
