@@ -18,9 +18,13 @@
         </div>
         <div class="list-right">
           <ElButton size="small" @click="() => clear(app)"> 清除缓存 </ElButton>
-          <ElButton size="small" @click="() => installApp(app.name, true)">{{
-            isAppInstall(app.name) ? '卸载' : '安装'
-          }}</ElButton>
+          <ElButton
+            plain
+            size="small"
+            :type="isAppInstall(app.name) ? 'danger' : 'default'"
+            @click="() => installApp(app.name, true)"
+            >{{ isAppInstall(app.name) ? '卸载' : '安装' }}</ElButton
+          >
         </div>
       </div>
     </div>

@@ -77,16 +77,6 @@ export default defineComponent({
               {this.directionText}
             </span>
           </div>
-          <span class="line" />
-          <div class="setting-theme">
-            <span></span>
-            <span
-              class="btn btn-small btn-border"
-              onClick={() => this.clearStore()}
-            >
-              清除缓存
-            </span>
-          </div>
         </>
       );
     };
