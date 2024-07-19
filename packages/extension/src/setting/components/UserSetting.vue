@@ -55,6 +55,7 @@ import { sendMessageToExtension } from '@utils';
 import dayjs from 'dayjs';
 import { ElButton, ElMessage } from 'element-plus';
 import { star } from '@utils/fire';
+import { Message } from '@core/message';
 import Sinput from '@/components/common/Input';
 
 const formatTime = (str: string) => {
@@ -73,6 +74,7 @@ const login = () => {
   sendMessageToExtension({
     from: 'content',
     code: 'onOpenWindow',
+    to: Message.Target.SERVERWORKER,
     data: {
       openUrl: 'login.html',
       extra: {

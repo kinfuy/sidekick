@@ -1,5 +1,6 @@
 import { sendMessageToContentScript } from '@utils';
 import notice from '@assets/app/notice.png';
+import { Message } from '@core/message';
 import type { App } from '@/types/core-app.type';
 
 export const WebNotice: App = {
@@ -12,21 +13,24 @@ export const WebNotice: App = {
   hooks: {
     async onContentInit() {
       sendMessageToContentScript({
-        from: 'background',
+        from: Message.Form.SERVERWORKER_MESSAGE,
+        to: Message.Target.CONTENT,
         code: 'WebNotice',
         data: [],
       });
     },
     async onPageshow() {
       sendMessageToContentScript({
-        from: 'background',
+        from: Message.Form.SERVERWORKER_MESSAGE,
+        to: Message.Target.CONTENT,
         code: 'WebNotice',
         data: [],
       });
     },
     async onDocVisibilitychange() {
       sendMessageToContentScript({
-        from: 'background',
+        from: Message.Form.SERVERWORKER_MESSAGE,
+        to: Message.Target.CONTENT,
         code: 'WebNotice',
         data: [],
       });

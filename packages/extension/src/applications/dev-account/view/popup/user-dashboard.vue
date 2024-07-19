@@ -23,6 +23,7 @@
 import { ElScrollbar } from 'element-plus';
 import { useDevAccountStore } from '@applications/dev-account/store';
 import { sendMessageToContentScript } from '@utils';
+import { Message } from '@core/message';
 import Empty from '@/components/common/Empty/Empty';
 
 const { matchWeb } = useDevAccountStore();
@@ -30,7 +31,8 @@ const { matchWeb } = useDevAccountStore();
 const handleLogin = (web: any, user: any) => {
   sendMessageToContentScript({
     code: 'DevAccount',
-    from: 'popup',
+    from: Message.Form.POPUP_MESSAGE,
+    to: Message.Target.CONTENT,
     data: {
       key: 'user-login',
       data: {

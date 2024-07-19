@@ -1,5 +1,6 @@
 export interface PostMessage {
   from: string;
+  to: string;
   code: string;
   data?: Record<string, any>;
 }

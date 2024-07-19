@@ -87,6 +87,7 @@
 <script lang="ts" setup>
 import { clearAllCookie, getAllStorage, injectPostMessage } from '@utils';
 import { computed, onMounted, ref } from 'vue';
+import { Message } from '@core/message';
 import { useStoragePortalStore } from '../../store';
 import KeyValue from './key-value.vue';
 import SelectWeb from './select-web.vue';
@@ -105,7 +106,7 @@ const menuList = [
 
 const init = () => {
   injectPostMessage({
-    from: 'app_inject',
+    from: Message.Form.INJECT_MESSAGE,
     code: 'onGetData',
     data: {
       key: 'cookies',
@@ -116,7 +117,7 @@ const init = () => {
     },
   });
   injectPostMessage({
-    from: 'app_inject',
+    from: Message.Form.INJECT_MESSAGE,
     code: 'onGetData',
     data: { key: 'tabs' },
   });
@@ -129,7 +130,7 @@ const init = () => {
 const deleteCookie = (cookies: string[]) => {
   const targetUrl = new URL(window.location.href);
   injectPostMessage({
-    from: 'app_inject',
+    from: Message.Form.INJECT_MESSAGE,
     code: 'onCustomAction',
     data: {
       key: 'clear-cookies',
@@ -187,7 +188,7 @@ const handleSync = (item: { url: string; title: string }) => {
   if (!item.url) return;
   syncWeb.value = item;
   injectPostMessage({
-    from: 'app_inject',
+    from: Message.Form.INJECT_MESSAGE,
     code: 'onGetData',
     data: {
       key: 'cookies',

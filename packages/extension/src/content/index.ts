@@ -3,6 +3,7 @@ import { injectCustomScript, sendMessageToExtension } from '@utils';
 import { contentFunc } from '@applications/content';
 import { useTheme } from '@store/useTheme';
 import { watch } from 'vue';
+import { Message } from '@core/message';
 import { contentCore } from './core';
 import injectScript from '@/inject/index.ts?script&module';
 import { initInject, removeInject } from '@/inject/component';
@@ -91,7 +92,7 @@ window.addEventListener('hashchange', (event) => {
 
 window.addEventListener('message', async (info: { data: PostMessage }) => {
   const { data } = info;
-  if (data.from !== 'app_inject') return;
+  if (data.from !== Message.Form.INJECT_MESSAGE) return;
   if (data.code === 'onDocVisibilitychange') {
     if (data.data && data.data.visible) {
       initInject();
@@ -105,7 +106,7 @@ window.addEventListener('message', async (info: { data: PostMessage }) => {
 
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   const { code, data } = request;
-  if (code === 'CoreApp') {
+  if (code === 'ContentCore') {
     contentCore(data);
   } else {
     const funcCall = contentFunc[code];

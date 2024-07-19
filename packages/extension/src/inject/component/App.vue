@@ -67,6 +67,7 @@ import logo from '@assets/logo16.png';
 import { useTheme } from '@store/useTheme';
 import { useApp } from '@store/useApp';
 import { injectPostMessage } from '@utils';
+import { Message } from '@core/message';
 import type { AppEntry } from '@/types/core-app.type';
 
 const { syncStore } = useApp();
@@ -142,7 +143,8 @@ const current = ref();
 
 const openPage = (code: string, url: string, extra: any = {}) => {
   injectPostMessage({
-    from: 'app_inject',
+    from: Message.Form.INJECT_MESSAGE,
+    to: Message.Target.CONTENT,
     code,
     data: {
       openUrl: url,

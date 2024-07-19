@@ -34,6 +34,7 @@ import { useClickCountStore } from '@applications/click-count/store';
 import { ElButton } from 'element-plus';
 import { sendMessageToContentScript } from '@utils';
 import { useApp } from '@store/useApp';
+import { Message } from '@core/message';
 
 const { status, count, set } = useClickCountStore();
 const { setPopupActive } = useApp();
@@ -42,7 +43,8 @@ const handleStart = () => {
   set(1);
   setPopupActive('ClickCount');
   sendMessageToContentScript({
-    from: 'popup',
+    from: Message.Form.POPUP_MESSAGE,
+    to: Message.Target.CONTENT,
     code: 'ClickCount',
     data: { key: 'init-click' },
   });
@@ -53,7 +55,8 @@ const handleStop = () => {
   set(0);
   setPopupActive('');
   sendMessageToContentScript({
-    from: 'popup',
+    from: Message.Form.POPUP_MESSAGE,
+    to: Message.Target.CONTENT,
     code: 'ClickCount',
     data: { key: 'stop-click' },
   });

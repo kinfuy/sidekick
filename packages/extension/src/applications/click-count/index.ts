@@ -1,4 +1,5 @@
 import click from '@assets/app/click.svg';
+import { Message } from '@core/message';
 import { getChromeUrl, sendMessageToContentScript } from '../../utils';
 import type { App } from '@/types/core-app.type';
 
@@ -12,7 +13,8 @@ export const ClickCount: App = {
   hooks: {
     onContentInit: async () => {
       sendMessageToContentScript({
-        from: 'background',
+        from: Message.Form.SERVERWORKER_MESSAGE,
+        to: Message.Target.CONTENT,
         code: 'ClickCount',
         data: {
           key: 'init-click',
@@ -21,7 +23,8 @@ export const ClickCount: App = {
     },
     onPageshow: async () => {
       sendMessageToContentScript({
-        from: 'background',
+        from: Message.Form.SERVERWORKER_MESSAGE,
+        to: Message.Target.CONTENT,
         code: 'ClickCount',
         data: {
           key: 'init-click',
@@ -30,7 +33,8 @@ export const ClickCount: App = {
     },
     onDocVisibilitychange: async () => {
       sendMessageToContentScript({
-        from: 'background',
+        from: Message.Form.SERVERWORKER_MESSAGE,
+        to: Message.Target.CONTENT,
         code: 'ClickCount',
         data: {
           key: 'init-click',

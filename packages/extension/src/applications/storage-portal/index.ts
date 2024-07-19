@@ -4,6 +4,7 @@ import {
   sendMessageToContentScript,
   sendMessageToContentScriptById,
 } from '@utils';
+import { Message } from '@core/message';
 import type { App } from '@/types/core-app.type';
 export const StoragePortal: App = {
   name: 'StoragePortal',
@@ -23,13 +24,15 @@ export const StoragePortal: App = {
         const tabs = await chrome.tabs.query({ url: `*://${targetUrl}/*` });
         if (tabs && tabs[0]?.id) {
           sendMessageToContentScriptById(tabs[0].id, {
-            from: 'background',
+            from: Message.Form.SERVERWORKER_MESSAGE,
+            to: Message.Target.CONTENT,
             code: 'StoragePortal',
             data: { key: 'send-storage', from: sourceUrl },
           });
         }
         sendMessageToContentScript({
-          from: 'background',
+          from: Message.Form.SERVERWORKER_MESSAGE,
+          to: Message.Target.CONTENT,
           code: 'StoragePortal',
           data: {
             key: 'get-cookies',
@@ -43,7 +46,8 @@ export const StoragePortal: App = {
           return { title: t.title, url: t.url };
         });
         sendMessageToContentScript({
-          from: 'background',
+          from: Message.Form.SERVERWORKER_MESSAGE,
+          to: Message.Target.CONTENT,
           code: 'StoragePortal',
           data: {
             key: 'get-tabs',
@@ -54,7 +58,8 @@ export const StoragePortal: App = {
     },
     onSendData: async (data) => {
       sendMessageToContentScript({
-        from: 'background',
+        from: Message.Form.SERVERWORKER_MESSAGE,
+        to: Message.Target.CONTENT,
         code: 'StoragePortal',
         data: { key: 'get-storage', data },
       });

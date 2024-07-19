@@ -13,6 +13,7 @@
 
 <script lang="ts" setup>
 import { createWindow, injectPostMessage } from '@utils';
+import { Message } from '@core/message';
 import logo from '@/assets/logo.png';
 
 const props = defineProps({
@@ -25,7 +26,7 @@ const logoIcon = chrome.runtime.getURL(logo);
 
 const openPage = (code: string, url: string, extra: any = {}) => {
   injectPostMessage({
-    from: 'app_inject',
+    from: Message.Form.INJECT_MESSAGE,
     code,
     data: {
       openUrl: url,
