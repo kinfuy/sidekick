@@ -1,5 +1,5 @@
 <template>
-  <div class="click-count">
+  <div class="click-count" :class="{ 'event-effect': canClick }">
     <div class="click-header">
       <div class="count-value">
         <span style="font-size: 24px"> {{ count }}</span>
@@ -27,7 +27,8 @@
 <script lang="ts" setup>
 import { removeView } from '@applications/click-count/content';
 import { useClickCountStore } from '@applications/click-count/store';
-import { onBeforeUnmount, onMounted, ref, watchEffect } from 'vue';
+import { useApp } from '@store/useApp';
+import { computed, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue';
 
 interface ClickItem {
   x: number;
@@ -39,6 +40,8 @@ interface ClickItem {
 }
 
 const { count, add, status, set } = useClickCountStore();
+
+const { setPopupActive } = useApp();
 
 const data = ref<ClickItem[]>([]);
 
@@ -64,8 +67,11 @@ const handleClick = async (e: MouseEvent) => {
 
 const handleStop = () => {
   removeView();
-  set(3);
+  setPopupActive();
+  set(0);
 };
+
+const canClick = computed(() => status.value === 1);
 
 onMounted(() => {
   document.addEventListener('click', handleClick, { capture: true });
@@ -77,6 +83,11 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="less" scoped shadow="clickCount">
+.event-effect {
+  pointer-events: none;
+  background-color: rgb(0 0 0 / 50%);
+}
+
 .click-count {
   position: fixed;
   top: 0;
@@ -84,8 +95,8 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
   z-index: 9999;
-  background-color: rgb(0 0 0 / 5%);
   pointer-events: none;
+  background-color: transparent;
 
   .click-header {
     position: absolute;
@@ -94,10 +105,9 @@ onBeforeUnmount(() => {
     top: 10px;
     right: 50%;
     transform: translateX(50%);
-    background-color: rgb(0 0 0 / 50%);
     padding: 4px 8px;
     border-radius: 4px;
-    widows: 220px;
+    width: 220px;
 
     .count-value {
       font-size: 16px;
@@ -117,7 +127,7 @@ onBeforeUnmount(() => {
         line-height: 36px;
 
         &:hover {
-          color: #11ec4c;
+          color: #da2cda;
         }
       }
     }
