@@ -65,6 +65,9 @@ const { daysWebStatics } = useBrowseBehaviorStore();
         font-size: 14px;
         color: #333;
         font-weight: 700;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
 
       .web-desc {

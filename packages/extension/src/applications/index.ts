@@ -33,7 +33,7 @@ const linkApp: AppEntry[] = [
 
 const settingApps: AppEntry[] = [
   {
-    title: '应用商店',
+    title: '插件商店',
     name: 'AppStore',
     logo: getChromeUrl(set),
     inner: true,

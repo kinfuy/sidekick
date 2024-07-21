@@ -5,18 +5,38 @@
     </div>
     <div class="click-count-content">
       <div class="btn-group">
-        <ElButton v-if="status === 0" size="small" @click="() => handleStart()">
+        <ElButton
+          v-if="status === 0"
+          type="primary"
+          plain
+          size="small"
+          @click="() => handleStart()"
+        >
           开始
         </ElButton>
-        <ElButton v-if="status === 1" size="small" @click="() => set(2)">
+        <ElButton
+          v-if="status === 1"
+          type="primary"
+          size="small"
+          plain
+          @click="() => set(2)"
+        >
           暂停
         </ElButton>
-        <ElButton v-if="status === 2" size="small" @click="() => set(1)">
+        <ElButton
+          v-if="status === 2"
+          type="primary"
+          plain
+          size="small"
+          @click="() => set(1)"
+        >
           继续
         </ElButton>
         <ElButton
           v-if="status === 1 || status === 2"
           size="small"
+          plain
+          type="primary"
           @click="() => handleStop()"
         >
           结束
