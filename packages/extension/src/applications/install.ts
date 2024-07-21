@@ -1,6 +1,5 @@
 import type { App } from 'vue';
 import {
-  devAccountContentInstall,
   devAccountPopupInstall,
   devAccountSettingInstall,
 } from './dev-account/install';
@@ -19,7 +18,6 @@ import { clickCountPopupInstall } from './click-count/install';
 
 export const contentInstall = (app: App) => {
   appLayoutContentInstall(app);
-  devAccountContentInstall(app);
   webNoticeContentInstall(app);
   storagePortalContentInstall(app);
 };

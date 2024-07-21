@@ -71,7 +71,6 @@ export const useApp = () => {
     const apps =
       storageKit.store.apps.filter((a) => a.popupApp && isAppActive(a.name)) ||
       [];
-    console.log('popupApps', storageKit.store);
     if (!storageKit.store.popupActive) return apps;
     const avtiveApp = apps.find((a) => a.name === storageKit.store.popupActive);
     const notActiveApp = apps.filter(
@@ -190,6 +189,12 @@ export const useApp = () => {
     storageKit.save();
   };
 
+  const getAppInfo = (name: string): AppEntry => {
+    return (
+      storageKit.store.apps.find((a) => a.name === name) || ({} as AppEntry)
+    );
+  };
+
   return {
     isAppActive,
     isAppInstall,
@@ -212,5 +217,6 @@ export const useApp = () => {
     clearStorage,
     getStorageSize,
     setPopupActive,
+    getAppInfo,
   };
 };

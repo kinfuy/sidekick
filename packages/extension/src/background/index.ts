@@ -15,6 +15,17 @@ chromeAddListenerMessage(async (message) => {
   if (message.code === 'onActiveChange' && message.data?.name) {
     limitApp = [message.data?.name];
   }
+
+  const contentActive = [
+    'onContentInit',
+    'onUrlChange',
+    'onPageshow',
+    'onDocVisibilitychange',
+    'onDocDOMContentLoaded',
+  ];
+  if (contentActive.includes(message.code)) {
+    triggerApplicationHooks('onContentActive', message.data, limitApp);
+  }
   triggerApplicationHooks(message.code, message.data, limitApp);
 });
 

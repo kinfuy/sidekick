@@ -11,23 +11,7 @@ export const WebNotice: App = {
   contentApp: true,
   settingApp: true,
   hooks: {
-    async onContentInit() {
-      sendMessageToContentScript({
-        from: Message.Form.SERVERWORKER_MESSAGE,
-        to: Message.Target.CONTENT,
-        code: 'WebNotice',
-        data: [],
-      });
-    },
-    async onPageshow() {
-      sendMessageToContentScript({
-        from: Message.Form.SERVERWORKER_MESSAGE,
-        to: Message.Target.CONTENT,
-        code: 'WebNotice',
-        data: [],
-      });
-    },
-    async onDocVisibilitychange() {
+    async onContentActive() {
       sendMessageToContentScript({
         from: Message.Form.SERVERWORKER_MESSAGE,
         to: Message.Target.CONTENT,

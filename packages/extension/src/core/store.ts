@@ -13,7 +13,7 @@ export class StorageKit<K> {
   private static instances = new Map<string, any>();
 
   private version = ref(0);
-  private update_key = ref('NOT_INIT');
+  readonly update_key = ref('NOT_INIT');
   public storeRaw = ref({} as K);
 
   private _key: string;
@@ -102,6 +102,7 @@ export class StorageKit<K> {
     this.storeRaw.value = this.defaultValue as any;
     this.save();
   }
+
 
   /**
    * 获取内存使用

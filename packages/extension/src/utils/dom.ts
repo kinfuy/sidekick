@@ -454,3 +454,8 @@ export const getAllStorage = <T>(storage: Storage): T => {
   }
   return arr as T;
 };
+
+export const transformUrl = (url: string) => {
+  const _url = new URL(url);
+  return `${_url.host}`;
+};

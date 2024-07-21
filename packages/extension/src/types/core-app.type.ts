@@ -58,6 +58,14 @@ export interface Application extends Record<string, any> {
   onTabMove?: (tab: any) => void;
   onTabReplaced?: (tab: any) => void;
 
+  /**
+   * content 快捷键
+   */
+  onShortcut?: (opt: { key: string; data: any }) => void;
+  /**
+   *  onContentActive === onContentInit onUrlChange onPageshow onDocVisibilitychange onDocDOMContentLoaded
+   * */
+  onContentActive?: (opt: { url: string }) => void;
   onContentInit?: ({ url }: { url: string }) => void;
   onDocDOMContentLoaded?: ({ url }: { url: string }) => void;
   onDocVisibilitychange?: (opt: { visible: boolean }) => void;

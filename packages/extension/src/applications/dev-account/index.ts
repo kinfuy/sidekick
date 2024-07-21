@@ -1,4 +1,6 @@
 import account from '@assets/app/account.svg';
+import { sendMessageToContentScript } from '@utils';
+import { Message } from '@core/message';
 import type { App } from '@/types/core-app.type';
 
 export const DevAccount: App = {
@@ -9,5 +11,28 @@ export const DevAccount: App = {
   width: '600px',
   popupApp: true,
   settingApp: true,
-  hooks: {},
+  hooks: {
+    onContentActive: async () => {
+      sendMessageToContentScript({
+        from: Message.Form.SERVERWORKER_MESSAGE,
+        to: Message.Target.CONTENT,
+        code: 'DevAccount',
+        data: {
+          key: 'register-shotcut',
+        },
+      });
+    },
+    onShortcut: async ({ key }) => {
+      if (key === 'auto-login') {
+        sendMessageToContentScript({
+          from: Message.Form.SERVERWORKER_MESSAGE,
+          to: Message.Target.CONTENT,
+          code: 'DevAccount',
+          data: {
+            key: 'auto-login',
+          },
+        });
+      }
+    },
+  },
 };

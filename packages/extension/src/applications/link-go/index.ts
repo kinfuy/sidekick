@@ -10,7 +10,7 @@ export const LinkGo: App = {
   inner: false,
   settingApp: true,
   hooks: {
-    onContentInit: async () => {
+    onContentActive: async () => {
       sendMessageToContentScriptAllTabs({
         from: Message.Form.SERVERWORKER_MESSAGE,
         to: Message.Target.CONTENT,

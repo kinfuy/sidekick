@@ -11,27 +11,7 @@ export const ClickCount: App = {
   popupApp: true,
   settingApp: false,
   hooks: {
-    onContentInit: async () => {
-      sendMessageToContentScript({
-        from: Message.Form.SERVERWORKER_MESSAGE,
-        to: Message.Target.CONTENT,
-        code: 'ClickCount',
-        data: {
-          key: 'init-click',
-        },
-      });
-    },
-    onPageshow: async () => {
-      sendMessageToContentScript({
-        from: Message.Form.SERVERWORKER_MESSAGE,
-        to: Message.Target.CONTENT,
-        code: 'ClickCount',
-        data: {
-          key: 'init-click',
-        },
-      });
-    },
-    onDocVisibilitychange: async () => {
+    onContentActive: async () => {
       sendMessageToContentScript({
         from: Message.Form.SERVERWORKER_MESSAGE,
         to: Message.Target.CONTENT,

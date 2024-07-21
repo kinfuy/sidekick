@@ -38,7 +38,8 @@ injectCustomScript(injectScript);
 
 const contentInit = () => {
   sendMessageToExtension({
-    from: 'content',
+    from: Message.Form.CONTENT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
     code: 'onContentInit',
     data: {
       url: window.location.href,
@@ -50,7 +51,8 @@ contentInit();
 
 document.addEventListener('DOMContentLoaded', () => {
   sendMessageToExtension({
-    from: 'content',
+    from: Message.Form.CONTENT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
     code: 'onDocDOMContentLoaded',
     data: {
       url: window.location.href,
@@ -60,7 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.addEventListener('load', () => {
   sendMessageToExtension({
-    from: 'content',
+    from: Message.Form.CONTENT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
     code: 'onDocLoad',
     data: { url: window.location.href },
   });
@@ -68,7 +71,8 @@ window.addEventListener('load', () => {
 
 window.addEventListener('pageshow', () => {
   sendMessageToExtension({
-    from: 'content',
+    from: Message.Form.CONTENT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
     code: 'onPageshow',
     data: { url: window.location.href },
   });
@@ -76,7 +80,8 @@ window.addEventListener('pageshow', () => {
 
 window.addEventListener('popstate', (event) => {
   sendMessageToExtension({
-    from: 'content',
+    from: Message.Form.CONTENT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
     code: 'onUrlChange',
     data: { url: window.location.href, event },
   });
@@ -84,7 +89,8 @@ window.addEventListener('popstate', (event) => {
 
 window.addEventListener('hashchange', (event) => {
   sendMessageToExtension({
-    from: 'content',
+    from: Message.Form.CONTENT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
     code: 'onUrlChange',
     data: { url: window.location.href, event },
   });
@@ -100,7 +106,8 @@ window.addEventListener('message', async (info: { data: PostMessage }) => {
   }
   sendMessageToExtension({
     ...data,
-    from: 'content',
+    from: Message.Form.CONTENT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
   });
 });
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="dev-tester-app" style="display: none" :class="[theme]">
+  <div class="dev-tester-app z-index" style="display: none" :class="[theme]">
     <div
       ref="kitRef"
       class="kit-tool-warper"
@@ -53,6 +53,13 @@
         </div>
       </div>
     </div>
+    <div
+      class="dev-tester-action"
+      :class="[`${direction}-action`]"
+      :style="{ top: y ? `${y + 68}px` : `calc(38% + 68px)` }"
+    >
+      <ActionTips v-if="!isVisable && !isActive" />
+    </div>
     <Dialog v-model="isVisable" :direction="direction" :tool="current" />
   </div>
 </template>
@@ -68,6 +75,7 @@ import { useTheme } from '@store/useTheme';
 import { useApp } from '@store/useApp';
 import { injectPostMessage } from '@utils';
 import { Message } from '@core/message';
+import ActionTips from './ActionTips.vue';
 import type { AppEntry } from '@/types/core-app.type';
 
 const { syncStore } = useApp();
