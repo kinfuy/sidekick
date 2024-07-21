@@ -308,6 +308,7 @@ export const dispatchEventHandler = (
   eventName: EventName,
   el: Element | Document,
   config?: {
+    data?: any;
     keyboardConfig?: KeyboardConfig;
     mouseEventConfig?: MouseEventConfig;
   },
@@ -323,7 +324,7 @@ export const dispatchEventHandler = (
         break;
       }
       case 'submit': {
-        const clickEvent = new Event('submit', {
+        const clickEvent = new SubmitEvent('submit', {
           cancelable: true,
           bubbles: true,
         });
@@ -339,12 +340,20 @@ export const dispatchEventHandler = (
       }
       case 'input':
         {
-          const inputEvent = new InputEvent('input');
+          const inputEvent = new InputEvent('input', {
+            data: config?.data,
+            bubbles: true,
+            cancelable: true,
+          });
           el.dispatchEvent(inputEvent);
         }
         break;
       case 'change': {
-        const changeEvent = new InputEvent('change');
+        const changeEvent = new InputEvent('change', {
+          data: config?.data,
+          bubbles: true,
+          cancelable: true,
+        });
         el.dispatchEvent(changeEvent);
         break;
       }
@@ -400,14 +409,14 @@ export const dispatchEventHandler = (
         if (config && config.mouseEventConfig) {
           const event = new MouseEvent(eventName, {
             ...config.mouseEventConfig,
-            cancelable: false,
             bubbles: true,
+            cancelable: true,
           });
           el.dispatchEvent(event);
         } else {
           const event = new MouseEvent(eventName, {
-            cancelable: false,
             bubbles: true,
+            cancelable: true,
           });
           el.dispatchEvent(event);
         }

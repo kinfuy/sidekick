@@ -21,7 +21,7 @@ const defaultStore: AppStore = {
 };
 
 // 内置应用 store key
-const innerStoreKeys = ['AppStore', 'AppAuth', 'AppTheme', 'AppNotice'];
+const innerStoreKeys = ['AppStore', 'AppAuth', 'AppTheme', 'AppContentAction'];
 
 const STORE_KEY = 'AppStore';
 export const useApp = () => {

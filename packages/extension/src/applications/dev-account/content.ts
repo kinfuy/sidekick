@@ -2,6 +2,11 @@ import { useContentAction } from '@store/useContentAction';
 import { transformUrl } from '@utils';
 import { type WebInfo, type WebUser, useDevAccountStore } from './store';
 import { autoInput, getElement } from './utils';
+/**
+ * 用户点击登录
+ * @param user
+ * @param web
+ */
 const userLogin = (user: WebUser, web: WebInfo) => {
   autoInput({
     user,
@@ -11,6 +16,30 @@ const userLogin = (user: WebUser, web: WebInfo) => {
       autoLogin: web.autoLogin,
     },
   });
+};
+
+const shortcutAutoLogin = async () => {
+  const { getMatch } = useDevAccountStore();
+  const match = await getMatch(window.location.href);
+  if (!match) return;
+  const loginBtn = getElement<HTMLElement>(match.match.loginBtn);
+  const { add, remove } = useContentAction();
+  if (!loginBtn) {
+    remove(transformUrl(window.location.href), 'auto-login');
+    return;
+  }
+  add(transformUrl(window.location.href), {
+    title: '自动登录',
+    code: 'DevAccount',
+    key: 'auto-login',
+  });
+};
+
+const shortcutTryResgister = () => {};
+
+const registerShortcut = async () => {
+  await shortcutAutoLogin();
+  await shortcutTryResgister();
 };
 
 export const devAccount = async (option: {
@@ -23,21 +52,8 @@ export const devAccount = async (option: {
     if (!user) return;
     userLogin(user, web);
   }
-  if (key === 'register-shotcut') {
-    const { getMatch } = useDevAccountStore();
-    const match = await getMatch(window.location.href);
-    if (!match) return;
-    const loginBtn = getElement<HTMLElement>(match.match.loginBtn);
-    const { add, remove } = useContentAction();
-    if (!loginBtn) {
-      remove(transformUrl(window.location.href), 'auto-login');
-      return;
-    }
-    add(transformUrl(window.location.href), {
-      title: '自动登录',
-      code: 'DevAccount',
-      key: 'auto-login',
-    });
+  if (key === 'register-shortcut') {
+    registerShortcut();
   }
   if (key === 'auto-login') {
     const { getMatch } = useDevAccountStore();

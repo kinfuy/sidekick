@@ -70,21 +70,45 @@ export const autoInput = (userInfo: {
   const loginEle = <HTMLElement>getElement(loginBtn);
 
   if (userEl && passWordEl) {
+    debugger;
+
+    dispatchEventHandler('focus', userEl);
+    dispatchEventHandler('input', userEl, {
+      data: userInfo.user.name,
+    });
     userEl.value = userInfo.user.name;
-    dispatchEventHandler('input', userEl);
+    dispatchEventHandler('change', userEl, {
+      data: userInfo.user.name,
+    });
+    dispatchEventHandler('blur', userEl);
+
+    dispatchEventHandler('focus', passWordEl);
+    dispatchEventHandler('input', passWordEl, {
+      data: userInfo.user.password,
+    });
     passWordEl.value = userInfo.user.password;
-    dispatchEventHandler('input', passWordEl);
+    dispatchEventHandler('change', passWordEl, {
+      data: userInfo.user.password,
+    });
+    dispatchEventHandler('blur', passWordEl);
 
     if (validateEl) {
       // 获取到验证码元素，尝试填充
       validateEl.value = code || '';
       dispatchEventHandler('input', validateEl);
     }
-    if (autoLogin && loginEle) {
-      dispatchEventHandler('mousedown', loginEle);
-      dispatchEventHandler('mouseup', loginEle);
-      dispatchEventHandler('click', loginEle);
-      dispatchEventHandler('submit', loginEle);
-    }
+    setTimeout(() => {
+      if (autoLogin && loginEle) {
+        dispatchEventHandler('mousedown', loginEle);
+        dispatchEventHandler('mouseup', loginEle);
+        dispatchEventHandler('click', loginEle);
+        if ((loginEle as HTMLButtonElement)?.type === 'submit') {
+          const formEl = loginEle.closest('form');
+          if (formEl) {
+            dispatchEventHandler('submit', formEl);
+          }
+        }
+      }
+    }, 500);
   }
 };

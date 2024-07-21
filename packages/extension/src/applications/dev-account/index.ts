@@ -18,7 +18,7 @@ export const DevAccount: App = {
         to: Message.Target.CONTENT,
         code: 'DevAccount',
         data: {
-          key: 'register-shotcut',
+          key: 'register-shortcut',
         },
       });
     },
