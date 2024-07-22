@@ -186,11 +186,11 @@
 }
 
 .right-action {
-    right: 0;
+    right: 4px;
 }
 
 .left-action {
-    left: 0;
+    left: 4px;
 }
 
 .dev-tester-action {
@@ -198,9 +198,8 @@
     top: 48px;
 
     .action-tips {
-        box-shadow: 0 0 5px 0 rgb(0 0 0 / 30%);
+        box-shadow: 0 0 5px 0 rgba(48 47 47 / 30%);
         border-radius: 4px 0 0 4px;
-        padding: 8px;
         background-color: var(--bg-color-primary);
 
         .action-tips-item {
@@ -210,12 +209,12 @@
             padding: 4px 8px;
             cursor: pointer;
 
+            &:hover {
+                background-color: var(--primary-color-fade-20);
+            }
+
             .action-tips-title {
                 font-size: 12px;
-
-                &:hover {
-                    color: var(--primary-color);
-                }
             }
 
             .action-tips-app {
