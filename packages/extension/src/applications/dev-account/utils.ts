@@ -70,8 +70,6 @@ export const autoInput = (userInfo: {
   const loginEle = <HTMLElement>getElement(loginBtn);
 
   if (userEl && passWordEl) {
-    debugger;
-
     dispatchEventHandler('focus', userEl);
     userEl.value = userInfo.user.name;
     dispatchEventHandler('input', userEl, {
