@@ -19,6 +19,7 @@ chromeAddListenerMessage(async (message) => {
   const contentActive = [
     'onContentInit',
     'onUrlChange',
+    'onTabUpdate',
     'onPageshow',
     'onDocVisibilitychange',
     'onDocDOMContentLoaded',

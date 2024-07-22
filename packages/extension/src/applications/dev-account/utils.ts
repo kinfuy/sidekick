@@ -73,20 +73,22 @@ export const autoInput = (userInfo: {
     debugger;
 
     dispatchEventHandler('focus', userEl);
+    userEl.value = userInfo.user.name;
     dispatchEventHandler('input', userEl, {
       data: userInfo.user.name,
     });
-    userEl.value = userInfo.user.name;
+
     dispatchEventHandler('change', userEl, {
       data: userInfo.user.name,
     });
     dispatchEventHandler('blur', userEl);
 
     dispatchEventHandler('focus', passWordEl);
+    passWordEl.value = userInfo.user.password;
     dispatchEventHandler('input', passWordEl, {
       data: userInfo.user.password,
     });
-    passWordEl.value = userInfo.user.password;
+
     dispatchEventHandler('change', passWordEl, {
       data: userInfo.user.password,
     });

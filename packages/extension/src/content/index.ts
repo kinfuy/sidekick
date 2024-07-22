@@ -5,6 +5,7 @@ import { useTheme } from '@store/useTheme';
 import { watch } from 'vue';
 import { Message } from '@core/message';
 import { contentCore } from './core';
+
 import injectScript from '@/inject/index.ts?script&module';
 import { initInject, removeInject } from '@/inject/component';
 
@@ -49,17 +50,6 @@ const contentInit = () => {
 
 contentInit();
 
-document.addEventListener('DOMContentLoaded', () => {
-  sendMessageToExtension({
-    from: Message.Form.CONTENT_MESSAGE,
-    to: Message.Target.SERVERWORKER,
-    code: 'onDocDOMContentLoaded',
-    data: {
-      url: window.location.href,
-    },
-  });
-});
-
 window.addEventListener('load', () => {
   sendMessageToExtension({
     from: Message.Form.CONTENT_MESSAGE,
@@ -75,24 +65,6 @@ window.addEventListener('pageshow', () => {
     to: Message.Target.SERVERWORKER,
     code: 'onPageshow',
     data: { url: window.location.href },
-  });
-});
-
-window.addEventListener('popstate', (event) => {
-  sendMessageToExtension({
-    from: Message.Form.CONTENT_MESSAGE,
-    to: Message.Target.SERVERWORKER,
-    code: 'onUrlChange',
-    data: { url: window.location.href, event },
-  });
-});
-
-window.addEventListener('hashchange', (event) => {
-  sendMessageToExtension({
-    from: Message.Form.CONTENT_MESSAGE,
-    to: Message.Target.SERVERWORKER,
-    code: 'onUrlChange',
-    data: { url: window.location.href, event },
   });
 });
 
