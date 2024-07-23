@@ -56,7 +56,7 @@
     <div
       class="dev-tester-action"
       :class="[`${direction}-action`]"
-      :style="{ top: y ? `${y + 68}px` : `calc(38% + 68px)` }"
+      :style="activeTipStyle"
     >
       <ActionTips v-if="!isVisable && !isActive" />
     </div>
@@ -65,10 +65,10 @@
 </template>
 
 <script lang="ts" setup>
-import { provide, ref, watch, watchEffect } from 'vue';
+import { computed, provide, ref, watch, watchEffect } from 'vue';
 import Dialog from '@components/common/Dialog/Dialog.vue';
 import ToolItem from '@components/common/ToolItem/ToolItem.vue';
-import { useDraggable } from '@vueuse/core';
+import { useDraggable, useWindowSize } from '@vueuse/core';
 import './App.less?shadow';
 import logo from '@assets/logo16.png';
 import { useTheme } from '@store/useTheme';
@@ -79,7 +79,7 @@ import ActionTips from './ActionTips.vue';
 import type { AppEntry } from '@/types/core-app.type';
 
 const { syncStore } = useApp();
-const { theme, direction, posY, setTheme, setPosY } = useTheme();
+const { theme, direction, posY, setPosY } = useTheme();
 
 const kitRef = ref();
 const { y, isDragging } = useDraggable(kitRef, {
@@ -87,6 +87,16 @@ const { y, isDragging } = useDraggable(kitRef, {
   onEnd: ({ y }) => {
     setPosY(y);
   },
+});
+
+const { height } = useWindowSize();
+
+const activeTipStyle = computed(() => {
+  let fix = 68;
+  if (height.value * 0.8 < y.value) {
+    fix = -18;
+  }
+  return { top: y.value ? `${y.value + fix}px` : `calc(38% + ${fix}px)` };
 });
 
 watch(

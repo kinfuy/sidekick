@@ -109,6 +109,6 @@ export const autoInput = (userInfo: {
           }
         }
       }
-    }, 500);
+    }, 0);
   }
 };
