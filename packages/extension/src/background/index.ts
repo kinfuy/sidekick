@@ -1,7 +1,7 @@
-import { useAlarmManger } from '@core/alarm-manage';
 import { triggerApplicationHooks } from '../core/application';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { chromeAddListenerMessage, createtab, getChromeUrl } from '../utils';
+import { useAlarm } from '@/store/useAlarm';
 
 chrome.runtime.onInstalled.addListener(() => {
   // createtab(getChromeUrl('setting.html'));
@@ -58,6 +58,6 @@ chrome.tabs.onReplaced.addListener((...opt) => {
   triggerApplicationHooks('onTabReplaced', opt);
 });
 
-const { add } = useAlarmManger();
+const { add } = useAlarm();
 
 add('refresh-token', { periodInMinutes: 60 * 24 });
