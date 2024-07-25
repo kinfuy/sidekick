@@ -8,6 +8,12 @@ chrome.runtime.onInstalled.addListener(() => {
   triggerApplicationHooks('onInstalled');
 });
 
+chrome.tabs.onActivated.addListener(
+  (opt: { tabId: number; windowId: number }) => {
+    triggerApplicationHooks('onTabActiveChange', opt);
+  },
+);
+
 triggerApplicationHooks('onInit');
 
 chromeAddListenerMessage(async (message) => {

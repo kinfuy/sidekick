@@ -1,12 +1,16 @@
 <template>
-  <div class="click-count" :class="{ 'event-effect': canClick }">
+  <div
+    class="click-count"
+    :class="{ 'event-effect': canClick }"
+    @click="handleClick"
+  >
     <div class="click-header">
       <div class="count-value">
         <span style="font-size: 24px"> {{ count }}</span>
         <span>次</span>
       </div>
       <div class="btn-group">
-        <div class="btn" @click="() => handleStop()">结束</div>
+        <div class="btn" @click.stop="() => handleStop()">结束</div>
       </div>
     </div>
     <div
@@ -72,20 +76,12 @@ const handleStop = () => {
 };
 
 const canClick = computed(() => status.value === 1);
-
-onMounted(() => {
-  document.addEventListener('click', handleClick, { capture: true });
-});
-
-onBeforeUnmount(() => {
-  document.removeEventListener('click', handleClick, { capture: true });
-});
 </script>
 
 <style lang="less" scoped shadow="clickCount">
 .event-effect {
-  pointer-events: none;
-  background-color: rgb(0 0 0 / 50%);
+  pointer-events: all !important;
+  background-color: rgb(0 0 0 / 30%) !important;
 }
 
 .click-count {
@@ -107,7 +103,6 @@ onBeforeUnmount(() => {
     transform: translateX(50%);
     padding: 4px 8px;
     border-radius: 4px;
-    width: 220px;
 
     .count-value {
       font-size: 16px;

@@ -57,6 +57,7 @@ export interface Application extends Record<string, any> {
   onTabUpdate?: (tab: any) => void;
   onTabMove?: (tab: any) => void;
   onTabReplaced?: (tab: any) => void;
+  onTabActiveChange?: (opt: { tabId: number; windowId: number }) => void;
 
   /**
    * content 快捷键

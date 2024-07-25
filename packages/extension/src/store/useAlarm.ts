@@ -21,7 +21,13 @@ export const useAlarm = () => {
     defaultStore(),
   );
 
-  const add = (name: string, alarmInfo: chrome.alarms.AlarmCreateInfo) => {
+  const add = async (
+    name: string,
+    alarmInfo: chrome.alarms.AlarmCreateInfo,
+  ) => {
+    while (!storageKit.inited) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
     storageKit.storeRaw.value.alarms.push({ name, alarmInfo });
     storageKit.save();
     return chrome.alarms.create(name, alarmInfo);

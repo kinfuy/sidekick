@@ -30,7 +30,9 @@
 <script lang="ts" setup>
 import { useBrowseBehaviorStore } from '@applications/browse-behavior/store';
 
-const { daysWebStatics } = useBrowseBehaviorStore();
+const { daysWebStatics, dayUseTimes } = useBrowseBehaviorStore();
+
+console.log(dayUseTimes.value);
 </script>
 
 <style lang="less" scoped>

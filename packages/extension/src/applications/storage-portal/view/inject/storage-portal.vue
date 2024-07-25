@@ -107,6 +107,7 @@ const menuList = [
 const init = () => {
   injectPostMessage({
     from: Message.Form.INJECT_MESSAGE,
+    to: Message.Form.CONTENT_MESSAGE,
     code: 'onGetData',
     data: {
       key: 'cookies',
@@ -118,6 +119,7 @@ const init = () => {
   });
   injectPostMessage({
     from: Message.Form.INJECT_MESSAGE,
+    to: Message.Form.CONTENT_MESSAGE,
     code: 'onGetData',
     data: { key: 'tabs' },
   });
@@ -131,6 +133,7 @@ const deleteCookie = (cookies: string[]) => {
   const targetUrl = new URL(window.location.href);
   injectPostMessage({
     from: Message.Form.INJECT_MESSAGE,
+    to: Message.Form.CONTENT_MESSAGE,
     code: 'onCustomAction',
     data: {
       key: 'clear-cookies',
@@ -189,6 +192,7 @@ const handleSync = (item: { url: string; title: string }) => {
   syncWeb.value = item;
   injectPostMessage({
     from: Message.Form.INJECT_MESSAGE,
+    to: Message.Form.CONTENT_MESSAGE,
     code: 'onGetData',
     data: {
       key: 'cookies',

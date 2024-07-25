@@ -10,8 +10,6 @@ export interface DayOpenWebs {
     url: string;
     title: string;
     count: number;
-    totalTime?: number;
-    activeTime?: number;
   }[];
 }
 
@@ -23,8 +21,23 @@ export interface WebStatics {
   startTime: string;
   endTime: string;
 }
+
+export interface WebUseTimes {
+  url: string;
+  title: string;
+  isActive: boolean;
+  startTime: string;
+  lastTime: string;
+  useTimes: number; // 秒
+}
+
+export interface DayUseTimes {
+  date: string;
+  webs: WebUseTimes[];
+}
 export interface BrowseBehaviorStore {
-  webStatics: Array<WebStatics>;
+  webStatics: WebStatics[]; // 打开次数统计
+  webUseTimes: DayUseTimes[]; // 站点活跃时间统计
 }
 
 const STORE_KEY = 'BrowseBehavior';
@@ -32,8 +45,10 @@ const STORE_KEY = 'BrowseBehavior';
 export const useBrowseBehaviorStore = () => {
   const storageKit = StorageKit.getInstance<BrowseBehaviorStore>(STORE_KEY, {
     webStatics: [],
+    webUseTimes: [],
   });
 
+  // 次数统计
   const addRecord = async (opt: any) => {
     while (!storageKit.inited) {
       await new Promise((resolve) => setTimeout(resolve, 100));
@@ -92,8 +107,83 @@ export const useBrowseBehaviorStore = () => {
     storageKit.clear();
   };
 
-  const inited = computed(() => {
-    return storageKit.inited;
+  const inited = computed(() => storageKit.inited);
+
+  // 时间统计
+
+  const getTadayUseTimes = () => {
+    const taday = dayjs().format('YYYY-MM-DD');
+    const tadayUsed = storageKit.storeRaw.value.webUseTimes?.find(
+      (item) => item.date === taday,
+    );
+    return tadayUsed;
+  };
+
+  const resetActiveUrl = async () => {
+    const tadayUsed = getTadayUseTimes();
+    if (tadayUsed)
+      tadayUsed.webs.forEach((item) => {
+        item.isActive = false;
+      });
+  };
+
+  const setActiveUrl = async (tab: { url?: string; title?: string }) => {
+    while (!storageKit.inited) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+    resetActiveUrl();
+    if (!tab.url) {
+      storageKit.save();
+      return;
+    }
+    let tadayUsed = getTadayUseTimes();
+    if (!tadayUsed) {
+      tadayUsed = {
+        date: dayjs().format('YYYY-MM-DD'),
+        webs: [],
+      };
+    }
+    const web = tadayUsed.webs.find((item) => item.url === tab.url);
+    if (web) {
+      web.useTimes += dayjs().diff(dayjs(web.lastTime), 'second');
+      web.lastTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
+    } else {
+      tadayUsed.webs.push({
+        url: tab.url,
+        title: tab.title || '',
+        isActive: true,
+        startTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+        lastTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+        useTimes: 0,
+      });
+    }
+    if (
+      storageKit.storeRaw.value.webUseTimes?.find(
+        (item) => item.date === tadayUsed.date,
+      )
+    ) {
+      storageKit.storeRaw.value.webUseTimes?.forEach((item) => {
+        if (item.date === tadayUsed.date) {
+          item.webs = tadayUsed.webs;
+        }
+      });
+    } else {
+      if (!storageKit.storeRaw.value.webUseTimes) {
+        storageKit.storeRaw.value.webUseTimes = [];
+      }
+      storageKit.storeRaw.value.webUseTimes?.push(tadayUsed);
+    }
+
+    storageKit.save();
+    console.log(tadayUsed.webs);
+  };
+
+  const dayUseTimes = computed(() => {
+    const taday = dayjs().format('YYYY-MM-DD');
+    const tadayUsed = storageKit.storeRaw.value.webUseTimes?.find(
+      (item) => item.date === taday,
+    );
+    return tadayUsed;
   });
 
   return {
@@ -103,5 +193,7 @@ export const useBrowseBehaviorStore = () => {
     updateEndTime,
     clear,
     inited,
+    setActiveUrl,
+    dayUseTimes,
   };
 };

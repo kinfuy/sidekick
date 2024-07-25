@@ -11,6 +11,13 @@ export const BrowseBehavior: App = {
   settingApp: true,
   popupApp: true,
   hooks: {
+    onTabActiveChange: async (opt) => {
+      const { setActiveUrl } = useBrowseBehaviorStore();
+      const { tabId } = opt;
+      const tab = await chrome.tabs.get(tabId);
+      const tabInfo = { url: tab?.url, title: tab?.title };
+      setActiveUrl(tabInfo);
+    },
     onTabUpdate: async (tabs) => {
       const { addRecord } = useBrowseBehaviorStore();
       const [tabId, changeinfo, tab] = tabs;
