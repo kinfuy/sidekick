@@ -13,7 +13,9 @@
           </div>
           <div class="app-info">
             <div>{{ app.title }}</div>
-            <div class="app-size">缓存：{{ appSizeMap.get(app.name) }}</div>
+            <div class="app-size">
+              缓存：{{ appSizeMap.get(app.name) || `${transformBytes(0)}` }}
+            </div>
           </div>
         </div>
         <div class="list-right">

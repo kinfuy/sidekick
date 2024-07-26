@@ -7,6 +7,7 @@ import { LinkGo } from './link-go';
 import { StoragePortal } from './storage-portal';
 import { BrowseBehavior } from './browse-behavior';
 import { ClickCount } from './click-count';
+import { UrlBlock } from './url-block';
 import type { App, AppEntry } from '@/types/core-app.type';
 
 export const apps: App[] = [
@@ -17,6 +18,7 @@ export const apps: App[] = [
   StoragePortal,
   BrowseBehavior,
   ClickCount,
+  UrlBlock,
 ];
 
 const linkApp: AppEntry[] = [

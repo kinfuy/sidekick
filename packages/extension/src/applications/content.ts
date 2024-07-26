@@ -3,6 +3,7 @@ import { devAccount } from './dev-account/content';
 import { linkGo } from './link-go/content';
 import { storagePortal } from './storage-portal/content';
 import { clickCount } from './click-count/content';
+import { urlBlock } from './url-block/content';
 
 export const contentFunc: Record<string, Function> = {
   WebNotice: webNotice,
@@ -10,4 +11,5 @@ export const contentFunc: Record<string, Function> = {
   LinkGo: linkGo,
   StoragePortal: storagePortal,
   ClickCount: clickCount,
+  UrlBlock: urlBlock,
 };
