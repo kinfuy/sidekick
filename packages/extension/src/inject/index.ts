@@ -22,8 +22,7 @@ window.addEventListener('replaceState', () => {
   });
 });
 
-window.addEventListener('popstate', (event) => {
-  console.log('popstate', event);
+window.addEventListener('popstate', () => {
   injectPostMessage({
     from: Message.Form.INJECT_MESSAGE,
     to: Message.Target.SERVERWORKER,
@@ -43,8 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-window.addEventListener('hashchange', (event) => {
-  console.log('hashchange', event);
+window.addEventListener('hashchange', () => {
   injectPostMessage({
     from: Message.Form.INJECT_MESSAGE,
     to: Message.Target.SERVERWORKER,

@@ -4,17 +4,21 @@
       <div class="behavior-card">
         <div class="behavior-title">数据总览</div>
       </div>
-      <div
-        v-for="item in daysWebStatics"
-        :key="item.date"
-        class="behavior-card"
-      >
+      <div v-for="item in daysUseTimes" :key="item.date" class="behavior-card">
         <div class="behavior-title">{{ item.date }}</div>
         <div class="behavior-content">
           <div v-for="web in item.webs" :key="web.url" class="behavior-item">
-            <div>
-              <span class="web-count">{{ web.count }}</span>
-              <span>次</span>
+            <div class="web-detail">
+              <div class="web-time">
+                {{ transformSecond(web.useTimes || 1).val }}
+                <span>{{ transformSecond(web.useTimes || 1).unit }}</span>
+              </div>
+
+              <div class="web-count">
+                <span>打开:</span>
+                {{ getCount(item.date, web.url) || 1 }}
+                <span>次</span>
+              </div>
             </div>
             <div class="web-info">
               <div class="web-url">{{ web.url }}</div>
@@ -29,10 +33,23 @@
 
 <script lang="ts" setup>
 import { useBrowseBehaviorStore } from '@applications/browse-behavior/store';
+import { transformSecond } from '@/utils/transform';
 
-const { daysWebStatics, dayUseTimes } = useBrowseBehaviorStore();
+const { daysWebStatics, daysUseTimes } = useBrowseBehaviorStore();
 
-console.log(dayUseTimes.value);
+const getCount = (date: string, url: string) => {
+  let count = 0;
+  daysWebStatics.value?.forEach((item) => {
+    if (item.date === date) {
+      item.webs?.forEach((web) => {
+        if (web.url === url) {
+          count = web.count;
+        }
+      });
+    }
+  });
+  return count;
+};
 </script>
 
 <style lang="less" scoped>
@@ -53,14 +70,17 @@ console.log(dayUseTimes.value);
   flex-wrap: wrap;
 
   .behavior-item {
-    height: 100px;
-    width: 220px;
+    width: 200px;
+    height: 120px;
     border: 1px solid #f4f4f4;
     border-radius: 8px;
-    box-shadow: 0 2px 4px #f4f4f4;
-    margin-bottom: 10px;
-    margin-right: 16px;
-    padding: 16px 22px;
+    box-shadow: 0 2px 4px #efe8e8;
+    padding: 4px 6px;
+    margin-right: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
     .web-info {
       .web-url {
@@ -82,10 +102,16 @@ console.log(dayUseTimes.value);
       }
     }
 
-    .web-count {
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--primary-color);
+    .web-detail {
+      .web-count {
+        color: #999;
+      }
+
+      .web-time {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--primary-color);
+      }
     }
   }
 }

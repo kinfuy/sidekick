@@ -62,7 +62,7 @@ export const useBrowseBehaviorStore = () => {
       tab.tabId = '';
       tab.endTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
     }
-    if (!storageKit.storeRaw.value.webStatics) {
+    if (!storageKit.storeRaw.value?.webStatics) {
       storageKit.storeRaw.value.webStatics = [];
     }
 
@@ -103,6 +103,11 @@ export const useBrowseBehaviorStore = () => {
     return daysWebStatics.value?.find((item) => item.date === date);
   };
 
+  const dayWebCounts = computed(() => {
+    const taday = dayjs().format('YYYY-MM-DD');
+    return queryByDate(taday);
+  });
+
   const clear = () => {
     storageKit.clear();
   };
@@ -123,6 +128,10 @@ export const useBrowseBehaviorStore = () => {
     const tadayUsed = getTadayUseTimes();
     if (tadayUsed)
       tadayUsed.webs.forEach((item) => {
+        if (item.isActive) {
+          item.useTimes += dayjs().diff(dayjs(item.lastTime), 'second');
+          item.lastTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
+        }
         item.isActive = false;
       });
   };
@@ -143,13 +152,15 @@ export const useBrowseBehaviorStore = () => {
         webs: [],
       };
     }
-    const web = tadayUsed.webs.find((item) => item.url === tab.url);
+    const web = tadayUsed.webs.find(
+      (item) => item.url === new URL(String(tab.url)).host,
+    );
     if (web) {
       web.useTimes += dayjs().diff(dayjs(web.lastTime), 'second');
       web.lastTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
     } else {
       tadayUsed.webs.push({
-        url: tab.url,
+        url: new URL(tab.url).host,
         title: tab.title || '',
         isActive: true,
         startTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
@@ -175,7 +186,6 @@ export const useBrowseBehaviorStore = () => {
     }
 
     storageKit.save();
-    console.log(tadayUsed.webs);
   };
 
   const dayUseTimes = computed(() => {
@@ -183,7 +193,19 @@ export const useBrowseBehaviorStore = () => {
     const tadayUsed = storageKit.storeRaw.value.webUseTimes?.find(
       (item) => item.date === taday,
     );
-    return tadayUsed;
+    return {
+      date: taday,
+      webs: tadayUsed?.webs.sort((a, b) => b.useTimes - a.useTimes) || [],
+    };
+  });
+
+  const daysUseTimes = computed(() => {
+    return storageKit.storeRaw.value.webUseTimes?.map((item) => {
+      return {
+        date: item.date,
+        webs: item.webs.sort((a, b) => b.useTimes - a.useTimes),
+      };
+    });
   });
 
   return {
@@ -195,5 +217,7 @@ export const useBrowseBehaviorStore = () => {
     inited,
     setActiveUrl,
     dayUseTimes,
+    daysUseTimes,
+    dayWebCounts,
   };
 };
