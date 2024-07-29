@@ -15,6 +15,10 @@ import {
   browseBehaviorSettingInstall,
 } from './browse-behavior/install';
 import { clickCountPopupInstall } from './click-count/install';
+import {
+  urlBlockPopopInstall,
+  urlBlockSettingInstall,
+} from './url-block/install';
 
 export const contentInstall = (app: App) => {
   appLayoutContentInstall(app);
@@ -26,6 +30,7 @@ export const popupInstall = (app: App) => {
   devAccountPopupInstall(app);
   browseBehaviorPopupInstall(app);
   clickCountPopupInstall(app);
+  urlBlockPopopInstall(app);
 };
 
 export const settingInstall = (app: App) => {
@@ -33,4 +38,5 @@ export const settingInstall = (app: App) => {
   linkGoSettingInstall(app);
   browseBehaviorSettingInstall(app);
   webNoticeContentSettingInstall(app);
+  urlBlockSettingInstall(app);
 };

@@ -175,7 +175,11 @@ export const camelize = (str: string) => {
   );
 };
 
-export const getStyle = (element: HTMLElement, styleName: string) => {
+export const getStyle = (
+  element: HTMLElement,
+  styleName: string,
+  isComputed?: boolean,
+) => {
   if (!element || !styleName) return '';
   let name: string = camelize(styleName);
   if (name === 'float') {
@@ -184,11 +188,21 @@ export const getStyle = (element: HTMLElement, styleName: string) => {
   try {
     const style = (element.style as any)[name];
     if (style) return style;
-    const computed = document.defaultView?.getComputedStyle(element, '') || '';
+    const computed = isComputed
+      ? document.defaultView?.getComputedStyle(element, '')
+      : element.style;
     return computed ? (computed as any)[name] : '';
   } catch (e) {
     return (element.style as any)[name];
   }
+};
+
+export const setStyle = (element: HTMLElement, styles: Record<string, any>) => {
+  if (!element) return;
+  Object.keys(styles).forEach((styleName) => {
+    const styleValue = styles[styleName];
+    (element.style as any)[camelize(styleName)] = styleValue;
+  });
 };
 
 export const isScroll = (el: HTMLElement, isVertical?: boolean) => {
