@@ -11,7 +11,14 @@
         class="behavior-item"
       >
         <div class="web-info">
-          <img :src="web.favIconUrl" alt="logo" width="16" height="16" />
+          <img
+            v-if="web.favIconUrl"
+            :src="web.favIconUrl"
+            class="web-logo"
+            alt="logo"
+            width="16"
+            height="16"
+          />
           <div class="web-url">{{ web.url }}</div>
         </div>
         <div class="web-detail">
@@ -92,6 +99,15 @@ const getCount = (url: string) => {
     .web-info {
       width: 400px;
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      height: 32px;
+
+      .web-logo {
+        margin-right: 8px;
+        width: 20px;
+        height: 20px;
+      }
 
       .web-url {
         width: 100%;
