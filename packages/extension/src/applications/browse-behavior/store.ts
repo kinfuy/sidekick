@@ -8,6 +8,7 @@ export interface DayOpenWebs {
   date: string;
   webs: {
     url: string;
+    favIconUrl: string;
     title: string;
     count: number;
   }[];
@@ -17,6 +18,7 @@ export interface WebStatics {
   tabId: string;
   url: string;
   title: string;
+  favIconUrl: string;
   date: string;
   startTime: string;
   endTime: string;
@@ -25,6 +27,7 @@ export interface WebStatics {
 export interface WebUseTimes {
   url: string;
   title: string;
+  favIconUrl: string;
   isActive: boolean;
   startTime: string;
   lastTime: string;
@@ -49,11 +52,18 @@ export const useBrowseBehaviorStore = () => {
   });
 
   // 次数统计
-  const addRecord = async (opt: any) => {
+  const addRecord = async (opt: {
+    tabId: string;
+    url: string;
+    title: string;
+    date: string;
+    startTime: string;
+    favIconUrl: string;
+  }) => {
     while (!storageKit.inited) {
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
-    const { tabId, url, title, date, startTime } = opt;
+    const { tabId, url, title, date, startTime, favIconUrl } = opt;
     const tab = storageKit.store.webStatics?.find(
       (item) => item.tabId === tabId,
     );
@@ -69,6 +79,7 @@ export const useBrowseBehaviorStore = () => {
     storageKit.storeRaw.value.webStatics?.push({
       tabId,
       url,
+      favIconUrl,
       title,
       date,
       startTime,
@@ -136,7 +147,11 @@ export const useBrowseBehaviorStore = () => {
       });
   };
 
-  const setActiveUrl = async (tab: { url?: string; title?: string }) => {
+  const setActiveUrl = async (tab: {
+    url?: string;
+    title?: string;
+    favIconUrl?: string;
+  }) => {
     while (!storageKit.inited) {
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
@@ -161,6 +176,7 @@ export const useBrowseBehaviorStore = () => {
     } else {
       tadayUsed.webs.push({
         url: new URL(tab.url).host,
+        favIconUrl: tab.favIconUrl || '',
         title: tab.title || '',
         isActive: true,
         startTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
@@ -207,6 +223,15 @@ export const useBrowseBehaviorStore = () => {
       };
     });
   });
+  const curentActiveWeb = computed(() => {
+    const taday = dayjs().format('YYYY-MM-DD');
+    const tadayUsed = storageKit.storeRaw.value.webUseTimes?.find(
+      (item) => item.date === taday,
+    );
+    console.log(tadayUsed);
+    if (!tadayUsed) return;
+    return tadayUsed.webs?.find((item) => item.isActive);
+  });
 
   return {
     daysWebStatics,
@@ -219,5 +244,6 @@ export const useBrowseBehaviorStore = () => {
     dayUseTimes,
     daysUseTimes,
     dayWebCounts,
+    curentActiveWeb,
   };
 };

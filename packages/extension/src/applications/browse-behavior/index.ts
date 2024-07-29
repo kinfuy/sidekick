@@ -15,7 +15,11 @@ export const BrowseBehavior: App = {
       const { setActiveUrl } = useBrowseBehaviorStore();
       const { tabId } = opt;
       const tab = await chrome.tabs.get(tabId);
-      const tabInfo = { url: tab?.url, title: tab?.title };
+      const tabInfo = {
+        url: tab?.url,
+        title: tab?.title,
+        favIconUrl: tab?.favIconUrl,
+      };
       if (!tabInfo.url) return;
       const host = new URL(tabInfo.url).host;
       if (tabInfo.url.startsWith('chrome://')) return;
@@ -34,6 +38,7 @@ export const BrowseBehavior: App = {
       if (changeinfo.url) {
         await addRecord({
           tabId,
+          favIconUrl: tab.favIconUrl,
           url: new URL(tab.url).host,
           title: tab.title,
           date: dayjs().format('YYYY-MM-DD'),

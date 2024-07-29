@@ -11,8 +11,8 @@
         class="behavior-item"
       >
         <div class="web-info">
+          <img :src="web.favIconUrl" alt="logo" width="16" height="16" />
           <div class="web-url">{{ web.url }}</div>
-          <div class="web-title">{{ web.title.trim() }}</div>
         </div>
         <div class="web-detail">
           <span class="web-count">
@@ -40,7 +40,7 @@
 import { useBrowseBehaviorStore } from '@applications/browse-behavior/store';
 import { ElLoading } from 'element-plus';
 import { transformSecond } from '@/utils/transform';
-const { dayWebCounts, dayUseTimes } = useBrowseBehaviorStore();
+const { dayWebCounts, dayUseTimes, curentActiveWeb } = useBrowseBehaviorStore();
 
 const getCount = (url: string) => {
   let count = 0;
