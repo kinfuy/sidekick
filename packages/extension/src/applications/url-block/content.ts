@@ -5,14 +5,21 @@ import { useUrlBlockStore } from './store';
 import { getPropByPath } from './utils';
 
 export const injectBlockView = (target: Element, engine: Engine) => {
+  const blockElement = document.createElement('div');
+  blockElement.setAttribute('style', 'position: absolute; inset: 0;');
+
+  const removeBlockElement = () => {
+    target.removeChild(blockElement);
+  };
+
   const app = createApp(BlockContent, {
     targetElement: target,
     engine,
+    onRemove: removeBlockElement,
   });
-  const blickElement = document.createElement('div');
-  blickElement.setAttribute('style', 'position: absolute; inset: 0;');
-  app.mount(blickElement);
-  target.appendChild(blickElement);
+
+  app.mount(blockElement);
+  target.appendChild(blockElement);
 };
 
 const getUrlText = (item: Element, target: TargetNode): string => {

@@ -29,9 +29,12 @@ const props = defineProps({
     type: Object as PropType<HTMLElement>,
     required: true,
   },
-  engin: {
+  engine: {
     type: String as PropType<Engine>,
     required: true,
+  },
+  onRemove: {
+    type: Function as PropType<() => void>,
   },
 });
 
@@ -45,6 +48,7 @@ const remove = () => {
 
   props.targetElement.removeAttribute('data-blocked');
   isBlock.value = false;
+  if (props.onRemove) props.onRemove();
 };
 
 const init = () => {
