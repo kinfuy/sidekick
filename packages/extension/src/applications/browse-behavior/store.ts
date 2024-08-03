@@ -202,12 +202,12 @@ export const useBrowseBehaviorStore = () => {
     }
     if (
       storageKit.storeRaw.value.webUseTimes?.find(
-        (item) => item.date === tadayUsed.date,
+        (item) => item.date === tadayUsed?.date,
       )
     ) {
       storageKit.storeRaw.value.webUseTimes?.forEach((item) => {
-        if (item.date === tadayUsed.date) {
-          item.webs = tadayUsed.webs;
+        if (item.date === tadayUsed?.date) {
+          item.webs = tadayUsed?.webs;
         }
       });
     } else {

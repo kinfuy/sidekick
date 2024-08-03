@@ -40,7 +40,7 @@ export default defineComponent({
     const containerRef = ref<HTMLElement | null>(null);
     const ids = ref<(string | number | symbol)[]>([]);
 
-    const geSource = (e: DragEvent) => {
+    const geSource = (e: DragEvent): Element | null => {
       const target = e.target as Element;
       const container = containerRef.value!;
       if (!target || !container.contains(target) || target === container) {
@@ -50,7 +50,7 @@ export default defineComponent({
       let node = container.firstElementChild;
       while (node) {
         if (node.contains(target)) {
-          return node;
+          return node as Element;
         }
         node = node.nextElementSibling;
       }
