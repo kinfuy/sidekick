@@ -5,7 +5,7 @@ export default defineManifest(() => {
   return {
     manifest_version: 3,
     name: '__MSG_chrome_extension_name__',
-    version: '0.0.1',
+    version: '0.0.2',
     description: '__MSG_chrome_extension_description__',
     icons: {
       '16': 'public/logo.png',

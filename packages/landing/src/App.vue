@@ -77,6 +77,15 @@
               </div>
               <div>Download for Chrome</div>
             </a>
+            <a
+              class="text-white flex items-center justify-center gap-2 h-12 px-6 rounded cursor-pointer w-full sm:w-auto"
+              href="https://ifdian.net/order/create?plan_id=2814cdde240211efb3a552540025c377&product_type=0"
+            >
+              <img
+                width="180"
+                src="https://pic1.afdiancdn.com/static/img/welcome/button-sponsorme.png"
+              />
+            </a>
           </div>
         </div>
         <div class="flex-1 min-w-0 hidden md:block">
