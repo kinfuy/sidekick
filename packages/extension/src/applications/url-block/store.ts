@@ -118,7 +118,7 @@ const defaultStore = (): UrlBlockStore => {
       {
         title: 'CSDN',
         type: 'string',
-        value: 'blog.csdn.net',
+        value: ['blog.csdn.net', 'wenku.csdn.net'],
         enable: true,
       },
       {

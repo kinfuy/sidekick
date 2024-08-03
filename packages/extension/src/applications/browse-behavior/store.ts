@@ -135,9 +135,9 @@ export const useBrowseBehaviorStore = () => {
     return tadayUsed;
   };
 
-  const resetActiveUrl = async () => {
+  const clearAllActive = async () => {
     const tadayUsed = getTadayUseTimes();
-    if (tadayUsed)
+    if (tadayUsed) {
       tadayUsed.webs.forEach((item) => {
         if (item.isActive) {
           item.useTimes += dayjs().diff(dayjs(item.lastTime), 'second');
@@ -145,6 +145,22 @@ export const useBrowseBehaviorStore = () => {
         }
         item.isActive = false;
       });
+    }
+  };
+
+  const resetActiveUrl = async (url: string) => {
+    const tadayUsed = getTadayUseTimes();
+    if (tadayUsed) {
+      tadayUsed.webs.forEach((item) => {
+        if (item.url === new URL(String(url)).host) {
+          if (item.isActive) {
+            item.useTimes += dayjs().diff(dayjs(item.lastTime), 'second');
+            item.lastTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
+            item.isActive = false;
+          }
+        }
+      });
+    }
   };
 
   const setActiveUrl = async (tab: {
@@ -155,7 +171,7 @@ export const useBrowseBehaviorStore = () => {
     while (!storageKit.inited) {
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
-    resetActiveUrl();
+    clearAllActive();
     if (!tab.url) {
       storageKit.save();
       return;
@@ -201,6 +217,7 @@ export const useBrowseBehaviorStore = () => {
       storageKit.storeRaw.value.webUseTimes?.push(tadayUsed);
     }
 
+    console.log(storageKit.storeRaw.value.webUseTimes);
     storageKit.save();
   };
 
@@ -241,6 +258,7 @@ export const useBrowseBehaviorStore = () => {
     clear,
     inited,
     setActiveUrl,
+    resetActiveUrl,
     dayUseTimes,
     daysUseTimes,
     dayWebCounts,

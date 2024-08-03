@@ -11,14 +11,13 @@ export const BrowseBehavior: App = {
   settingApp: true,
   popupApp: true,
   hooks: {
-    onTabActiveChange: async (opt) => {
+    onContentFocus: async (opt) => {
       const { setActiveUrl } = useBrowseBehaviorStore();
-      const { tabId } = opt;
-      const tab = await chrome.tabs.get(tabId);
+      const { url, title, favIconUrl } = opt;
       const tabInfo = {
-        url: tab?.url,
-        title: tab?.title,
-        favIconUrl: tab?.favIconUrl,
+        url,
+        title,
+        favIconUrl,
       };
       if (!tabInfo.url) return;
       const host = new URL(tabInfo.url).host;
@@ -27,6 +26,13 @@ export const BrowseBehavior: App = {
       if (['extension', 'newtab'].includes(host)) return;
       setActiveUrl(tabInfo);
     },
+
+    onContentBlur: async (opt) => {
+      const { url } = opt;
+      const { resetActiveUrl } = useBrowseBehaviorStore();
+      resetActiveUrl(url);
+    },
+
     onTabUpdate: async (tabs) => {
       const { addRecord } = useBrowseBehaviorStore();
       const [tabId, changeinfo, tab] = tabs;

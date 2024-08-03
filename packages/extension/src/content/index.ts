@@ -1,5 +1,9 @@
 import type { PostMessage } from '@utils';
-import { injectCustomScript, sendMessageToExtension } from '@utils';
+import {
+  getFaviconUrl,
+  injectCustomScript,
+  sendMessageToExtension,
+} from '@utils';
 import { contentFunc } from '@applications/content';
 import { useTheme } from '@store/useTheme';
 import { watch } from 'vue';
@@ -80,6 +84,29 @@ window.addEventListener('message', async (info: { data: PostMessage }) => {
     ...data,
     from: Message.Form.CONTENT_MESSAGE,
     to: Message.Target.SERVERWORKER,
+  });
+});
+
+window.addEventListener('blur', () => {
+  console.log('blur', window.location.href);
+  sendMessageToExtension({
+    from: Message.Form.CONTENT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
+    code: 'onContentBlur',
+    data: { url: window.location.href },
+  });
+});
+window.addEventListener('focus', () => {
+  const url = window.location.href;
+  const title = document.title;
+  // shortcut icon
+  const favIconUrl = getFaviconUrl();
+  console.log('focus', url, title, favIconUrl);
+  sendMessageToExtension({
+    from: Message.Form.CONTENT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
+    code: 'onContentFocus',
+    data: { url, title, favIconUrl },
   });
 });
 

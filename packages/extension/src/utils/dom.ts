@@ -478,7 +478,30 @@ export const getAllStorage = <T>(storage: Storage): T => {
   return arr as T;
 };
 
+/**
+ * 获取 url host
+ * @param url
+ * @returns
+ */
 export const transformUrl = (url: string) => {
   const _url = new URL(url);
   return `${_url.host}`;
+};
+
+/**
+ * 获取网站 favicon
+ * @returns
+ */
+export const getFaviconUrl = () => {
+  // 获取文档中所有的<link>元素
+  const links = document.getElementsByTagName('link');
+  for (let i = 0; i < links.length; i++) {
+    // 检查<link>元素的rel属性是否包含'icon'或'shortcut icon'
+    if (links[i].rel.match(/icon|shortcut icon/i)) {
+      // 返回找到的图标URL
+      return links[i].href;
+    }
+  }
+  // 如果没有找到，返回null或默认图标URL
+  return null; // 或者 'default-icon-url.png'
 };

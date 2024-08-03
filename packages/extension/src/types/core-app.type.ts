@@ -67,6 +67,12 @@ export interface Application extends Record<string, any> {
    *  onContentActive === onContentInit onUrlChange onPageshow onDocVisibilitychange onDocDOMContentLoaded
    * */
   onContentActive?: (opt: { url: string }) => void;
+  onContentFocus?: (opt: {
+    url: string;
+    title: string;
+    favIconUrl: string;
+  }) => void;
+  onContentBlur?: (opt: { url: string }) => void;
   onContentInit?: ({ url }: { url: string }) => void;
   onDocDOMContentLoaded?: ({ url }: { url: string }) => void;
   onDocVisibilitychange?: (opt: { visible: boolean }) => void;
