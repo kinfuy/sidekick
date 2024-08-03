@@ -484,8 +484,10 @@ export const getAllStorage = <T>(storage: Storage): T => {
  * @returns
  */
 export const transformUrl = (url: string) => {
-  const _url = new URL(url);
-  return `${_url.host}`;
+  if (url.startsWith('https://') || url.startsWith('http://')) {
+    return new URL(url).host;
+  }
+  return new URL(`https://${url}`).host;
 };
 
 /**

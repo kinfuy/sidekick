@@ -75,7 +75,7 @@ export interface Application extends Record<string, any> {
   onContentBlur?: (opt: { url: string }) => void;
   onContentInit?: ({ url }: { url: string }) => void;
   onDocDOMContentLoaded?: ({ url }: { url: string }) => void;
-  onDocVisibilitychange?: (opt: { visible: boolean }) => void;
+  onDocVisibilitychange?: (opt: { visible: boolean; url: string }) => void;
   onUrlChange?: ({ url, event }: { url: string; event: any }) => void;
   onDocLoad?: ({ url }: { url: string }) => void;
   onPageshow?: ({ url }: { url: string }) => void;

@@ -88,7 +88,6 @@ window.addEventListener('message', async (info: { data: PostMessage }) => {
 });
 
 window.addEventListener('blur', () => {
-  console.log('blur', window.location.href);
   sendMessageToExtension({
     from: Message.Form.CONTENT_MESSAGE,
     to: Message.Target.SERVERWORKER,
@@ -101,7 +100,6 @@ window.addEventListener('focus', () => {
   const title = document.title;
   // shortcut icon
   const favIconUrl = getFaviconUrl();
-  console.log('focus', url, title, favIconUrl);
   sendMessageToExtension({
     from: Message.Form.CONTENT_MESSAGE,
     to: Message.Target.SERVERWORKER,

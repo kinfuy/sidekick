@@ -27,8 +27,16 @@ export const BrowseBehavior: App = {
       setActiveUrl(tabInfo);
     },
 
+    onDocVisibilitychange(opt) {
+      const { url } = opt;
+      if (!url) return;
+      const { setActiveUrl } = useBrowseBehaviorStore();
+      setActiveUrl({ url });
+    },
+
     onContentBlur: async (opt) => {
       const { url } = opt;
+      if (!url) return;
       const { resetActiveUrl } = useBrowseBehaviorStore();
       resetActiveUrl(url);
     },

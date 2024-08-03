@@ -26,6 +26,7 @@ export interface EngineQuery {
 }
 
 export interface BlockUrl extends UrlMatch {
+  id: string;
   title: string;
   enable: boolean;
 }
@@ -116,18 +117,21 @@ const defaultStore = (): UrlBlockStore => {
     ],
     blackList: [
       {
+        id: '1',
         title: 'CSDN',
         type: 'string',
         value: ['blog.csdn.net', 'wenku.csdn.net'],
         enable: true,
       },
       {
+        id: '2',
         title: '腾讯云',
         type: 'string',
         value: 'cloud.tencent.com',
         enable: true,
       },
       {
+        id: '3',
         title: '阿里云',
         type: 'string',
         value: ['www.aliyun.com', 'developer.aliyun.com'],
@@ -141,8 +145,6 @@ export const useUrlBlockStore = () => {
     STORE_KEY,
     defaultStore(),
   );
-
-  storageKit.clear();
 
   const blackList = computed(() => {
     return storageKit.store.blackList;
@@ -183,19 +185,37 @@ export const useUrlBlockStore = () => {
     return storageKit.inited;
   });
 
-  const setBlock = async (name: string, enable: boolean) => {
+  const setBlock = async (id: string, enable: boolean) => {
     await storageKit.sync();
     while (!storageKit.inited) {
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
-    storageKit.store.blackList = storageKit.store.blackList.map((b) => {
-      if (b.title === name) {
-        b.enable = enable;
-      }
-      return b;
-    });
+    storageKit.storeRaw.value.blackList =
+      storageKit.storeRaw.value.blackList.map((b) => {
+        if (b.id === id) {
+          b.enable = enable;
+        }
+        return b;
+      });
     storageKit.save();
-    return storageKit.store.blackList;
+  };
+
+  const update = async (item: BlockUrl) => {
+    while (!storageKit.inited) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+    if (storageKit.storeRaw.value.blackList.some((b) => b.id === item.id)) {
+      storageKit.storeRaw.value.blackList =
+        storageKit.storeRaw.value.blackList.map((b) => {
+          if (b.id === item.id) {
+            b = item;
+          }
+          return b;
+        });
+    } else {
+      storageKit.storeRaw.value.blackList.push(item);
+    }
+    storageKit.save();
   };
 
   return {
@@ -205,5 +225,6 @@ export const useUrlBlockStore = () => {
     inited,
     getEnfineConfig,
     setBlock,
+    update,
   };
 };

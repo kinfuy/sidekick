@@ -217,7 +217,6 @@ export const useBrowseBehaviorStore = () => {
       storageKit.storeRaw.value.webUseTimes?.push(tadayUsed);
     }
 
-    console.log(storageKit.storeRaw.value.webUseTimes);
     storageKit.save();
   };
 
@@ -245,7 +244,6 @@ export const useBrowseBehaviorStore = () => {
     const tadayUsed = storageKit.storeRaw.value.webUseTimes?.find(
       (item) => item.date === taday,
     );
-    console.log(tadayUsed);
     if (!tadayUsed) return;
     return tadayUsed.webs?.find((item) => item.isActive);
   });

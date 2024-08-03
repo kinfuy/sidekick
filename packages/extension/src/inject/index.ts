@@ -60,7 +60,7 @@ document.addEventListener('visibilitychange', () => {
     from: Message.Form.INJECT_MESSAGE,
     to: Message.Target.CONTENT,
     code: 'onDocVisibilitychange',
-    data: { visible },
+    data: { visible, url: window.location.href },
   });
 });
 export {};
