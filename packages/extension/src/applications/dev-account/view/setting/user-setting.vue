@@ -89,6 +89,7 @@ const reset = () => {
   editForm.value.role = '';
   editForm.value.isDefault = false;
   editForm.value.password = '';
+  viewType.value = 'add';
   editFormRef.value?.resetFields();
 };
 

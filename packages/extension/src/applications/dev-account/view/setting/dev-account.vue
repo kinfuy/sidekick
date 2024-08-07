@@ -174,6 +174,11 @@ const handleExport = () => {
 </script>
 
 <style lang="less" scoped>
+.dev-account {
+  height: 100%;
+  overflow: hidden;
+}
+
 .operate-list {
   display: flex;
   margin-bottom: 10px;
