@@ -5,7 +5,7 @@ export default defineManifest(() => {
   return {
     manifest_version: 3,
     name: '__MSG_chrome_extension_name__',
-    version: '0.0.1',
+    version: '0.0.3',
     description: '__MSG_chrome_extension_description__',
     icons: {
       '16': 'public/logo.png',
@@ -38,9 +38,8 @@ export default defineManifest(() => {
       'alarms',
       'cookies',
       'activeTab',
-      'sidePanel',
     ],
-    default_locale: 'en',
+    default_locale: 'zh_CN',
     host_permissions: ['<all_urls>'],
     web_accessible_resources: isDev
       ? []
@@ -53,6 +52,11 @@ export default defineManifest(() => {
           {
             matches: ['<all_urls>'],
             resources: ['assets/web-notice.css'],
+            use_dynamic_url: true,
+          },
+          {
+            matches: ['<all_urls>'],
+            resources: ['assets/click-count.css'],
             use_dynamic_url: true,
           },
         ],

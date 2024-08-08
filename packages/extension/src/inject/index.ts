@@ -1,10 +1,55 @@
 // import type { PostMessage } from '@utils';
+import { Message } from '@core/message';
 import { injectPostMessage } from '@utils';
+import { enhanceHistory } from './history-polyfill';
+enhanceHistory();
 
-// window.addEventListener('message', (info: { data: PostMessage }) => {
-//   const response = info.data as PostMessage;
-//   if (response?.from !== 'content_inject') return;
-// });
+window.addEventListener('pushState', () => {
+  injectPostMessage({
+    from: Message.Form.INJECT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
+    code: 'onUrlChange',
+    data: { url: window.location.href },
+  });
+});
+
+window.addEventListener('replaceState', () => {
+  injectPostMessage({
+    from: Message.Form.INJECT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
+    code: 'onUrlChange',
+    data: { url: window.location.href },
+  });
+});
+
+window.addEventListener('popstate', () => {
+  injectPostMessage({
+    from: Message.Form.INJECT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
+    code: 'onUrlChange',
+    data: { url: window.location.href },
+  });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  injectPostMessage({
+    from: Message.Form.CONTENT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
+    code: 'onDocDOMContentLoaded',
+    data: {
+      url: window.location.href,
+    },
+  });
+});
+
+window.addEventListener('hashchange', () => {
+  injectPostMessage({
+    from: Message.Form.INJECT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
+    code: 'onUrlChange',
+    data: { url: window.location.href },
+  });
+});
 
 document.addEventListener('visibilitychange', () => {
   let visible = false;
@@ -12,9 +57,10 @@ document.addEventListener('visibilitychange', () => {
     visible = true;
   }
   injectPostMessage({
-    from: 'app_inject',
+    from: Message.Form.INJECT_MESSAGE,
+    to: Message.Target.CONTENT,
     code: 'onDocVisibilitychange',
-    data: { visible },
+    data: { visible, url: window.location.href },
   });
 });
 export {};

@@ -1,5 +1,6 @@
 export interface PostMessage {
   from: string;
+  to: string;
   code: string;
   data?: Record<string, any>;
 }
@@ -12,8 +13,8 @@ export const storage = {
     const store = await chrome.storage.local.get(key);
     return store[key] ? (JSON.parse(store[key]) as T) : ({} as T);
   },
-  remove: (key: string) => {
-    chrome.storage.local.remove(key);
+  remove: async (key: string) => {
+    await chrome.storage.local.remove(key);
   },
   clear: (): void => {
     chrome.storage.local.clear();

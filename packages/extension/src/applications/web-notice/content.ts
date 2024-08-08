@@ -4,18 +4,20 @@ import { createApp } from '@/components/vue-component';
 
 const APP_SELCTOR = 'web-notice';
 
+let app: any;
 export const injectNotice = () => {
   const isExist = document.querySelector(`#${APP_SELCTOR}`);
   if (isExist) return true;
-  createApp({
+  app = createApp({
     app: { component: Notice },
     config: { appSelector: 'web-notice', predStyle: 'assets/web-notice.css' },
   });
 };
 
 export const removeNotice = () => {
-  const app = document.body?.querySelector('#web-notice');
-  app && document.body.removeChild(app);
+  if (app) app.unmount();
+  const el = document.body?.querySelector('#web-notice');
+  el && document.body.removeChild(el);
 };
 
 export const initNotice = async () => {

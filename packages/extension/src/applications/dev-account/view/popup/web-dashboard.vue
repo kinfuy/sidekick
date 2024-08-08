@@ -51,7 +51,11 @@ const setMatchWeb = (name: string) => {
 };
 
 const handleEnv = (web: WebEnv) => {
-  window.open(`http://${web.url}`, '_blank');
+  let url = web.url;
+  if (!url.startsWith('http') && !url.startsWith('https')) {
+    url = `http://${web.url}`;
+  }
+  window.open(url, '_blank');
 };
 const { openSet } = inject('appContent') as any;
 const handleSetting = () => {

@@ -11,6 +11,36 @@ export const BrowseBehavior: App = {
   settingApp: true,
   popupApp: true,
   hooks: {
+    onContentFocus: async (opt) => {
+      const { setActiveUrl } = useBrowseBehaviorStore();
+      const { url, title, favIconUrl } = opt;
+      const tabInfo = {
+        url,
+        title,
+        favIconUrl,
+      };
+      if (!tabInfo.url) return;
+      const host = new URL(tabInfo.url).host;
+      if (tabInfo.url.startsWith('chrome://')) return;
+      if (tabInfo.url.startsWith('chrome-extension://')) return;
+      if (['extension', 'newtab'].includes(host)) return;
+      setActiveUrl(tabInfo);
+    },
+
+    onDocVisibilitychange(opt) {
+      const { url } = opt;
+      if (!url) return;
+      const { setActiveUrl } = useBrowseBehaviorStore();
+      setActiveUrl({ url });
+    },
+
+    onContentBlur: async (opt) => {
+      const { url } = opt;
+      if (!url) return;
+      const { resetActiveUrl } = useBrowseBehaviorStore();
+      resetActiveUrl(url);
+    },
+
     onTabUpdate: async (tabs) => {
       const { addRecord } = useBrowseBehaviorStore();
       const [tabId, changeinfo, tab] = tabs;
@@ -22,6 +52,7 @@ export const BrowseBehavior: App = {
       if (changeinfo.url) {
         await addRecord({
           tabId,
+          favIconUrl: tab.favIconUrl,
           url: new URL(tab.url).host,
           title: tab.title,
           date: dayjs().format('YYYY-MM-DD'),

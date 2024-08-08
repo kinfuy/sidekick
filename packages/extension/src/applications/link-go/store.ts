@@ -1,67 +1,72 @@
-import { storage } from '@utils';
-import { computed, ref, toRaw } from 'vue';
+import { StorageKit } from '@core/store';
+import { computed } from 'vue';
 
 const STORE_KEY = 'LinkGo';
 
-interface LinkRule {
+export interface LinkRule {
   type: 'string' | 'regex';
   value: string;
+  description?: string;
 }
 export interface LinkGoStoreInstance {
   linkRules: LinkRule[];
 }
 
-const defaultStore: LinkGoStoreInstance = {
-  linkRules: [
-    {
-      type: 'string',
-      value: 'target',
-    },
-    {
-      type: 'string',
-      value: 'url',
-    },
-    {
-      type: 'regex',
-      value: '/transfer?(?<target>.+)/', // https://blog.51cto.com/
-    },
-  ],
+const defaultStore = (): LinkGoStoreInstance => {
+  return {
+    linkRules: [
+      {
+        type: 'string',
+        value: 'target',
+        description:
+          'http://xxx.cn?target=https://devtester.kinfuy.cn => https://devtester.kinfuy.cn',
+      },
+      {
+        type: 'string',
+        value: 'url',
+        description:
+          'https://xxx.cn?url=https://devtester.kinfuy.cn => https://devtester.kinfuy.cn',
+      },
+      {
+        type: 'regex',
+        value: 'transfer?(?<target>.+)', // https://blog.51cto.com/
+        description:
+          'https://www.xxx.com/transfer?https://devtester.kinfuy.cn => https://devtester.kinfuy.cn',
+      },
+    ],
+  };
 };
 
-const store = ref<LinkGoStoreInstance>(defaultStore);
-
 export const useLinkGoStore = () => {
-  const { get, set } = storage;
-  const save = () => {
-    set(STORE_KEY, JSON.stringify(toRaw(store.value)));
-  };
-  const sync = async () => {
-    let _store: LinkGoStoreInstance = defaultStore;
-    const linkGo = await get<LinkGoStoreInstance>(STORE_KEY);
-    if (linkGo && JSON.stringify(linkGo) !== '{}') {
-      _store = linkGo;
-    }
-    store.value = _store;
-  };
-
-  sync();
+  const storageKit = StorageKit.getInstance<LinkGoStoreInstance>(
+    STORE_KEY,
+    defaultStore(),
+  );
 
   const addRule = async (rule: LinkRule) => {
-    const isexist = store.value.linkRules.find(
+    const isexist = storageKit.store.linkRules.find(
       (r) => r.type === rule.type && r.value === rule.value,
     );
-    if (isexist) return;
-    store.value.linkRules.push(rule);
-    save();
+    if (isexist) return false;
+    storageKit.storeRaw.value.linkRules.push(JSON.parse(JSON.stringify(rule)));
+    storageKit.save();
+    return true;
   };
 
   const setRules = async (rules: LinkRule[]) => {
-    store.value.linkRules = rules;
-    save();
+    storageKit.storeRaw.value.linkRules = rules;
+    storageKit.save();
+  };
+
+  const removeRule = async (rule: LinkRule) => {
+    storageKit.storeRaw.value.linkRules = storageKit.store.linkRules.filter(
+      (r) => !(r.type === rule.type && r.value === rule.value),
+    );
+    storageKit.save();
   };
 
   const rules = computed(() => {
-    return store.value.linkRules;
+    return storageKit.store.linkRules;
   });
 
   const parseUrl = (url: string, filed: LinkRule) => {
@@ -71,16 +76,29 @@ export const useLinkGoStore = () => {
       return urlParamRes;
     }
     if (filed.type) {
-      const match = url.match(filed.type);
-      if (match?.groups && match.groups.target) return match?.groups.target;
+      try {
+        const reg = new RegExp(filed.value);
+        const match = url.match(reg);
+        if (match?.groups && match.groups.target) {
+          return match?.groups.target.replace(/^\?/, '');
+        }
+      } catch (error) {
+        return undefined;
+      }
     }
     return undefined;
   };
+
+  const inited = computed(() => {
+    return storageKit.inited;
+  });
 
   return {
     addRule,
     setRules,
     rules,
     parseUrl,
+    inited,
+    removeRule,
   };
 };

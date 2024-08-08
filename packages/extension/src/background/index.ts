@@ -1,11 +1,18 @@
-import { useAlarmManger } from '@core/alarm-manage';
 import { triggerApplicationHooks } from '../core/application';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { chromeAddListenerMessage, createtab, getChromeUrl } from '../utils';
+import { useAlarm } from '@/store/useAlarm';
 
 chrome.runtime.onInstalled.addListener(() => {
-  createtab(getChromeUrl('setting.html'));
+  // createtab(getChromeUrl('setting.html'));
   triggerApplicationHooks('onInstalled');
 });
+
+chrome.tabs.onActivated.addListener(
+  (opt: { tabId: number; windowId: number }) => {
+    triggerApplicationHooks('onTabActiveChange', opt);
+  },
+);
 
 triggerApplicationHooks('onInit');
 
@@ -13,6 +20,18 @@ chromeAddListenerMessage(async (message) => {
   let limitApp;
   if (message.code === 'onActiveChange' && message.data?.name) {
     limitApp = [message.data?.name];
+  }
+
+  const contentActive = [
+    'onContentInit',
+    'onUrlChange',
+    'onTabUpdate',
+    'onPageshow',
+    'onDocVisibilitychange',
+    'onDocDOMContentLoaded',
+  ];
+  if (contentActive.includes(message.code)) {
+    triggerApplicationHooks('onContentActive', message.data, limitApp);
   }
   triggerApplicationHooks(message.code, message.data, limitApp);
 });
@@ -45,28 +64,6 @@ chrome.tabs.onReplaced.addListener((...opt) => {
   triggerApplicationHooks('onTabReplaced', opt);
 });
 
-const { add } = useAlarmManger();
+const { add } = useAlarm();
 
 add('refresh-token', { periodInMinutes: 60 * 24 });
-
-const GOOGLE_ORIGIN = 'https://www.google.com';
-
-chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
-  debugger;
-  if (!tab.url) return;
-  const url = new URL(tab.url);
-  // Enables the side panel on google.com
-  if (url.origin === GOOGLE_ORIGIN) {
-    await chrome.sidePanel.setOptions({
-      tabId,
-      path: 'sidepanel.html',
-      enabled: true,
-    });
-  } else {
-    // Disables the side panel on all other sites
-    await chrome.sidePanel.setOptions({
-      tabId,
-      enabled: false,
-    });
-  }
-});

@@ -1,7 +1,7 @@
 {
   "name": "dev-tester",
   "type": "module",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "kinfuy",
   "license": "MIT",
   "main": "index.js",

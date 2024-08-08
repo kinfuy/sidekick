@@ -1,9 +1,15 @@
 import type { PostMessage } from '@utils';
-import { injectCustomScript, sendMessageToExtension } from '@utils';
+import {
+  getFaviconUrl,
+  injectCustomScript,
+  sendMessageToExtension,
+} from '@utils';
 import { contentFunc } from '@applications/content';
 import { useTheme } from '@store/useTheme';
 import { watch } from 'vue';
+import { Message } from '@core/message';
 import { contentCore } from './core';
+
 import injectScript from '@/inject/index.ts?script&module';
 import { initInject, removeInject } from '@/inject/component';
 
@@ -37,7 +43,8 @@ injectCustomScript(injectScript);
 
 const contentInit = () => {
   sendMessageToExtension({
-    from: 'content',
+    from: Message.Form.CONTENT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
     code: 'onContentInit',
     data: {
       url: window.location.href,
@@ -47,19 +54,10 @@ const contentInit = () => {
 
 contentInit();
 
-document.addEventListener('DOMContentLoaded', () => {
-  sendMessageToExtension({
-    from: 'content',
-    code: 'onDocDOMContentLoaded',
-    data: {
-      url: window.location.href,
-    },
-  });
-});
-
 window.addEventListener('load', () => {
   sendMessageToExtension({
-    from: 'content',
+    from: Message.Form.CONTENT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
     code: 'onDocLoad',
     data: { url: window.location.href },
   });
@@ -67,31 +65,16 @@ window.addEventListener('load', () => {
 
 window.addEventListener('pageshow', () => {
   sendMessageToExtension({
-    from: 'content',
+    from: Message.Form.CONTENT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
     code: 'onPageshow',
     data: { url: window.location.href },
   });
 });
 
-window.addEventListener('popstate', (event) => {
-  sendMessageToExtension({
-    from: 'content',
-    code: 'onUrlChange',
-    data: { url: window.location.href, event },
-  });
-});
-
-window.addEventListener('hashchange', (event) => {
-  sendMessageToExtension({
-    from: 'content',
-    code: 'onUrlChange',
-    data: { url: window.location.href, event },
-  });
-});
-
 window.addEventListener('message', async (info: { data: PostMessage }) => {
   const { data } = info;
-  if (data.from !== 'app_inject') return;
+  if (data.from !== Message.Form.INJECT_MESSAGE) return;
   if (data.code === 'onDocVisibilitychange') {
     if (data.data && data.data.visible) {
       initInject();
@@ -99,13 +82,35 @@ window.addEventListener('message', async (info: { data: PostMessage }) => {
   }
   sendMessageToExtension({
     ...data,
-    from: 'content',
+    from: Message.Form.CONTENT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
+  });
+});
+
+window.addEventListener('blur', () => {
+  sendMessageToExtension({
+    from: Message.Form.CONTENT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
+    code: 'onContentBlur',
+    data: { url: window.location.href },
+  });
+});
+window.addEventListener('focus', () => {
+  const url = window.location.href;
+  const title = document.title;
+  // shortcut icon
+  const favIconUrl = getFaviconUrl();
+  sendMessageToExtension({
+    from: Message.Form.CONTENT_MESSAGE,
+    to: Message.Target.SERVERWORKER,
+    code: 'onContentFocus',
+    data: { url, title, favIconUrl },
   });
 });
 
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   const { code, data } = request;
-  if (code === 'CoreApp') {
+  if (code === 'ContentCore') {
     contentCore(data);
   } else {
     const funcCall = contentFunc[code];

@@ -1,7 +1,7 @@
 <template>
   <ElDrawer v-model="drawer" title="高级配置" @close="handleClose">
     <ElForm label-width="auto" :model="editForm">
-      <ElFormItem label="平台">
+      <ElFormItem label="按钮">
         <ElRadioGroup v-model="ruleType" size="small">
           <ElRadioButton label="账户" value="account" />
           <ElRadioButton label="密码" value="password" />

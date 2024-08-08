@@ -81,12 +81,16 @@ const editForm = ref({
   password: '',
 });
 
+const editFormRef = ref<InstanceType<typeof ElForm>>();
+
 const reset = () => {
   editForm.value.id = '';
   editForm.value.name = '';
   editForm.value.role = '';
   editForm.value.isDefault = false;
   editForm.value.password = '';
+  viewType.value = 'add';
+  editFormRef.value?.resetFields();
 };
 
 const addUser = () => {
@@ -112,7 +116,6 @@ const show = (row: WebInfo) => {
   webId.value = row?.id || '';
 };
 
-const editFormRef = ref<InstanceType<typeof ElForm>>();
 const handleSave = () => {
   editFormRef.value?.validate().then(() => {
     if (editForm.value.id) {
@@ -133,7 +136,6 @@ const handleSave = () => {
       users: JSON.parse(JSON.stringify(webUsers.value)),
     });
     reset();
-    editFormRef.value?.resetFields();
   });
 };
 const handleDelete = (env: WebUser) => {

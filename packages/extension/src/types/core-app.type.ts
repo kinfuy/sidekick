@@ -57,10 +57,25 @@ export interface Application extends Record<string, any> {
   onTabUpdate?: (tab: any) => void;
   onTabMove?: (tab: any) => void;
   onTabReplaced?: (tab: any) => void;
+  onTabActiveChange?: (opt: { tabId: number; windowId: number }) => void;
 
+  /**
+   * content 快捷键
+   */
+  onShortcut?: (opt: { key: string; data: any }) => void;
+  /**
+   *  onContentActive === onContentInit onUrlChange onPageshow onDocVisibilitychange onDocDOMContentLoaded
+   * */
+  onContentActive?: (opt: { url: string }) => void;
+  onContentFocus?: (opt: {
+    url: string;
+    title: string;
+    favIconUrl: string;
+  }) => void;
+  onContentBlur?: (opt: { url: string }) => void;
   onContentInit?: ({ url }: { url: string }) => void;
   onDocDOMContentLoaded?: ({ url }: { url: string }) => void;
-  onDocVisibilitychange?: (opt: { visible: boolean }) => void;
+  onDocVisibilitychange?: (opt: { visible: boolean; url: string }) => void;
   onUrlChange?: ({ url, event }: { url: string; event: any }) => void;
   onDocLoad?: ({ url }: { url: string }) => void;
   onPageshow?: ({ url }: { url: string }) => void;

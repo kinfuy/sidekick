@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import { settingInstall } from '@applications/install';
-import setting from './setting.vue';
+import App from './App.vue';
 import '@/styles/index.less';
 import './style/setting.less';
 import 'element-plus/dist/index.css';
@@ -10,10 +10,10 @@ import AboutSetting from './components/AboutSetting.vue';
 import AppStoreSetting from './components/AppStoreSetting.vue';
 import AppStorageSetting from './components/AppStorageSetting.vue';
 
-const app = createApp(setting);
+const app = createApp(App);
 
 export const isRegister = (name: string) => {
-  console.log(name);
+  if (!app) return false;
   return app.component(name);
 };
 

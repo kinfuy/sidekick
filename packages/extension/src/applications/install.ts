@@ -1,6 +1,5 @@
 import type { App } from 'vue';
 import {
-  devAccountContentInstall,
   devAccountPopupInstall,
   devAccountSettingInstall,
 } from './dev-account/install';
@@ -15,24 +14,23 @@ import {
   browseBehaviorPopupInstall,
   browseBehaviorSettingInstall,
 } from './browse-behavior/install';
+import { clickCountPopupInstall } from './click-count/install';
 import {
-  uiFlowContentInstall,
-  uiFlowPopupInstall,
-  uiFlowSettingInstall,
-} from './ui-flow/install';
+  urlBlockPopopInstall,
+  urlBlockSettingInstall,
+} from './url-block/install';
 
 export const contentInstall = (app: App) => {
   appLayoutContentInstall(app);
-  devAccountContentInstall(app);
   webNoticeContentInstall(app);
   storagePortalContentInstall(app);
-  uiFlowContentInstall(app);
 };
 
 export const popupInstall = (app: App) => {
   devAccountPopupInstall(app);
   browseBehaviorPopupInstall(app);
-  uiFlowPopupInstall(app);
+  clickCountPopupInstall(app);
+  urlBlockPopopInstall(app);
 };
 
 export const settingInstall = (app: App) => {
@@ -40,5 +38,5 @@ export const settingInstall = (app: App) => {
   linkGoSettingInstall(app);
   browseBehaviorSettingInstall(app);
   webNoticeContentSettingInstall(app);
-  uiFlowSettingInstall(app);
+  urlBlockSettingInstall(app);
 };

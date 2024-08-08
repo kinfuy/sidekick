@@ -175,7 +175,11 @@ export const camelize = (str: string) => {
   );
 };
 
-export const getStyle = (element: HTMLElement, styleName: string) => {
+export const getStyle = (
+  element: HTMLElement,
+  styleName: string,
+  isComputed?: boolean,
+) => {
   if (!element || !styleName) return '';
   let name: string = camelize(styleName);
   if (name === 'float') {
@@ -184,11 +188,21 @@ export const getStyle = (element: HTMLElement, styleName: string) => {
   try {
     const style = (element.style as any)[name];
     if (style) return style;
-    const computed = document.defaultView?.getComputedStyle(element, '') || '';
+    const computed = isComputed
+      ? document.defaultView?.getComputedStyle(element, '')
+      : element.style;
     return computed ? (computed as any)[name] : '';
   } catch (e) {
     return (element.style as any)[name];
   }
+};
+
+export const setStyle = (element: HTMLElement, styles: Record<string, any>) => {
+  if (!element) return;
+  Object.keys(styles).forEach((styleName) => {
+    const styleValue = styles[styleName];
+    (element.style as any)[camelize(styleName)] = styleValue;
+  });
 };
 
 export const isScroll = (el: HTMLElement, isVertical?: boolean) => {
@@ -308,6 +322,7 @@ export const dispatchEventHandler = (
   eventName: EventName,
   el: Element | Document,
   config?: {
+    data?: any;
     keyboardConfig?: KeyboardConfig;
     mouseEventConfig?: MouseEventConfig;
   },
@@ -323,7 +338,7 @@ export const dispatchEventHandler = (
         break;
       }
       case 'submit': {
-        const clickEvent = new Event('submit', {
+        const clickEvent = new SubmitEvent('submit', {
           cancelable: true,
           bubbles: true,
         });
@@ -339,12 +354,20 @@ export const dispatchEventHandler = (
       }
       case 'input':
         {
-          const inputEvent = new InputEvent('input');
+          const inputEvent = new InputEvent('input', {
+            data: config?.data,
+            bubbles: true,
+            cancelable: true,
+          });
           el.dispatchEvent(inputEvent);
         }
         break;
       case 'change': {
-        const changeEvent = new InputEvent('change');
+        const changeEvent = new InputEvent('change', {
+          data: config?.data,
+          bubbles: true,
+          cancelable: true,
+        });
         el.dispatchEvent(changeEvent);
         break;
       }
@@ -400,14 +423,14 @@ export const dispatchEventHandler = (
         if (config && config.mouseEventConfig) {
           const event = new MouseEvent(eventName, {
             ...config.mouseEventConfig,
-            cancelable: false,
             bubbles: true,
+            cancelable: true,
           });
           el.dispatchEvent(event);
         } else {
           const event = new MouseEvent(eventName, {
-            cancelable: false,
             bubbles: true,
+            cancelable: true,
           });
           el.dispatchEvent(event);
         }
@@ -453,4 +476,34 @@ export const getAllStorage = <T>(storage: Storage): T => {
     }
   }
   return arr as T;
+};
+
+/**
+ * 获取 url host
+ * @param url
+ * @returns
+ */
+export const transformUrl = (url: string) => {
+  if (url.startsWith('https://') || url.startsWith('http://')) {
+    return new URL(url).host;
+  }
+  return new URL(`https://${url}`).host;
+};
+
+/**
+ * 获取网站 favicon
+ * @returns
+ */
+export const getFaviconUrl = () => {
+  // 获取文档中所有的<link>元素
+  const links = document.getElementsByTagName('link');
+  for (let i = 0; i < links.length; i++) {
+    // 检查<link>元素的rel属性是否包含'icon'或'shortcut icon'
+    if (links[i].rel.match(/icon|shortcut icon/i)) {
+      // 返回找到的图标URL
+      return links[i].href;
+    }
+  }
+  // 如果没有找到，返回null或默认图标URL
+  return null; // 或者 'default-icon-url.png'
 };

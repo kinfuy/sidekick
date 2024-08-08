@@ -50,9 +50,16 @@ export default defineConfig({
           output: 'assets/web-notice.css',
           retry: 10,
         },
+        {
+          key: 'clickCount',
+          container: '#click-count',
+          output: 'assets/click-count.css',
+          retry: 10,
+        },
       ],
     }),
     viteStaticCopy({
+      silent: true,
       targets: [
         {
           src: './src/_locales',
@@ -78,7 +85,7 @@ export default defineConfig({
     cssMinify: false,
     assetsInlineLimit: 0,
     rollupOptions: {
-      input: ['popup.html', 'login.html', 'setting.html', 'sidepanel.html'],
+      input: ['popup.html', 'login.html', 'setting.html'],
       output: {
         assetFileNames: `assets/[name].[ext]`,
       },

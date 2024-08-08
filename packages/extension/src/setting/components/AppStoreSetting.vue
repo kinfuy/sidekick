@@ -13,16 +13,20 @@
           </div>
           <div class="app-info">
             <div>{{ app.title }}</div>
-            <div class="app-size">缓存：{{ appSizeMap.get(app.name) }}</div>
+            <div class="app-size">
+              缓存：{{ appSizeMap.get(app.name) || `${transformBytes(0)}` }}
+            </div>
           </div>
         </div>
         <div class="list-right">
-          <ElButton size="small" @click="() => clearStorage(app.name)">
-            清除缓存
-          </ElButton>
-          <ElButton size="small" @click="() => installApp(app.name, true)">{{
-            isAppInstall(app.name) ? '卸载' : '安装'
-          }}</ElButton>
+          <ElButton size="small" @click="() => clear(app)"> 清除缓存 </ElButton>
+          <ElButton
+            plain
+            size="small"
+            :type="isAppInstall(app.name) ? 'danger' : 'default'"
+            @click="() => installApp(app.name, true)"
+            >{{ isAppInstall(app.name) ? '卸载' : '安装' }}</ElButton
+          >
         </div>
       </div>
     </div>
@@ -34,6 +38,7 @@ import { useApp } from '@store/useApp';
 import { ElButton } from 'element-plus';
 import { transformBytes } from '@utils/transform';
 import { reactive } from 'vue';
+import type { AppEntry } from '@/types/core-app.type';
 
 const {
   allCustomApps,
@@ -51,10 +56,19 @@ const useSize = async (name: string) => {
 
 const appSizeMap = reactive<Map<string, string>>(new Map());
 
-allCustomApps.value.forEach(async (item) => {
-  const size = await useSize(item.name);
-  appSizeMap.set(item.name, size);
-});
+const init = () => {
+  allCustomApps.value.forEach(async (item) => {
+    const size = await useSize(item.name);
+    appSizeMap.set(item.name, size);
+  });
+};
+
+init();
+
+const clear = async (app: AppEntry) => {
+  await clearStorage(app.name);
+  init();
+};
 </script>
 
 <style lang="less" scoped>
@@ -62,6 +76,7 @@ allCustomApps.value.forEach(async (item) => {
   padding: 10px 20px;
   border-bottom: 1px solid #f4f4f4;
 }
+
 .store-list {
   display: flex;
   justify-content: space-between;

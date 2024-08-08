@@ -6,7 +6,8 @@ import { DevAccount } from './dev-account';
 import { LinkGo } from './link-go';
 import { StoragePortal } from './storage-portal';
 import { BrowseBehavior } from './browse-behavior';
-import { UiFlow } from './ui-flow';
+import { ClickCount } from './click-count';
+import { UrlBlock } from './url-block';
 import type { App, AppEntry } from '@/types/core-app.type';
 
 export const apps: App[] = [
@@ -16,7 +17,8 @@ export const apps: App[] = [
   LinkGo,
   StoragePortal,
   BrowseBehavior,
-  UiFlow,
+  ClickCount,
+  UrlBlock,
 ];
 
 const linkApp: AppEntry[] = [
@@ -33,7 +35,7 @@ const linkApp: AppEntry[] = [
 
 const settingApps: AppEntry[] = [
   {
-    title: '应用商店',
+    title: '插件商店',
     name: 'AppStore',
     logo: getChromeUrl(set),
     inner: true,
@@ -56,22 +58,6 @@ const settingApps: AppEntry[] = [
     isLogin: false,
     settingApp: true,
   },
-  // {
-  //   title: '帮助与反馈',
-  //   name: 'AppHelp',
-  //   logo: getChromeUrl(set),
-  //   inner: true,
-  //   isLogin: false,
-  //   settingApp: true,
-  // },
-  // {
-  //   title: '关于',
-  //   name: 'AppAbout',
-  //   logo: getChromeUrl(set),
-  //   inner: true,
-  //   isLogin: false,
-  //   settingApp: true,
-  // },
 ];
 
 export const appsRaw: AppEntry[] = [

@@ -1,4 +1,5 @@
 import { getAllStorage, sendMessageToExtension } from '@utils';
+import { Message } from '@core/message';
 import { useStoragePortalStore } from './store';
 
 export const storagePortal = (opt: any) => {
@@ -6,7 +7,8 @@ export const storagePortal = (opt: any) => {
     const _localStorage = getAllStorage(localStorage);
     const _sessionStorage = getAllStorage(sessionStorage);
     sendMessageToExtension({
-      from: 'content',
+      from: Message.Form.CONTENT_MESSAGE,
+      to: Message.Target.SERVERWORKER,
       code: 'onSendData',
       data: {
         key: 'send-storage',

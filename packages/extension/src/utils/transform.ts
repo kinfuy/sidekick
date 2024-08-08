@@ -71,3 +71,20 @@ export const recoverBytes = (str: string): number => {
   const i = sizes.indexOf(str.slice(-2));
   return parseFloat(str.slice(0, -2)) * 1024 ** i;
 };
+
+/**
+ * 转换second
+ */
+export const transformSecond = (
+  second: number,
+): { val: number; unit: string } => {
+  const units = ['秒', '分', '小时', '天', '周', '月', '年'];
+  if (second === 0) {
+    return { val: 0, unit: '秒' };
+  }
+  const i = Math.floor(Math.log(second) / Math.log(60));
+  return {
+    val: parseFloat((second / 60 ** i).toFixed()),
+    unit: units[i],
+  };
+};

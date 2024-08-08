@@ -1,5 +1,5 @@
 <template>
-  <div class="dev-tester-app" style="display: none" :class="[theme]">
+  <div class="dev-tester-app z-index" style="display: none" :class="[theme]">
     <div
       ref="kitRef"
       class="kit-tool-warper"
@@ -53,24 +53,33 @@
         </div>
       </div>
     </div>
+    <div
+      class="dev-tester-action"
+      :class="[`${direction}-action`]"
+      :style="activeTipStyle"
+    >
+      <ActionTips v-if="!isVisable && !isActive" />
+    </div>
     <Dialog v-model="isVisable" :direction="direction" :tool="current" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { provide, ref, watch, watchEffect } from 'vue';
+import { computed, provide, ref, watch, watchEffect } from 'vue';
 import Dialog from '@components/common/Dialog/Dialog.vue';
 import ToolItem from '@components/common/ToolItem/ToolItem.vue';
-import { useDraggable } from '@vueuse/core';
+import { useDraggable, useWindowSize } from '@vueuse/core';
 import './App.less?shadow';
 import logo from '@assets/logo16.png';
 import { useTheme } from '@store/useTheme';
 import { useApp } from '@store/useApp';
 import { injectPostMessage } from '@utils';
+import { Message } from '@core/message';
+import ActionTips from './ActionTips.vue';
 import type { AppEntry } from '@/types/core-app.type';
 
 const { syncStore } = useApp();
-const { theme, direction, posY, setTheme, setPosY } = useTheme();
+const { theme, direction, posY, setPosY } = useTheme();
 
 const kitRef = ref();
 const { y, isDragging } = useDraggable(kitRef, {
@@ -78,6 +87,16 @@ const { y, isDragging } = useDraggable(kitRef, {
   onEnd: ({ y }) => {
     setPosY(y);
   },
+});
+
+const { height } = useWindowSize();
+
+const activeTipStyle = computed(() => {
+  let fix = 68;
+  if (height.value * 0.8 < y.value) {
+    fix = -18;
+  }
+  return { top: y.value ? `${y.value + fix}px` : `calc(38% + ${fix}px)` };
 });
 
 watch(
@@ -142,7 +161,8 @@ const current = ref();
 
 const openPage = (code: string, url: string, extra: any = {}) => {
   injectPostMessage({
-    from: 'app_inject',
+    from: Message.Form.INJECT_MESSAGE,
+    to: Message.Target.CONTENT,
     code,
     data: {
       openUrl: url,

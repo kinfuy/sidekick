@@ -146,7 +146,11 @@ const handleEnv = (row: WebInfo) => {
 };
 
 const handleOpen = (web: WebEnv) => {
-  window.open(`http://${web.url}`, '_blank');
+  let url = web.url;
+  if (!url.startsWith('http') && !url.startsWith('https')) {
+    url = `http://${web.url}`;
+  }
+  window.open(url, '_blank');
 };
 
 const handleSupper = (row?: WebInfo) => {
@@ -170,6 +174,11 @@ const handleExport = () => {
 </script>
 
 <style lang="less" scoped>
+.dev-account {
+  height: 100%;
+  overflow: hidden;
+}
+
 .operate-list {
   display: flex;
   margin-bottom: 10px;

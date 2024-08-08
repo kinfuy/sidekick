@@ -20,7 +20,6 @@ export const SuffixCoreApp = (): Application => {
     onOpenChromeUrl: ({ openUrl, extra }) => {
       createtab(getChromeUrl(openUrl), extra);
     },
-
     onOpenWindow: ({ openUrl, extra }) => {
       createWindow(getChromeUrl(openUrl), extra);
     },

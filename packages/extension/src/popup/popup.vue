@@ -33,12 +33,14 @@ import { onBeforeUnmount, provide, ref, watchEffect } from 'vue';
 import { getChromeUrl, sendMessageToExtension } from '@utils';
 import set from '@assets/image/set.svg';
 import { ElConfigProvider } from 'element-plus';
+import { Message } from '@core/message';
 import { isRegister } from '.';
 import type { AppEntry } from '@/types/core-app.type';
 const setIcon = getChromeUrl(set);
 
 sendMessageToExtension({
-  from: 'POPUP_VIEW',
+  from: Message.Form.POPUP_MESSAGE,
+  to: Message.Target.SERVERWORKER,
   code: 'onPopupOpen',
   data: {},
 });
@@ -55,7 +57,8 @@ const appClick = (app: AppEntry) => {
 
 onBeforeUnmount(() => {
   sendMessageToExtension({
-    from: 'POPUP_VIEW',
+    from: Message.Form.POPUP_MESSAGE,
+    to: Message.Target.SERVERWORKER,
     code: 'onPopupClose',
     data: {},
   });
