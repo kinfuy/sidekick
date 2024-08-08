@@ -11,8 +11,6 @@ declare module 'vue' {
     Cover: typeof import('./src/components/common/Cover/Cover.vue')['default']
     Dialog: typeof import('./src/components/common/Dialog/Dialog.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElIcon: typeof import('element-plus/es')['ElIcon']
-    ElImage: typeof import('element-plus/es')['ElImage']
     Fluorescence: typeof import('./src/components/common/Fluorescence/Fluorescence.vue')['default']
     ToolItem: typeof import('./src/components/common/ToolItem/ToolItem.vue')['default']
   }
