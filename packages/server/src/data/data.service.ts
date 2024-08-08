@@ -14,8 +14,9 @@ export class DataService {
    */
   async getGihubUser(name: string): Promise<SocialCardResponse> {
     const res = this.httpService.get(`https://api.github.com/users/${name}`);
-    const data = await lastValueFrom(res);
+   
     try {
+      const data = await lastValueFrom(res);
       const {
         followers,
         login: username,
