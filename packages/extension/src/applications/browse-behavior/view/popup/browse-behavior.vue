@@ -11,14 +11,24 @@
         class="behavior-item"
       >
         <div class="web-info">
-          <img
+          <ElImage
             v-if="web.favIconUrl"
             :src="web.favIconUrl"
             class="web-logo"
             alt="logo"
             width="16"
             height="16"
-          />
+          >
+            <template #error>
+              <img
+                class="web-logo"
+                alt="logo"
+                width="16"
+                height="16"
+                src="@/assets/image/no-found.svg"
+              />
+            </template>
+          </ElImage>
           <div class="web-url">{{ web.url }}</div>
         </div>
         <div class="web-detail">
@@ -45,7 +55,7 @@
 
 <script lang="ts" setup>
 import { useBrowseBehaviorStore } from '@applications/browse-behavior/store';
-import { ElLoading } from 'element-plus';
+import { ElImage, ElLoading } from 'element-plus';
 import { transformSecond } from '@/utils/transform';
 const { dayWebCounts, dayUseTimes, curentActiveWeb } = useBrowseBehaviorStore();
 
