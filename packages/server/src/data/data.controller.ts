@@ -1,25 +1,21 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { DataService } from './data.service';
-import { App, Public } from '@/auth/auth.guard';
+import { App } from '@/auth/auth.guard';
+import { DataDto } from './dto/data.dto';
 @Controller('data')
 export class DataController {
   constructor(private readonly dataService: DataService) {}
 
-  @Get('github')
+
+  @Post("userFollowers")
   @App('ios_app')
-  getGithub(@Query('name') name: string) {
-    return this.dataService.getGihubUser(name);
+  getUserFollowers(@Body() data:DataDto) {
+    return this.dataService.getFollowers(data);
   }
 
-  @Get('juejin')
+  @Post("icons")
   @App('ios_app')
-  getJuejin2(@Query('name') name: string) {
-    return this.dataService.getJuejinUser(name);
-  }
-
-  @Get('juejin2')
-  @App('ios_app')
-  getJuejin(@Query('user_id') user_id: string) {
-    return this.dataService.getJuejinUser2(user_id);
+  getIcons() {
+    return this.dataService.getIcons();
   }
 }

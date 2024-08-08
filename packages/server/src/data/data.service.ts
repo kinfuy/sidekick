@@ -3,6 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { UserException } from '@/common/exceptions/custom.exception';
 import { SocialCardResponse } from './data.interface';
+import { DataDto } from './dto/data.dto';
 @Injectable()
 export class DataService {
   constructor(private readonly httpService: HttpService) {}
@@ -29,22 +30,22 @@ export class DataService {
    
   }
 
-  async getJuejinUser2(user_id: string): Promise<SocialCardResponse> {
-    const res = this.httpService.get(
-      `https://api.juejin.cn/user_api/v1/user/get?user_id=${user_id}`,
-    );
-  try {
-    const data = await lastValueFrom(res);
-    const {
-      follower_count: followers,
-      user_name: nickname,
-      avatar_large: avatar_url,
-    } = data.data.data;
-    return { followers, username: '', nickname, avatar_url };
-  } catch (error) {
-    throw new UserException('用户不存在'); 
-  }
-  }
+  // async getJuejinUser2(user_id: string): Promise<SocialCardResponse> {
+  //   const res = this.httpService.get(
+  //     `https://api.juejin.cn/user_api/v1/user/get?user_id=${user_id}`,
+  //   );
+  // try {
+  //   const data = await lastValueFrom(res);
+  //   const {
+  //     follower_count: followers,
+  //     user_name: nickname,
+  //     avatar_large: avatar_url,
+  //   } = data.data.data;
+  //   return { followers, username: '', nickname, avatar_url };
+  // } catch (error) {
+  //   throw new UserException('用户不存在'); 
+  // }
+  // }
 
   async getJuejinUser(name: string) {
     const res = this.httpService.get(
@@ -64,6 +65,21 @@ export class DataService {
       return { followers, username: '', nickname, avatar_url };
     } catch (error) {
       throw new UserException('用户不存在');
+    }
+  }
+
+  async getIcons(){
+    const icons = []
+    return icons
+  }
+
+  async getFollowers(param: DataDto) {
+    const { type, data } = param;
+    if (type === 'juejin') {
+      return this.getJuejinUser(data);
+    }
+    if (type === 'github') {
+      return this.getGihubUser(data);
     }
   }
 }
