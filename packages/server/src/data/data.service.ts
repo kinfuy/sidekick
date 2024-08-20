@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { UserException } from '@/common/exceptions/custom.exception';
-import { SocialCardResponse } from './data.interface';
+import { Follower, Icon } from './data.interface';
 import { DataDto } from './dto/data.dto';
 @Injectable()
 export class DataService {
@@ -10,12 +10,12 @@ export class DataService {
 
   /**
    * 根据name 获取github 信息
-   * @param name 
-   * @returns 
+   * @param name
+   * @returns
    */
-  async getGihubUser(name: string): Promise<SocialCardResponse> {
+  async getGihubUser(name: string): Promise<Follower> {
     const res = this.httpService.get(`https://api.github.com/users/${name}`);
-   
+
     try {
       const data = await lastValueFrom(res);
       const {
@@ -28,25 +28,7 @@ export class DataService {
     } catch (error) {
       throw new UserException('用户不存在');
     }
-   
   }
-
-  // async getJuejinUser2(user_id: string): Promise<SocialCardResponse> {
-  //   const res = this.httpService.get(
-  //     `https://api.juejin.cn/user_api/v1/user/get?user_id=${user_id}`,
-  //   );
-  // try {
-  //   const data = await lastValueFrom(res);
-  //   const {
-  //     follower_count: followers,
-  //     user_name: nickname,
-  //     avatar_large: avatar_url,
-  //   } = data.data.data;
-  //   return { followers, username: '', nickname, avatar_url };
-  // } catch (error) {
-  //   throw new UserException('用户不存在'); 
-  // }
-  // }
 
   async getJuejinUser(name: string) {
     const res = this.httpService.get(
@@ -69,9 +51,9 @@ export class DataService {
     }
   }
 
-  async getIcons(){
-    const icons = []
-    return icons
+  async getIcons() {
+    const icons: Icon[] = [];
+    return icons;
   }
 
   async getFollowers(param: DataDto) {
