@@ -69,13 +69,11 @@ export class DataService {
   }
 
   private async getWeiboUser(name: string) {
-    const res = this.httpService.get(
-      `https://m.weibo.cn/api/container/getIndex?containerid=100103type=3&q=${name}&page_type=searchall`,
-    );
-    debugger;
+    const url = encodeURI(`https://m.weibo.cn/api/container/getIndex?containerid=100103type%3D3%26q%3D${name}%26t%3D&page_type=searchall`)
+    const res = this.httpService.get(url);
     const data = await lastValueFrom(res);
     try {
-      const userGroup = data.data.cards[1].card_group;
+      const userGroup = data.data.data.cards[1].card_group;
       const userInfo = userGroup.find((item) =>
         item.user.screen_name.includes(name),
       );
@@ -87,7 +85,7 @@ export class DataService {
         screen_name: nickname,
         profile_image_url: avatar_url,
       } = user;
-      return { followers, username: '', nickname, avatar_url };
+      return { followers: Number(followers), username: '', nickname, avatar_url };
     } catch (error) {
       throw new UserException('用户不存在');
     }
@@ -111,3 +109,4 @@ export class DataService {
     }
   }
 }
+
