@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { UserException } from '@/common/exceptions/custom.exception';
-import { SocialCardResponse } from './data.interface';
+import { Follower, Icon } from './data.interface';
 import { DataDto } from './dto/data.dto';
 @Injectable()
 export class DataService {
@@ -13,7 +13,7 @@ export class DataService {
    * @param name
    * @returns
    */
-  async getGihubUser(name: string): Promise<SocialCardResponse> {
+  async getGihubUser(name: string): Promise<Follower> {
     const res = this.httpService.get(`https://api.github.com/users/${name}`);
 
     try {

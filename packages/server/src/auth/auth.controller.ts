@@ -12,6 +12,7 @@ import { LoginDto, RegisterDto, TokenDto, VerifyCodeDto } from './auto.dto';
 import {  Public } from '@/auth/auth.guard';
 import { UserService } from '@/user/user.service';
 import { UserException } from '@/common/exceptions/custom.exception';
+import { Throttle } from '@nestjs/throttler';
 @Controller('')
 export class AuthController {
   constructor(
@@ -21,8 +22,19 @@ export class AuthController {
 
   @Public()
   @Post('login')
-  signIn(@Body() signInDto: LoginDto) {    
-    return this.authService.signIn(signInDto.email, signInDto.password);
+  @Throttle({ long: { limit: 5, ttl: 5 * 60 * 1000 } })
+  async signIn(@Body() signInDto: LoginDto, @Req() req) {    
+
+    const user = await this.authService.signIn(signInDto.email, signInDto.password);
+    if(!user.data.confirm) {
+      req.session.user = {
+        email: user.email,
+        id: user.id,
+        role: user.role,
+        name: user.name
+      } 
+    }
+    return user
   }
 
   @Public()
@@ -39,6 +51,7 @@ export class AuthController {
 
   @Public()
   @Post('sendCode')
+  @Throttle({ long: { limit: 5, ttl: 5 * 60 * 1000 } })
   async sendCode(@Body() parmas: VerifyCodeDto, @Req() req) {
     const code = Math.floor(Math.random() * 1000000);
     req.session.code = code;

@@ -6,8 +6,7 @@ import { DataDto } from './dto/data.dto';
 export class DataController {
   constructor(private readonly dataService: DataService) {}
 
-
-  @Post("userFollowers")
+  @Post("followers")
   @App('ios_app')
   getUserFollowers(@Body() data:DataDto) {
     return this.dataService.getFollowers(data);

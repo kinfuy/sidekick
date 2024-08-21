@@ -8,9 +8,31 @@ import { DataModule } from './data/data.module';
 import { CardModule } from './card/card.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          name: 'short',
+          ttl: 1000,
+          limit: 3,
+        },
+        {
+          name: 'medium',
+          ttl: 10000,
+          limit: 20
+        },
+        {
+          name: 'long',
+          ttl: 60000,
+          limit: 100
+        }
+      ],
+      errorMessage: '请求过于频繁'
+    }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
       serveRoot: '/assets',
@@ -34,7 +56,12 @@ import { join } from 'path';
     SubscriptionModule,
     DataModule,
     CardModule,
-   
+  ],
+  providers: [{
+    provide: APP_GUARD,
+    useClass: ThrottlerGuard
+  }
+  
   ],
 })
 export class AppModule {}

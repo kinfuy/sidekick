@@ -14,9 +14,10 @@ import { UserException } from '@/common/exceptions/custom.exception';
 
 export const IS_PUBLIC_KEY = 'isPublic';
 export const APP_KEY = 'APP_KEY';
+export const ROLES_KEY = 'roles';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
-export const App = (key:string) => SetMetadata(APP_KEY, key);
-
+export const App = (key: string) => SetMetadata(APP_KEY, key);
+export const Roles = (...roles: string[]) => SetMetadata(ROLES_KEY, roles);
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
@@ -29,6 +30,7 @@ export class AuthGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
+
     if (isPublic) {
       return true;
     }
@@ -36,14 +38,29 @@ export class AuthGuard implements CanActivate {
     const isApp = this.reflector.getAllAndOverride<string>(APP_KEY, [
       context.getHandler(),
       context.getClass(),
-    ])
-
+    ]);
 
     const request = context.switchToHttp().getRequest();
 
-    const appKey = this.exyractHeaders(request, "app-key");
+    const roles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
+    if (roles && roles.length > 0) {
+      const userRole = request.session?.user?.role;
+      if (userRole) {
+        if (!roles.includes(userRole)) {
+          throw new UserException('暂无权限', responseCode.FORBIDDEN);
+        }
+      } else {
+        throw new UserException('暂无权限', responseCode.FORBIDDEN);
+      }
+    }
+
+    const appKey = this.exyractHeaders(request, 'app-key');
     if (isApp && appKey === isApp) {
-      return true
+      return true;
     }
 
     const token = this.extractTokenFromHeader(request);

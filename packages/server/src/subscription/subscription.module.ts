@@ -4,11 +4,13 @@ import { SubscriptionController } from './subscription.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Subscription } from './entities/subscription.entity';
 import { Activation } from './entities/activation.entity';
+import { AFDianService } from '@/common/services/afdian.service';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Subscription, Activation])],
+  imports: [HttpModule,TypeOrmModule.forFeature([Subscription, Activation])],
   controllers: [SubscriptionController],
-  providers: [SubscriptionService],
+  providers: [SubscriptionService,AFDianService],
   exports: [SubscriptionService],
 })
 export class SubscriptionModule {}
