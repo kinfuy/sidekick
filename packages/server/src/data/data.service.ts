@@ -10,12 +10,12 @@ export class DataService {
 
   /**
    * 根据name 获取github 信息
-   * @param name 
-   * @returns 
+   * @param name
+   * @returns
    */
   async getGihubUser(name: string): Promise<SocialCardResponse> {
     const res = this.httpService.get(`https://api.github.com/users/${name}`);
-   
+
     try {
       const data = await lastValueFrom(res);
       const {
@@ -28,7 +28,6 @@ export class DataService {
     } catch (error) {
       throw new UserException('用户不存在');
     }
-   
   }
 
   // async getJuejinUser2(user_id: string): Promise<SocialCardResponse> {
@@ -44,7 +43,7 @@ export class DataService {
   //   } = data.data.data;
   //   return { followers, username: '', nickname, avatar_url };
   // } catch (error) {
-  //   throw new UserException('用户不存在'); 
+  //   throw new UserException('用户不存在');
   // }
   // }
 
@@ -69,9 +68,34 @@ export class DataService {
     }
   }
 
-  async getIcons(){
-    const icons = []
-    return icons
+  private async getWeiboUser(name: string) {
+    const res = this.httpService.get(
+      `https://m.weibo.cn/api/container/getIndex?containerid=100103type=3&q=${name}&page_type=searchall`,
+    );
+    debugger;
+    const data = await lastValueFrom(res);
+    try {
+      const userGroup = data.data.cards[1].card_group;
+      const userInfo = userGroup.find((item) =>
+        item.user.screen_name.includes(name),
+      );
+      if (!userInfo) throw new UserException(`用户不存在${userInfo}`);
+      const user = userInfo.user;
+      if (!user) throw new UserException(`用户不存在${user}`);
+      const {
+        followers_count: followers,
+        screen_name: nickname,
+        profile_image_url: avatar_url,
+      } = user;
+      return { followers, username: '', nickname, avatar_url };
+    } catch (error) {
+      throw new UserException('用户不存在');
+    }
+  }
+
+  async getIcons() {
+    const icons = [];
+    return icons;
   }
 
   async getFollowers(param: DataDto) {
@@ -81,6 +105,9 @@ export class DataService {
     }
     if (type === 'github') {
       return this.getGihubUser(data);
+    }
+    if (type === 'weibo') {
+      return this.getWeiboUser(data);
     }
   }
 }
