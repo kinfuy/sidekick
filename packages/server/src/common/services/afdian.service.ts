@@ -1,14 +1,12 @@
-import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import * as blueimpMd5 from 'blueimp-md5';
-
 import { envConfig } from '@/common/configs/env';
-import { lastValueFrom } from 'rxjs';
 import { UserException } from '../exceptions/custom.exception';
+import { AxiosService } from './http.services';
 
 @Injectable()
 export class AFDianService {
-    constructor(private readonly httpService: HttpService) {}
+    constructor(private readonly axiosService: AxiosService) {}
 
     async webhook() {
         return { ec: 200 };
@@ -32,11 +30,10 @@ export class AFDianService {
      * @returns 
      */
     private async query(url: string, params: Record<string, any>) {
-        const sign = this.generateSign(JSON.stringify(params))
-        const res =  this.httpService.post(url, sign)
+       
         try {
-            const data = await lastValueFrom(res);
-            return data.data
+            const sign = this.generateSign(JSON.stringify(params))
+            return await  this.axiosService.post(url, sign)
         } catch (error) {
             throw new UserException(error.message);
         }

@@ -7,7 +7,6 @@ import { AuthGuard } from '@/auth/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { jwtConstants } from '@/common/configs/constants';
 import { EmailService } from '@/common/services/email.service';
-import { SubscriptionService } from '@/subscription/subscription.service';
 import { SubscriptionModule } from '@/subscription/subscription.module';
 
 @Module({
