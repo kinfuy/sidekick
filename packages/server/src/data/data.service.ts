@@ -4,6 +4,7 @@ import { lastValueFrom } from 'rxjs';
 import { UserException } from '@/common/exceptions/custom.exception';
 import { Follower, Icon } from './data.interface';
 import { DataDto } from './dto/data.dto';
+import { toNumber } from '@/utils/unit.transform';
 @Injectable()
 export class DataService {
   constructor(private readonly httpService: HttpService) {}
@@ -85,7 +86,7 @@ export class DataService {
         screen_name: nickname,
         profile_image_url: avatar_url,
       } = user;
-      return { followers: Number(followers), username: '', nickname, avatar_url };
+      return { followers: toNumber(followers), username: '', nickname, avatar_url };
     } catch (error) {
       throw new UserException('用户不存在');
     }
