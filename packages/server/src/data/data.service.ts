@@ -15,13 +15,10 @@ export class DataService {
    */
   async getGihubUser(name: string): Promise<Follower> {
     try {
-      const res = await this.axiosService.get(`https://api.github.com/users/${name}`);
-      const {
-        followers,
-        login: username,
-        name: nickname,
-        avatar_url,
-      } = res;
+      const res = await this.axiosService.get(
+        `https://api.github.com/users/${name}`,
+      );
+      const { followers, login: username, name: nickname, avatar_url } = res;
       return { followers, username, nickname, avatar_url };
     } catch (error) {
       throw new UserException('用户不存在');
@@ -29,9 +26,8 @@ export class DataService {
   }
 
   async getJuejinUser(name: string) {
-  
     try {
-      const res =await this.axiosService.get(
+      const res = await this.axiosService.get(
         `https://api.juejin.cn/search_api/v1/search?query=${name}&id_type=1&search_type=0&limit=10`,
       );
       const user = res.data.find(
@@ -50,10 +46,11 @@ export class DataService {
   }
 
   private async getWeiboUser(name: string) {
-   
     try {
-      const url = encodeURI(`https://m.weibo.cn/api/container/getIndex?containerid=100103type%3D3%26q%3D${name}%26t%3D&page_type=searchall`)
-      const res =await this.axiosService.get(url);
+      const url = encodeURI(
+        `https://m.weibo.cn/api/container/getIndex?containerid=100103type%3D3%26q%3D${name}%26t%3D&page_type=searchall`,
+      );
+      const res = await this.axiosService.get(url);
       const userGroup = res.data.cards[1].card_group;
       const userInfo = userGroup.find((item) =>
         item.user.screen_name.includes(name),
@@ -66,7 +63,54 @@ export class DataService {
         screen_name: nickname,
         profile_image_url: avatar_url,
       } = user;
-      return { followers: toNumber(followers), username: '', nickname, avatar_url };
+      return {
+        followers: toNumber(followers),
+        username: '',
+        nickname,
+        avatar_url,
+      };
+    } catch (error) {
+      throw new UserException('用户不存在');
+    }
+  }
+
+  private async getBilibiliCookie() {
+    const url = 'https://bilibili.com';
+    const res = await this.axiosService.getCatchAll(url);
+    if (!res) return;
+    const cookies = res.headers['set-cookie']?.join(';') || '';
+    return cookies;
+  }
+
+  private async getBilibiliUser(name: string) {
+    try {
+      const url = `https://api.bilibili.com/x/web-interface/search/type`;
+      const cookies = await this.getBilibiliCookie();
+      const res = await this.axiosService.get(
+        url,
+        {
+          search_type: 'bili_user',
+          keyword: name,
+          page: 1,
+          page_size: 36,
+        },
+        {
+          Cookie: cookies,
+        },
+      );
+
+      const { result } = res?.data;
+      if (!result) return;
+
+      const user = result?.find((item) => item.uname.includes(name));
+      const { fans, uname, upic } = user;
+
+      return {
+        followers: fans,
+        username: uname,
+        nickname: '',
+        avatar_url: `https:${upic}`,
+      };
     } catch (error) {
       throw new UserException('用户不存在');
     }
@@ -88,6 +132,8 @@ export class DataService {
     if (type === 'weibo') {
       return this.getWeiboUser(data);
     }
+    if (type === 'bilibili') {
+      return this.getBilibiliUser(data);
+    }
   }
 }
-

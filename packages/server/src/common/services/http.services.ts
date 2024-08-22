@@ -4,15 +4,37 @@ import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class AxiosService {
-  constructor(private  httpService: HttpService) {}
+  private defaultHeaders = {
+    'Content-Type': 'application/json',
+  };
+  constructor(private httpService: HttpService) {}
 
-  async get<T = any>(url: string): Promise<T> {
-    const { data } = await lastValueFrom(this.httpService.get<T>(url));
+  async get<T = any>(url: string, param?: any, headers?: any): Promise<T> {
+    const u = param ? `${url}?${new URLSearchParams(param)}` : url;
+    const { data } = await lastValueFrom(
+      this.httpService.get<T>(u, {
+        headers: Object.assign(this.defaultHeaders, headers),
+      }),
+    );
     return data;
   }
 
-  async post<T = any>(url: string, body: any): Promise<T> {
-    const { data } = await lastValueFrom(this.httpService.post<T>(url, body));
+  async getCatchAll<T = any>(url: string, param?: any, headers?: any): Promise<any> {
+    const u = param ? `${url}?${new URLSearchParams(param)}` : url;
+    const res = await lastValueFrom(
+      this.httpService.get<T>(u, {
+        headers: Object.assign(this.defaultHeaders, headers),
+      }),
+    );
+    return res;
+  }
+
+  async post<T = any>(url: string, param?: any, headers?: any): Promise<T> {
+    const { data } = await lastValueFrom(
+      this.httpService.post<T>(url, param, {
+        headers: Object.assign(this.defaultHeaders, headers),
+      }),
+    );
     return data;
   }
 }

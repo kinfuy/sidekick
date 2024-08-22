@@ -1,6 +1,4 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { ICardTemplate } from "../card.interface";
-
 @Entity() 
 export class CardTemplate {
      //作为主键且创建时自动生成，默认自增
@@ -12,9 +10,6 @@ export class CardTemplate {
 
      @Column()
      type: number;
-
-     @Column("simple-json")
-     content: ICardTemplate;
 
      @Column()
      isDelete: boolean;
