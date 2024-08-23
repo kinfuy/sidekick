@@ -23,15 +23,15 @@ import { APP_GUARD } from '@nestjs/core';
         {
           name: 'medium',
           ttl: 10000,
-          limit: 20
+          limit: 20,
         },
         {
           name: 'long',
           ttl: 60000,
-          limit: 100
-        }
+          limit: 100,
+        },
       ],
-      errorMessage: '请求过于频繁'
+      errorMessage: '请求过于频繁',
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
@@ -57,11 +57,11 @@ import { APP_GUARD } from '@nestjs/core';
     DataModule,
     CardModule,
   ],
-  providers: [{
-    provide: APP_GUARD,
-    useClass: ThrottlerGuard
-  }
-  
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
   ],
 })
 export class AppModule {}

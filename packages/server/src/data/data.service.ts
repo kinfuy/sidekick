@@ -100,7 +100,7 @@ export class DataService {
       const { result } = res?.data;
       if (!result) {
         throw new UserException('用户不存在');
-      };
+      }
 
       const user = result?.find((item) => item.uname.includes(name));
       const { fans, uname, upic } = user;
@@ -116,6 +116,34 @@ export class DataService {
     }
   }
 
+  private async getJianShuUser(name: string) {
+    try {
+      const url = `https://www.jianshu.com/search/do`;
+      const res = await this.axiosService.postQuery(
+        url,
+        {
+          q: name,
+          type: 'user',
+          page: 1,
+          order_by: 'default',
+        },
+      );
+      const user = res?.entries?.find((item) => item.nickname.includes(name));
+      if (!user) {
+        throw new UserException('用户不存在');
+      }
+      const { followers_count, nickname, avatar_url } = user;
+
+      return {
+        followers: followers_count,
+        username: '',
+        nickname: nickname,
+        avatar_url: avatar_url,
+      };
+    } catch (error) {
+      throw new UserException('用户不存在');
+    }
+  }
 
   async getFollowers(param: DataDto) {
     const { type, data } = param;
@@ -130,6 +158,9 @@ export class DataService {
     }
     if (type === 'bilibili') {
       return this.getBilibiliUser(data);
+    }
+    if (type === 'jianshu') {
+      return this.getJianShuUser(data);
     }
   }
 }
