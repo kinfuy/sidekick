@@ -11,10 +11,4 @@ export class DataController {
   getUserFollowers(@Body() data:DataDto) {
     return this.dataService.getFollowers(data);
   }
-
-  @Post("icons")
-  @App('ios_app')
-  getIcons() {
-    return this.dataService.getIcons();
-  }
 }

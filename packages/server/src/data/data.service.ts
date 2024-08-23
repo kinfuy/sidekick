@@ -116,10 +116,6 @@ export class DataService {
     }
   }
 
-  async getIcons() {
-    const icons = [];
-    return icons;
-  }
 
   async getFollowers(param: DataDto) {
     const { type, data } = param;

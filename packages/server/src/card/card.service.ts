@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { CardTemplate } from './card.interface';
 
 @Injectable()
 export class CardService {
-  getCardList() {
+  getCardList(): CardTemplate[] {
     return [
       {
         themeColor: '#333333',
