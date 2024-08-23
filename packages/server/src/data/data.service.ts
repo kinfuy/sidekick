@@ -55,14 +55,12 @@ export class DataService {
       const userInfo = userGroup.find((item) =>
         item.user.screen_name.includes(name),
       );
-      if (!userInfo) throw new UserException(`用户不存在${userInfo}`);
-      const user = userInfo.user;
-      if (!user) throw new UserException(`用户不存在${user}`);
+      if (!userInfo?.user) throw new UserException(`用户不存在${userInfo}`);
       const {
         followers_count: followers,
         screen_name: nickname,
         profile_image_url: avatar_url,
-      } = user;
+      } = userInfo.user;
       return {
         followers: toNumber(followers),
         username: '',
@@ -100,7 +98,9 @@ export class DataService {
       );
 
       const { result } = res?.data;
-      if (!result) return;
+      if (!result) {
+        throw new UserException('用户不存在');
+      };
 
       const user = result?.find((item) => item.uname.includes(name));
       const { fans, uname, upic } = user;
