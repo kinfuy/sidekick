@@ -107,8 +107,8 @@ export class DataService {
 
       return {
         followers: fans,
-        username: uname,
-        nickname: '',
+        username: '',
+        nickname: uname,
         avatar_url: `https:${upic}`,
       };
     } catch (error) {
