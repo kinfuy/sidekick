@@ -55,4 +55,17 @@ export class AxiosService {
     );
     return data;
   }
+
+
+  /**
+   * 获取对于url 返回cookies
+   * @param url 
+   * @returns 
+   */
+  async getCookies(url: string) {
+    const res = await this.getCatchAll(url);
+    if (!res) return;
+    const cookies = res.headers['set-cookie']?.join(';') || '';
+    return cookies;
+  }
 }
