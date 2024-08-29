@@ -5,11 +5,6 @@
         <div class="web-title theme-text">{{ currentWeb.title }}</div>
         <div class="web-url">
           <span class="theme-text-desc">{{ currentWeb.url }}</span>
-          <template v-if="syncWeb.url">
-            <span class="m-l-1 m-r-1">已从</span>
-            <span>{{ syncWeb.url }}</span>
-            <span class="m-l-1">同步</span>
-          </template>
         </div>
       </div>
       <div class="operation-btn">
@@ -25,6 +20,19 @@
         </span>
         <span class="btn btn-small btn-border" @click="handleRefresh">
           刷新
+        </span>
+      </div>
+    </div>
+    <div v-if="isSyncing" class="sync-info">
+      <div class="sync-title">
+        <span class="m-r-1">已从</span>
+        <span>{{ syncWeb.url || 'localhost:8080' }}</span>
+        <span class="m-l-1">同步</span>
+      </div>
+      <div class="sync-btn">
+        <span class="primary-text f-20">{{ cancelTimer }}s</span>
+        <span class="btn btn-small btn-border m-l-1" @click="cancelSync">
+          撤销
         </span>
       </div>
     </div>
@@ -86,8 +94,9 @@
 
 <script lang="ts" setup>
 import { clearAllCookie, getAllStorage, injectPostMessage } from '@utils';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { Message } from '@core/message';
+import type { IStorage } from '../../store';
 import { useStoragePortalStore } from '../../store';
 import KeyValue from './key-value.vue';
 import SelectWeb from './select-web.vue';
@@ -187,9 +196,49 @@ const syncWeb = ref({
   title: '',
 });
 
+const cancelTimer = ref(3);
+let timer: string | number | NodeJS.Timer | undefined;
+const catchOriginal = reactive<IStorage>({
+  localStorage: [],
+  sessionStorage: [],
+  cookie: [],
+});
+
+const cancelSync = () => {
+  cancelTimer.value = 3;
+  syncWeb.value = { url: '', title: '' };
+  setStore({ ...catchOriginal }, true);
+  catchOriginal.localStorage = [];
+  catchOriginal.sessionStorage = [];
+  catchOriginal.cookie = [];
+  clearInterval(timer);
+};
+
+const isSyncing = computed(() => {
+  return syncWeb.value.url || syncWeb.value.title;
+});
+
+const initSyncTimer = () => {
+  catchOriginal.cookie = currentStorage.value.cookie;
+  catchOriginal.localStorage = currentStorage.value.localStorage;
+  catchOriginal.sessionStorage = currentStorage.value.sessionStorage;
+
+  timer = setInterval(() => {
+    if (cancelTimer.value > 0) {
+      cancelTimer.value--;
+    }
+    if (cancelTimer.value === 0) {
+      cancelTimer.value = 3;
+      syncWeb.value = { url: '', title: '' };
+      clearInterval(timer);
+    }
+  }, 1000);
+};
+
 const handleSync = (item: { url: string; title: string }) => {
   if (!item.url) return;
   syncWeb.value = item;
+  initSyncTimer();
   injectPostMessage({
     from: Message.Form.INJECT_MESSAGE,
     to: Message.Form.CONTENT_MESSAGE,

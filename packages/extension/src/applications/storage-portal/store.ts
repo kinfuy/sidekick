@@ -26,6 +26,8 @@ const store = ref<StoragePortalStoreInstance>({
 
 export const useStoragePortalStore = () => {
   const syncLocal = () => {
+    localStorage.clear();
+    sessionStorage.clear();
     const list = store.value.storage.cookie;
     list.forEach((c: IStorageItem) => {
       document.cookie = `${c.key}=${c.val}`;
