@@ -13,7 +13,7 @@ export class AxiosService {
     const u = param ? `${url}?${new URLSearchParams(param)}` : url;
     const { data } = await lastValueFrom(
       this.httpService.get<T>(u, {
-        headers: Object.assign(this.defaultHeaders, (headers = {})),
+        headers: Object.assign(this.defaultHeaders, headers || {}),
       }),
     );
     return data;
