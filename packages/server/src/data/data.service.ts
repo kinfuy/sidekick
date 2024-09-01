@@ -8,6 +8,7 @@ import { AxiosService } from '@/common/services/http.services';
 export class DataService {
   constructor(private axiosService: AxiosService) {}
 
+
   /**
    * 根据name 获取github 信息
    * @param name
@@ -31,7 +32,7 @@ export class DataService {
         `https://api.juejin.cn/search_api/v1/search?query=${name}&id_type=1&search_type=0&limit=10`,
       );
       const user = res.data.find(
-        (item) => item.result_model.user_name === name,
+        (item) => item.result_model.user_name.includes(name),
       );
       if (!user) throw new UserException(`用户不存在${user}`);
       const {
@@ -72,18 +73,11 @@ export class DataService {
     }
   }
 
-  private async getBilibiliCookie() {
-    const url = 'https://bilibili.com';
-    const res = await this.axiosService.getCatchAll(url);
-    if (!res) return;
-    const cookies = res.headers['set-cookie']?.join(';') || '';
-    return cookies;
-  }
 
   private async getBilibiliUser(name: string) {
     try {
       const url = `https://api.bilibili.com/x/web-interface/search/type`;
-      const cookies = await this.getBilibiliCookie();
+      const cookies = await this.axiosService.getCookies('https://bilibili.com');
       const res = await this.axiosService.get(
         url,
         {
@@ -121,6 +115,7 @@ export class DataService {
     }
   }
 
+  // TODO 未完成
   private async getJianShuUser(name: string) {
     try {
       const url = `https://www.jianshu.com/search/do`;
@@ -150,6 +145,33 @@ export class DataService {
     }
   }
 
+  // TODO 未完成
+  async getDouyinUser(name: string) {
+    try {
+      const cookies = await this.axiosService.getCookies('https://www.douyin.com');
+      const res = await this.axiosService.get(
+        `https://www.douyin.com/user/aweme`,
+        {
+          user_id: name,
+        },
+        {
+          Cookie: cookies,
+        },
+      );
+      const user = res.data.user;
+      if (!user) throw new UserException('用户不存在');
+      const { followers_count: followers, nickname, avatar_url } = user;
+      return {
+        followers,
+        username: '',
+        nickname,
+        avatar_url,
+      };
+    } catch (error) {
+      throw new UserException('用户不存在');
+    }
+  }
+
   async getFollowers(param: DataDto) {
     const { type, data } = param;
     if (type === 'juejin') {
@@ -167,5 +189,9 @@ export class DataService {
     if (type === 'jianshu') {
       return this.getJianShuUser(data);
     }
+    if (type === 'douyin') {
+      return this.getDouyinUser(data);
+    }
+    throw new UserException('用户不存在');
   }
 }

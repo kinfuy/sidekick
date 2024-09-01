@@ -30,7 +30,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['sync']);
+const emit = defineEmits(['sync', 'preview']);
 
 const handleSync = (item: { url: string; title: string }) => {
   emit('sync', item);

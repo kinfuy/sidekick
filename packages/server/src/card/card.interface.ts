@@ -3,4 +3,5 @@ export interface CardTemplate {
   logo: string;
   unit: string;
   desc: string;
+  query: boolean;
 }
