@@ -24,7 +24,7 @@ export class CardService {
         desc: '微博粉丝',
       },
       {
-        themeColor: '#20b0e3',
+        themeColor: '#f16c8c',
         logo: 'bilibili',
         unit: '粉丝',
         desc: 'bilibili粉丝',

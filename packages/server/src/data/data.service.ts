@@ -103,6 +103,11 @@ export class DataService {
       }
 
       const user = result?.find((item) => item.uname.includes(name));
+
+      if(!user){
+        throw new UserException('用户不存在');
+      }
+      
       const { fans, uname, upic } = user;
 
       return {
