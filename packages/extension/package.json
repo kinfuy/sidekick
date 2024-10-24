@@ -21,7 +21,7 @@
     "vue-echarts": "^6.7.3"
   },
   "devDependencies": {
-    "@crxjs/vite-plugin": "2.0.0-beta.18",
+    "@crxjs/vite-plugin": "2.0.0-beta.26",
     "@rollup/pluginutils": "^5.0.2",
     "@types/blueimp-md5": "^2.18.2",
     "@types/canvas-confetti": "1.6.4",

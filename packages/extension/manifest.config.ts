@@ -47,17 +47,17 @@ export default defineManifest(() => {
           {
             matches: ['<all_urls>'],
             resources: ['assets/shadow-styles.css'],
-            use_dynamic_url: true,
+            use_dynamic_url: false,
           },
           {
             matches: ['<all_urls>'],
             resources: ['assets/web-notice.css'],
-            use_dynamic_url: true,
+            use_dynamic_url: false,
           },
           {
             matches: ['<all_urls>'],
             resources: ['assets/click-count.css'],
-            use_dynamic_url: true,
+            use_dynamic_url: false,
           },
         ],
   };
