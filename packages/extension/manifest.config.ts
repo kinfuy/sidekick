@@ -28,17 +28,7 @@ export default defineManifest(() => {
         run_at: 'document_start',
       },
     ],
-    permissions: [
-      // 'contextMenus',
-      // 'bookmarks',
-      // 'webRequest',
-      // 'notifications',
-      'storage',
-      'tabs',
-      'alarms',
-      'cookies',
-      'activeTab',
-    ],
+    permissions: ['storage', 'tabs', 'alarms', 'cookies', 'activeTab'],
     default_locale: 'zh_CN',
     host_permissions: ['<all_urls>'],
     web_accessible_resources: isDev

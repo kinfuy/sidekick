@@ -3,13 +3,10 @@ import {
   devAccountPopupInstall,
   devAccountSettingInstall,
 } from './dev-account/install';
-import {
-  webNoticeContentInstall,
-  webNoticeContentSettingInstall,
-} from './web-notice/install';
-import { appLayoutContentInstall } from './app-layout/install';
+import { webNoticeContentSettingInstall } from './web-notice/install';
+
 import { linkGoSettingInstall } from './link-go/install';
-import { storagePortalContentInstall } from './storage-portal/install';
+
 import {
   browseBehaviorPopupInstall,
   browseBehaviorSettingInstall,
@@ -19,12 +16,6 @@ import {
   urlBlockPopopInstall,
   urlBlockSettingInstall,
 } from './url-block/install';
-
-export const contentInstall = (app: App) => {
-  appLayoutContentInstall(app);
-  webNoticeContentInstall(app);
-  storagePortalContentInstall(app);
-};
 
 export const popupInstall = (app: App) => {
   devAccountPopupInstall(app);

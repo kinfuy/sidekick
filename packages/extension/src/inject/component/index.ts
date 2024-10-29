@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import { contentInstall } from '@applications/install';
+import { contentInstall } from '@applications/inject';
 import App from './App.vue';
 
 const APP_SELCTOR = 'dev-tester-extension';
