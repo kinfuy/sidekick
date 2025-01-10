@@ -21,6 +21,8 @@ import {
   uiFlowSettingInstall,
 } from './ui-flow/install';
 
+import { mockPopupInstall, mockSettingInstall } from './mock/install';
+
 export const contentInstall = (app: App) => {
   appLayoutContentInstall(app);
   devAccountContentInstall(app);
@@ -33,6 +35,7 @@ export const popupInstall = (app: App) => {
   devAccountPopupInstall(app);
   browseBehaviorPopupInstall(app);
   uiFlowPopupInstall(app);
+  mockPopupInstall(app);
 };
 
 export const settingInstall = (app: App) => {
@@ -41,4 +44,5 @@ export const settingInstall = (app: App) => {
   browseBehaviorSettingInstall(app);
   webNoticeContentSettingInstall(app);
   uiFlowSettingInstall(app);
+  mockSettingInstall(app);
 };

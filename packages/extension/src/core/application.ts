@@ -33,11 +33,12 @@ export const runCoreHook = async (
   name: string,
   app: () => Application,
   options: any,
+  sender?: chrome.runtime.MessageSender,
 ) => {
   const core = app();
   const coreHooks = core[name];
   if (coreHooks) {
-    await coreHooks(options);
+    await coreHooks(options, sender);
   }
 };
 /**
@@ -50,12 +51,13 @@ export const triggerApplicationHooks = async (
   name: string,
   options?: any,
   limitApp?: string[],
+  sender?: chrome.runtime.MessageSender,
 ) => {
-  await runCoreHook(name, PreCoreApp, options);
+  await runCoreHook(name, PreCoreApp, options, sender);
   const actived = name !== 'onActiveChange';
   const hooks = await getApplicationHooks(name, actived, limitApp);
   for (const hook of hooks) {
-    await hook(options);
+    await hook(options, sender);
   }
-  await runCoreHook(name, SuffixCoreApp, options);
+  await runCoreHook(name, SuffixCoreApp, options, sender);
 };

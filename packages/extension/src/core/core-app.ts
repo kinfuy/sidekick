@@ -24,5 +24,23 @@ export const SuffixCoreApp = (): Application => {
     onOpenWindow: ({ openUrl, extra }) => {
       createWindow(getChromeUrl(openUrl), extra);
     },
+
+    onOpenSidePanel: async (_, sender) => {
+      console.log('onOpenSidePanel');
+      if (chrome.sidePanel && sender.tab) {
+        try {
+          await chrome.sidePanel.open({ windowId: sender.tab.windowId });
+          await chrome.sidePanel.setOptions({
+            tabId: sender.tab.id,
+            path: 'sidepanel.html',
+            enabled: true,
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        console.warn('chrome.sidePanel API is not available');
+      }
+    },
   };
 };
