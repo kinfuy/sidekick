@@ -171,6 +171,16 @@ const openPage = (code: string, url: string, extra: any = {}) => {
   });
 };
 
+const openSidePanel = (app: string) => {
+  injectPostMessage({
+    from: 'app_inject',
+    code: 'onOpenSidePanel',
+    data: {
+      app,
+    },
+  });
+};
+
 const openLogin = () => {
   openPage('onOpenWindow', 'login.html', {
     focused: true,
@@ -184,7 +194,11 @@ const openLogin = () => {
 
 const appClick = async (tool: AppEntry) => {
   if (tool.linkUrl) {
-    openPage('onOpenChromeUrl', 'setting.html');
+    if (tool.linkUrl === 'sidepanel') {
+      openSidePanel(tool.name);
+    } else {
+      openPage('onOpenChromeUrl', tool.linkUrl);
+    }
     return;
   }
   if (current.value?.name && tool.name !== current.value.name) {

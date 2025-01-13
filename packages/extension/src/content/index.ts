@@ -39,7 +39,10 @@ watch(
   },
 );
 
-injectCustomScript(injectScript);
+injectCustomScript(injectScript, {
+  key: 'core-inject',
+  type: 'module',
+});
 
 const contentInit = () => {
   sendMessageToExtension({

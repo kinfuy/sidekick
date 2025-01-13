@@ -43,6 +43,10 @@ export interface Application extends Record<string, any> {
   onSendData?: (opt: { key: string; opt: any }) => void;
   onOpenChromeUrl?: (opt: { openUrl: string; extra?: any }) => void;
   onOpenWindow?: (opt: { openUrl: string; extra?: any }) => void;
+  onOpenSidePanel?: (
+    opt: { app: string },
+    sender: chrome.runtime.MessageSender,
+  ) => void;
 
   onContextMenusClick?: (option: {
     e: chrome.contextMenus.OnClickData;
@@ -91,4 +95,5 @@ export interface App extends AppEntry {
 
 export type ApplicationHook = (
   options: any,
+  sender?: chrome.runtime.MessageSender,
 ) => (() => void) | void | Promise<(() => void) | void>;

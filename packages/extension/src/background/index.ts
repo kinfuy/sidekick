@@ -1,10 +1,9 @@
 import { triggerApplicationHooks } from '../core/application';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { chromeAddListenerMessage, createtab, getChromeUrl } from '../utils';
+import { createtab, getChromeUrl } from '../utils';
 import { useAlarm } from '@/store/useAlarm';
 
 chrome.runtime.onInstalled.addListener(() => {
-  // createtab(getChromeUrl('setting.html'));
+  createtab(getChromeUrl('setting.html'));
   triggerApplicationHooks('onInstalled');
 });
 
@@ -14,12 +13,18 @@ chrome.tabs.onActivated.addListener(
   },
 );
 
+// 禁用 action button 打开侧边栏
+chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false });
+
 triggerApplicationHooks('onInit');
 
-chromeAddListenerMessage(async (message) => {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   let limitApp;
-  if (message.code === 'onActiveChange' && message.data?.name) {
-    limitApp = [message.data?.name];
+  if (request.code === 'onActiveChange' && request.data?.name) {
+    limitApp = [request.data?.name];
+  }
+  if (request.code === 'onOpenSidePanel' && sender.tab) {
+    chrome.sidePanel.open({ tabId: sender.tab.id });
   }
 
   const contentActive = [
@@ -30,10 +35,12 @@ chromeAddListenerMessage(async (message) => {
     'onDocVisibilitychange',
     'onDocDOMContentLoaded',
   ];
-  if (contentActive.includes(message.code)) {
-    triggerApplicationHooks('onContentActive', message.data, limitApp);
+  if (contentActive.includes(request.code)) {
+    triggerApplicationHooks('onContentActive', request.data, limitApp);
   }
-  triggerApplicationHooks(message.code, message.data, limitApp);
+  triggerApplicationHooks(request.code, request.data, limitApp, sender);
+  sendResponse();
+  return false;
 });
 
 chrome.alarms?.onAlarm.addListener((opt) => {

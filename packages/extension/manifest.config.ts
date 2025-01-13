@@ -21,6 +21,9 @@ export default defineManifest(() => {
       default_title: 'DevTester',
       default_popup: 'popup.html',
     },
+    side_panel: {
+      default_path: 'sidePanel.html',
+    },
     content_scripts: [
       {
         matches: ['<all_urls>'],
@@ -28,8 +31,19 @@ export default defineManifest(() => {
         run_at: 'document_start',
       },
     ],
-    permissions: ['storage', 'tabs', 'alarms', 'cookies', 'activeTab'],
     default_locale: 'zh_CN',
+    permissions: [
+      'contextMenus',
+      // 'bookmarks',
+      // 'notifications',
+      'storage',
+      'tabs',
+      'alarms',
+      'cookies',
+      'activeTab',
+      'sidePanel',
+      'windows',
+    ],
     host_permissions: ['<all_urls>'],
     web_accessible_resources: isDev
       ? []

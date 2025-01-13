@@ -82,42 +82,45 @@ export const getChromeUrl = (path: string) => {
 
 /**
  * 向平台注入动态js
- * @param path
+ * @param path 脚本路径
+ * @param options 配置选项
  * @returns
  */
-export const injectCustomJs = (path: string) => {
-  const temp = document.createElement('script');
-  if (!temp) return new Error('发生了错误');
-  temp.setAttribute('type', 'text/javascript');
-  temp.src = getChromeUrl(path);
-  temp.onload = function () {
-    if (temp.parentNode) {
-      temp.parentNode.removeChild(temp);
-    } else {
-      document.removeChild(temp);
+export const injectCustomScript = (
+  path: string,
+  options: { key?: string; type?: string } = {},
+) => {
+  const script = document.createElement('script');
+  if (!script) return new Error('发生了错误');
+
+  if (options.key) {
+    script.setAttribute('data-key', options.key);
+  }
+
+  script.src = getChromeUrl(path);
+  script.type = options.type || 'text/javascript';
+
+  script.onload = function () {
+    try {
+      script.remove(); // 使用 remove() 方法更简洁可靠
+    } catch (error) {
+      console.error('移除脚本时发生错误:', error);
     }
   };
-  document.head.appendChild(temp);
+
+  document.head.appendChild(script);
+  return script;
 };
 
 /**
- * 向平台注入动态js
- * @param injectscript  es module
- * @returns
+ * 移除 script
+ * @param key
  */
-export const injectCustomScript = (injectscript: any) => {
-  const script = document.createElement('script');
-  script.src = getChromeUrl(injectscript);
-  script.type = 'module';
-  if (!script) return new Error('发生了错误');
-  script.onload = function () {
-    if (script.parentNode) {
-      script.parentNode.removeChild(script);
-    } else {
-      document.removeChild(script);
-    }
-  };
-  document.head.appendChild(script);
+export const removeCustomScript = (key: string) => {
+  const script = document.querySelector(`[data-key="${key}"]`);
+  if (script) {
+    script.remove();
+  }
 };
 
 /**
@@ -179,12 +182,15 @@ export const sendMessageToContentScriptAllTabs = (message: PostMessage) => {
  * @param callback
  */
 export const chromeAddListenerMessage = (
-  callback: (request: PostMessage) => void,
+  callback: (
+    request: PostMessage,
+    sender: chrome.runtime.MessageSender,
+  ) => void,
 ) => {
   try {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      callback(request, sender);
       sendResponse();
-      callback(request);
       return false;
     });
   } catch (error) {
@@ -281,7 +287,7 @@ export const getCurrentTabId = () => {
 };
 
 // 获取当前选项卡ID
-export const getCurrentTab = () => {
+export const getCurrentTab = (): Promise<chrome.tabs.Tab | null> => {
   return new Promise((resolve, reject) => {
     try {
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
