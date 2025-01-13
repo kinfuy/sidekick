@@ -21,9 +21,9 @@ export default defineManifest(() => {
       default_title: 'DevTester',
       default_popup: 'popup.html',
     },
-    // side_panel: {
-    //   default_path: 'sidePanel.html',
-    // },
+    side_panel: {
+      default_path: 'sidePanel.html',
+    },
     content_scripts: [
       {
         matches: ['<all_urls>'],

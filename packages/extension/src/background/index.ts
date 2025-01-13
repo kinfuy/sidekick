@@ -1,19 +1,27 @@
 import { useAlarmManger } from '@core/alarm-manage';
 import { triggerApplicationHooks } from '../core/application';
-import { chromeAddListenerMessage, createtab, getChromeUrl } from '../utils';
+import { createtab, getChromeUrl } from '../utils';
 chrome.runtime.onInstalled.addListener(() => {
   createtab(getChromeUrl('setting.html'));
   triggerApplicationHooks('onInstalled');
 });
 
+// 禁用 action button 打开侧边栏
+chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false });
+
 triggerApplicationHooks('onInit');
 
-chromeAddListenerMessage(async (message, sender) => {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   let limitApp;
-  if (message.code === 'onActiveChange' && message.data?.name) {
-    limitApp = [message.data?.name];
+  if (request.code === 'onActiveChange' && request.data?.name) {
+    limitApp = [request.data?.name];
   }
-  triggerApplicationHooks(message.code, message.data, limitApp, sender);
+  if (request.code === 'onOpenSidePanel' && sender.tab) {
+    chrome.sidePanel.open({ tabId: sender.tab.id });
+  }
+  triggerApplicationHooks(request.code, request.data, limitApp, sender);
+  sendResponse();
+  return false;
 });
 
 chrome.alarms?.onAlarm.addListener((opt) => {
