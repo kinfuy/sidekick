@@ -78,6 +78,7 @@ window.addEventListener('pageshow', () => {
 window.addEventListener('message', async (info: { data: PostMessage }) => {
   const { data } = info;
   if (data.from !== Message.Form.INJECT_MESSAGE) return;
+
   if (data.code === 'onDocVisibilitychange') {
     if (data.data && data.data.visible) {
       initInject();

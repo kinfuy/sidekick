@@ -90,6 +90,8 @@ export const injectCustomScript = (
   path: string,
   options: { key?: string; type?: string } = {},
 ) => {
+  const isExist = document.querySelector(`[data-key="${options.key}"]`);
+  if (isExist) return;
   const script = document.createElement('script');
   if (!script) return new Error('发生了错误');
 
@@ -304,4 +306,12 @@ export const getCurrentTab = (): Promise<chrome.tabs.Tab | null> => {
  */
 export const t = (key: string) => {
   return chrome.i18n.getMessage(key);
+};
+
+/**
+ *
+ * @param message
+ */
+export const sendMessageToInjectScript = (message: PostMessage) => {
+  window.postMessage(message, '*');
 };

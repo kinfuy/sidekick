@@ -11,6 +11,12 @@ declare module 'vue' {
     Cover: typeof import('./src/components/common/Cover/Cover.vue')['default']
     Dialog: typeof import('./src/components/common/Dialog/Dialog.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElDrawer: typeof import('element-plus/es')['ElDrawer']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
+    ElInput: typeof import('element-plus/es')['ElInput']
+    ElOption: typeof import('element-plus/es')['ElOption']
+    ElSelect: typeof import('element-plus/es')['ElSelect']
+    ElSwitch: typeof import('element-plus/es')['ElSwitch']
     Fluorescence: typeof import('./src/components/common/Fluorescence/Fluorescence.vue')['default']
     ToolItem: typeof import('./src/components/common/ToolItem/ToolItem.vue')['default']
   }

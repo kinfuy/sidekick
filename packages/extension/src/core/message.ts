@@ -13,6 +13,11 @@ export namespace Message {
      *@description Popup脚本消息
      */
     export const POPUP_MESSAGE = 'POPUP_MESSAGE';
+
+    /**
+     *@description Sidepanel脚本消息
+     */
+    export const SIDEPANEL_MESSAGE = 'SIDEPANEL_MESSAGE';
     /**
      *@description Server worker消息
      */

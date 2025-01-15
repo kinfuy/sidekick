@@ -91,6 +91,10 @@ export const useApp = () => {
     return storageKit?.store?.apps.filter((a) => a.settingApp) || [];
   });
 
+  const sidePanelApps = computed(() => {
+    return storageKit?.store?.apps.filter((a) => a.sidePanelApp) || [];
+  });
+
   // 安装的app
   const installApps = computed(() => {
     return (
@@ -224,5 +228,6 @@ export const useApp = () => {
     getStorageSize,
     setPopupActive,
     getAppInfo,
+    sidePanelApps,
   };
 };

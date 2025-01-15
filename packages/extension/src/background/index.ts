@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { triggerApplicationHooks } from '../core/application';
 import { createtab, getChromeUrl } from '../utils';
 import { useAlarm } from '@/store/useAlarm';
 
 chrome.runtime.onInstalled.addListener(() => {
-  createtab(getChromeUrl('setting.html'));
+  // createtab(getChromeUrl('setting.html'));
   triggerApplicationHooks('onInstalled');
 });
 
@@ -20,11 +21,16 @@ triggerApplicationHooks('onInit');
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   let limitApp;
+  console.log(request);
   if (request.code === 'onActiveChange' && request.data?.name) {
     limitApp = [request.data?.name];
   }
   if (request.code === 'onOpenSidePanel' && sender.tab) {
-    chrome.sidePanel.open({ tabId: sender.tab.id });
+    try {
+      chrome.sidePanel.open({ tabId: sender.tab.id });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   const contentActive = [
@@ -36,7 +42,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     'onDocDOMContentLoaded',
   ];
   if (contentActive.includes(request.code)) {
-    triggerApplicationHooks('onContentActive', request.data, limitApp);
+    triggerApplicationHooks('onContentActive', request.data, limitApp, sender);
   }
   triggerApplicationHooks(request.code, request.data, limitApp, sender);
   sendResponse();

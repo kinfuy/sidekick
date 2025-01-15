@@ -4,7 +4,7 @@ import { linkGo } from './link-go/content';
 import { storagePortal } from './storage-portal/content';
 import { clickCount } from './click-count/content';
 import { urlBlock } from './url-block/content';
-import { mock } from './mock/content';
+import { apiProxy } from './api-proxy/content';
 
 export const contentFunc: Record<string, Function> = {
   WebNotice: webNotice,
@@ -13,5 +13,5 @@ export const contentFunc: Record<string, Function> = {
   StoragePortal: storagePortal,
   ClickCount: clickCount,
   UrlBlock: urlBlock,
-  Mock: mock,
+  ApiProxy: apiProxy,
 };

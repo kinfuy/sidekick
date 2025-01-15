@@ -8,7 +8,7 @@ import { StoragePortal } from './storage-portal';
 import { BrowseBehavior } from './browse-behavior';
 import { ClickCount } from './click-count';
 import { UrlBlock } from './url-block';
-import { Mock } from './mock';
+import { ApiProxy } from './api-proxy';
 import type { App, AppEntry } from '@/types/core-app.type';
 
 export const apps: App[] = [
@@ -20,7 +20,7 @@ export const apps: App[] = [
   BrowseBehavior,
   ClickCount,
   UrlBlock,
-  Mock,
+  ApiProxy,
 ];
 
 const linkApp: AppEntry[] = [

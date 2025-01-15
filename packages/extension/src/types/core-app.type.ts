@@ -12,6 +12,7 @@ export interface AppEntry {
   popupApp?: boolean;
   contentApp?: boolean;
   settingApp?: boolean;
+  sidePanelApp?: boolean;
 }
 
 export interface CoreApp extends AppEntry {

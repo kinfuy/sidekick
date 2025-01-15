@@ -58,9 +58,10 @@ document.addEventListener('visibilitychange', () => {
   }
   injectPostMessage({
     from: Message.Form.INJECT_MESSAGE,
-    to: Message.Target.CONTENT,
+    to: Message.Target.SERVERWORKER,
     code: 'onDocVisibilitychange',
     data: { visible, url: window.location.href },
   });
 });
+
 export {};

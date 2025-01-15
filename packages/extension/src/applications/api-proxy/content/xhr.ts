@@ -21,6 +21,7 @@ export interface GlobalXmlContext {
   uploadSize?: number;
   downloadSize?: number;
   isStreaming?: boolean;
+  requestHeaders: Record<string, string>;
 }
 
 export type ResponseBody = XMLHttpRequest['response'];
@@ -374,6 +375,15 @@ export function createXHRProxy(
       const context: GlobalXmlContext = {
         xhr,
         requestStartTime: Date.now(),
+        requestHeaders: {},
+      };
+
+      // 代理 setRequestHeader 方法
+      const originalSetRequestHeader = xhr.setRequestHeader;
+      xhr.setRequestHeader = function (header: string, value: string) {
+        // 保存请求头
+        context.requestHeaders[header] = value;
+        return originalSetRequestHeader.call(xhr, header, value);
       };
 
       // 添加进度处理

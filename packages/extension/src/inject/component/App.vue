@@ -173,11 +173,12 @@ const openPage = (code: string, url: string, extra: any = {}) => {
 
 const openSidePanel = (app: string) => {
   injectPostMessage({
-    from: 'app_inject',
     code: 'onOpenSidePanel',
     data: {
       app,
     },
+    from: Message.Form.INJECT_MESSAGE,
+    to: Message.Target.CONTENT,
   });
 };
 

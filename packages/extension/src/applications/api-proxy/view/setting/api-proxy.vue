@@ -1,3 +1,3 @@
 <template>
-  <div>mock</div>
+  <div>ApiProxy</div>
 </template>

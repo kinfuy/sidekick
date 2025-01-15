@@ -27,6 +27,7 @@ const logoIcon = chrome.runtime.getURL(logo);
 const openPage = (code: string, url: string, extra: any = {}) => {
   injectPostMessage({
     from: Message.Form.INJECT_MESSAGE,
+    to: Message.Form.CONTENT_MESSAGE,
     code,
     data: {
       openUrl: url,

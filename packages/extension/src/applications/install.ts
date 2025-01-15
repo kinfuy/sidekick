@@ -17,13 +17,15 @@ import {
   urlBlockSettingInstall,
 } from './url-block/install';
 
-import { mockPopupInstall, mockSettingInstall } from './mock/install';
+import {
+  apiProxySettingInstall,
+  apiProxySidePanelInstall,
+} from './api-proxy/install';
 
 export const popupInstall = (app: App) => {
   devAccountPopupInstall(app);
   browseBehaviorPopupInstall(app);
   clickCountPopupInstall(app);
-  mockPopupInstall(app);
   urlBlockPopopInstall(app);
 };
 
@@ -33,5 +35,9 @@ export const settingInstall = (app: App) => {
   browseBehaviorSettingInstall(app);
   webNoticeContentSettingInstall(app);
   urlBlockSettingInstall(app);
-  mockSettingInstall(app);
+  apiProxySettingInstall(app);
+};
+
+export const sidePanelInstall = (app: App) => {
+  apiProxySidePanelInstall(app);
 };
