@@ -192,9 +192,9 @@ sidekick/
 
 ## 📞 联系我们
 
-- 项目主页：https://github.com/kinfuy/dev-tester
-- 问题反馈：https://github.com/kinfuy/dev-tester/issues
-- 邮箱：kinfuy@example.com
+- 项目主页：https://github.com/kinfuy/sidekick
+- 问题反馈：https://github.com/kinfuy/sidekick/issues
+- 邮箱：kinfuy@outlook.com
 
 ---
 
